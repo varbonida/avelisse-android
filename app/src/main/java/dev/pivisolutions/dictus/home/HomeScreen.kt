@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,13 +62,13 @@ fun HomeScreen(
     dataStore: DataStore<Preferences>,
     onNewDictation: () -> Unit,
 ) {
-    val activeModelKey by dataStore.data
-        .map { it[PreferenceKeys.ACTIVE_MODEL] ?: ModelCatalog.DEFAULT_KEY }
-        .collectAsState(initial = ModelCatalog.DEFAULT_KEY)
+    val activeModelKey by remember(dataStore) {
+        dataStore.data.map { it[PreferenceKeys.ACTIVE_MODEL] ?: ModelCatalog.DEFAULT_KEY }
+    }.collectAsState(initial = ModelCatalog.DEFAULT_KEY)
 
-    val lastTranscription by dataStore.data
-        .map { it[PreferenceKeys.LAST_TRANSCRIPTION] }
-        .collectAsState(initial = null)
+    val lastTranscription by remember(dataStore) {
+        dataStore.data.map { it[PreferenceKeys.LAST_TRANSCRIPTION] }
+    }.collectAsState(initial = null)
 
     val activeModel = ModelCatalog.findByKey(activeModelKey)
     val context = LocalContext.current
