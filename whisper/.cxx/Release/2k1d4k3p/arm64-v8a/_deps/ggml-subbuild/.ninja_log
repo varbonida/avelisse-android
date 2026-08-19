@@ -1,0 +1,21 @@
+# ninja log v5
+0	250	8083998786882678	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-mkdir	a265843a92c649ef
+0	250	8083998786882678	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-mkdir	a265843a92c649ef
+250	331	8083998787693950	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-download	8beae3a78cec25c4
+250	331	8083998787693950	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-download	8beae3a78cec25c4
+332	414	8083998788513237	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-update	94248dfd7115c8f2
+332	414	8083998788513237	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-update	94248dfd7115c8f2
+414	495	8083998789339866	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-patch	7a05aea6a2d68cb0
+414	495	8083998789339866	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-patch	7a05aea6a2d68cb0
+495	576	8083998790149862	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-configure	dc8eaff4940a781e
+495	576	8083998790149862	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-configure	dc8eaff4940a781e
+577	657	8083998790949990	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-build	17179fe373efa8be
+577	657	8083998790949990	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-build	17179fe373efa8be
+657	738	8083998791749851	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-install	e5b0fab132ec7ad0
+657	738	8083998791749851	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-install	e5b0fab132ec7ad0
+738	818	8083998792559859	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-test	3294e0932c04b138
+738	818	8083998792559859	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-test	3294e0932c04b138
+818	927	8083998793649846	CMakeFiles/ggml-populate-complete	93b4c1773c51f9e3
+818	927	8083998793649846	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-done	93b4c1773c51f9e3
+818	927	8083998793649846	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/CMakeFiles/ggml-populate-complete	93b4c1773c51f9e3
+818	927	8083998793649846	C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-done	93b4c1773c51f9e3

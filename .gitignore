@@ -20,3 +20,5 @@ Thumbs.db
 *.jks
 *.keystore
 keystore.properties
+
+PROJECT_NOTES.md
