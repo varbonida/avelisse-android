@@ -51,4 +51,16 @@ object DictusColors {
     val LightBorderSubtle = Color(0xFFD1D1D6)      // iOS separator light
     val LightKeyBackground = Color(0xFFE8E8ED)     // Light key background
     val LightKeySpecialBackground = Color(0xFFD4D4DA) // Light special key background
+
+    // --- Home palette (fixed brand palette for the Home tab; not dark/light reactive) ---
+    val HomeBackground = Color(0xFFF5F0E6)
+    val HomeSurface = Color(0xFFEFE3CC)
+    val HomeSurfaceBorder = Color(0xFFE1D3B4)
+    val HomeAccent = Color(0xFF0F7A8C)
+    val HomeAccentHighlight = Color(0xFF35A6B5)
+    val HomeAccentDark = Color(0xFF0B5C6B)
+    val HomeAccentSecondary = Color(0xFFD9662E)
+    val HomeTextPrimary = Color(0xFF332B22)
+    val HomeTextSecondary = Color(0xFF7A6F62)
+    val HomeWaveformMuted = Color(0xFF9C9284)
 }

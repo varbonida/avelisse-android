@@ -1,13 +1,15 @@
-package dev.pivisolutions.dictus.home
+﻿package dev.pivisolutions.dictus.home
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,9 +45,6 @@ import androidx.datastore.preferences.core.Preferences
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.preferences.PreferenceKeys
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
-import dev.pivisolutions.dictus.core.ui.GlassCard
 import dev.pivisolutions.dictus.model.ModelCatalog
 import kotlinx.coroutines.flow.map
 
@@ -77,7 +76,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(DictusColors.HomeBackground)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -88,10 +87,10 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // "Dictus" wordmark in accent blue
+        // "Dictus" wordmark in accent teal
         Text(
             text = "Dictus",
-            color = DictusColors.Accent,
+            color = DictusColors.HomeAccent,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -99,10 +98,10 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Active model card
-        GlassCard(modifier = Modifier.fillMaxWidth()) {
+        HomeCard(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(R.string.home_active_model),
-                color = LocalDictusColors.current.textSecondary,
+                color = DictusColors.HomeTextSecondary,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
             )
@@ -115,7 +114,7 @@ fun HomeScreen(
                 Column {
                     Text(
                         text = activeModel?.displayName ?: activeModelKey,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = DictusColors.HomeTextPrimary,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -123,17 +122,17 @@ fun HomeScreen(
                         val sizeMb = activeModel.expectedSizeBytes / 1_000_000
                         Text(
                             text = "~$sizeMb Mo",
-                            color = LocalDictusColors.current.textSecondary,
+                            color = DictusColors.HomeTextSecondary,
                             fontSize = 13.sp,
                         )
                     }
                 }
-                // Green check circle
+                // Check circle
                 Box(
                     modifier = Modifier
                         .size(28.dp)
                         .clip(CircleShape)
-                        .background(DictusColors.Success),
+                        .background(DictusColors.HomeAccentSecondary),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -149,7 +148,7 @@ fun HomeScreen(
         // Last transcription card (only shown when a transcription exists)
         if (!lastTranscription.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(16.dp))
-            GlassCard(modifier = Modifier.fillMaxWidth()) {
+            HomeCard(modifier = Modifier.fillMaxWidth()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -157,14 +156,14 @@ fun HomeScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.home_last_transcription),
-                        color = LocalDictusColors.current.textSecondary,
+                        color = DictusColors.HomeTextSecondary,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                     )
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.home_copy_cd),
-                        tint = LocalDictusColors.current.textSecondary,
+                        tint = DictusColors.HomeTextSecondary,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
@@ -180,7 +179,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = lastTranscription ?: "",
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = DictusColors.HomeTextPrimary,
                     fontSize = 16.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
@@ -198,7 +197,7 @@ fun HomeScreen(
                 .clip(RoundedCornerShape(14.dp))
                 .background(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(DictusColors.Accent, DictusColors.AccentDark),
+                        colors = listOf(DictusColors.HomeAccent, DictusColors.HomeAccentDark),
                     )
                 ),
             contentAlignment = Alignment.Center,
@@ -225,6 +224,30 @@ fun HomeScreen(
 }
 
 /**
+ * Home-screen-only card surface.
+ *
+ * Mirrors [dev.pivisolutions.dictus.core.ui.GlassCard]'s shape (16dp corner radius, 20dp
+ * padding, 1dp border) exactly, but sources its colors from the Home palette in [DictusColors]
+ * instead of the shared Material theme. Kept local to HomeScreen.kt rather than editing GlassCard itself,
+ * since GlassCard is also used by the Recording and Onboarding screens, which must keep the
+ * shared dark/light theme.
+ */
+@Composable
+private fun HomeCard(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(DictusColors.HomeSurface)
+            .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
+            .padding(20.dp),
+        content = content,
+    )
+}
+
+/**
  * Dictus waveform logo — 3 rounded vertical bars matching the app icon.
  *
  * Bar proportions from the brand kit: short left (opacity 0.45),
@@ -234,9 +257,7 @@ fun HomeScreen(
 private fun DictusWaveformLogo(
     modifier: Modifier = Modifier,
 ) {
-    // Outer bar base color: white in dark theme, gray in light theme (matches iOS & WaveformBars)
-    val isDark = MaterialTheme.colorScheme.background == DictusColors.Background
-    val outerBarBase = if (isDark) Color.White else Color(0xFF8E8E93)
+    val outerBarBase = DictusColors.HomeWaveformMuted
 
     Row(
         modifier = modifier,
@@ -260,8 +281,8 @@ private fun DictusWaveformLogo(
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            DictusColors.AccentHighlight, // #6BA3FF
-                            Color(0xFF2563EB),
+                            DictusColors.HomeAccentHighlight,
+                            DictusColors.HomeAccentDark,
                         ),
                     )
                 ),
