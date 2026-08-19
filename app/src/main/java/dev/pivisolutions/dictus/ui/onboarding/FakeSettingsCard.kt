@@ -36,8 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
+import dev.pivisolutions.dictus.core.theme.DictusColors
 import kotlinx.coroutines.delay
 
 /**
@@ -73,20 +72,20 @@ fun FakeSettingsCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, LocalDictusColors.current.borderSubtle, RoundedCornerShape(16.dp)),
+            .background(DictusColors.HomeSurface)
+            .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(16.dp)),
     ) {
         // Section header: "Manage keyboards" — matches Android system settings label
         Text(
             text = stringResource(R.string.fake_settings_manage_keyboards),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         )
 
         HorizontalDivider(
-            color = LocalDictusColors.current.borderSubtle,
+            color = DictusColors.HomeSurfaceBorder,
             thickness = 1.dp,
         )
 
@@ -99,7 +98,7 @@ fun FakeSettingsCard(
         )
 
         HorizontalDivider(
-            color = LocalDictusColors.current.borderSubtle,
+            color = DictusColors.HomeSurfaceBorder,
             thickness = 1.dp,
             modifier = Modifier.padding(start = 72.dp),
         )
@@ -155,12 +154,12 @@ private fun KeyboardEntryRow(
         ) {
             Text(
                 text = name,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = DictusColors.HomeTextPrimary,
                 fontSize = 16.sp,
             )
             Text(
                 text = subtitle,
-                color = LocalDictusColors.current.textSecondary,
+                color = DictusColors.HomeTextSecondary,
                 fontSize = 13.sp,
             )
         }

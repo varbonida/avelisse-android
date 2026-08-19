@@ -36,8 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 
 /**
  * Two side-by-side keyboard mode selection cards for onboarding step 4.
@@ -46,8 +44,8 @@ import androidx.compose.material3.MaterialTheme
  * - "ABC" (azerty/abc layout) — starts with letters visible
  * - "123" (numeric layout) — starts with numbers visible
  *
- * The selected card gets an accent-blue border (2dp) and blue text.
- * The unselected card gets a subtle border (1dp, #2A2A2E) and grey text.
+ * The selected card gets a Home accent-teal border (2dp) and teal text.
+ * The unselected card gets the Home palette's subtle border (1dp) and muted text.
  *
  * WHY two cards (not radio buttons / Chips): The UI-SPEC calls for large, tappable
  * cards that clearly show what each layout looks like. The visual differentiation
@@ -107,16 +105,16 @@ private fun LayoutOptionCard(
         label = "card_scale_$layoutKey",
     )
 
-    val borderColor = if (isSelected) DictusColors.Accent else LocalDictusColors.current.borderSubtle
+    val borderColor = if (isSelected) DictusColors.HomeAccent else DictusColors.HomeSurfaceBorder
     val borderWidth = if (isSelected) 2.dp else 1.dp
-    val labelColor = if (isSelected) DictusColors.Accent else LocalDictusColors.current.textSecondary
-    val descColor = if (isSelected) MaterialTheme.colorScheme.onBackground else LocalDictusColors.current.textSecondary
+    val labelColor = if (isSelected) DictusColors.HomeAccent else DictusColors.HomeTextSecondary
+    val descColor = if (isSelected) DictusColors.HomeTextPrimary else DictusColors.HomeTextSecondary
 
     Column(
         modifier = modifier
             .scale(scale)
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(DictusColors.HomeSurface)
             .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -153,7 +151,7 @@ private fun LayoutOptionCard(
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = stringResource(R.string.cd_selected),
-                tint = DictusColors.Accent,
+                tint = DictusColors.HomeAccent,
                 modifier = Modifier.size(24.dp),
             )
         } else {
@@ -162,7 +160,7 @@ private fun LayoutOptionCard(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(CircleShape)
-                    .border(2.dp, LocalDictusColors.current.borderSubtle, CircleShape),
+                    .border(2.dp, DictusColors.HomeSurfaceBorder, CircleShape),
             )
         }
     }

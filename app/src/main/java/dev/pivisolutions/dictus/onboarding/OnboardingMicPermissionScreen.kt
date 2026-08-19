@@ -23,8 +23,6 @@ import android.content.pm.PackageManager
 import androidx.compose.ui.text.font.FontWeight
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
 
 /**
@@ -100,7 +98,7 @@ fun OnboardingMicPermissionScreen(
         Icon(
             imageVector = Icons.Default.Mic,
             contentDescription = null,
-            tint = DictusColors.Accent,
+            tint = DictusColors.HomeAccent,
             modifier = Modifier.size(72.dp),
         )
 
@@ -108,7 +106,7 @@ fun OnboardingMicPermissionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mic_permission_title),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -118,7 +116,7 @@ fun OnboardingMicPermissionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mic_permission_body),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.HomeTextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,

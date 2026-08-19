@@ -60,6 +60,8 @@ object DictusColors {
     val HomeAccentHighlight = Color(0xFF35A6B5)
     val HomeAccentDark = Color(0xFF0B5C6B)
     val HomeAccentSecondary = Color(0xFFD9662E)
+    val HomeAccentSecondaryDark = Color(0xFFA34D23)
+    val HomeAccentSecondarySubtle = Color(0x33D9662E) // HomeAccentSecondary at ~20% opacity
     val HomeTextPrimary = Color(0xFF332B22)
     val HomeTextSecondary = Color(0xFF7A6F62)
     val HomeWaveformMuted = Color(0xFF9C9284)

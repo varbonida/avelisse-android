@@ -32,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
 
 /**
@@ -96,7 +94,7 @@ fun OnboardingModelDownloadScreen(
         Icon(
             imageVector = Icons.Default.Download,
             contentDescription = null,
-            tint = DictusColors.Accent,
+            tint = DictusColors.HomeAccent,
             modifier = Modifier.size(64.dp),
         )
 
@@ -104,7 +102,7 @@ fun OnboardingModelDownloadScreen(
 
         Text(
             text = stringResource(R.string.onboarding_model_download_title),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -114,7 +112,7 @@ fun OnboardingModelDownloadScreen(
 
         Text(
             text = stringResource(R.string.onboarding_model_download_body),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.HomeTextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,
@@ -173,15 +171,15 @@ private fun ModelInfoCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, DictusColors.GlassBorder, RoundedCornerShape(16.dp))
+            .background(DictusColors.HomeSurface)
+            .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         // Model name — dynamic from ModelInfo
         Text(
             text = modelName,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
         )
@@ -189,7 +187,7 @@ private fun ModelInfoCard(
         // Subtitle: recommended badge
         Text(
             text = stringResource(R.string.onboarding_model_download_recommended),
-            color = DictusColors.Accent,
+            color = DictusColors.HomeAccent,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
         )
@@ -206,12 +204,12 @@ private fun ModelInfoCard(
                 Icon(
                     imageVector = Icons.Outlined.Storage,
                     contentDescription = null,
-                    tint = LocalDictusColors.current.textSecondary,
+                    tint = DictusColors.HomeTextSecondary,
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = modelSize,
-                    color = LocalDictusColors.current.textSecondary,
+                    color = DictusColors.HomeTextSecondary,
                     fontSize = 13.sp,
                 )
             }
@@ -222,12 +220,12 @@ private fun ModelInfoCard(
                 Icon(
                     imageVector = Icons.Outlined.Bolt,
                     contentDescription = null,
-                    tint = LocalDictusColors.current.textSecondary,
+                    tint = DictusColors.HomeTextSecondary,
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = modelQualityLabel,
-                    color = LocalDictusColors.current.textSecondary,
+                    color = DictusColors.HomeTextSecondary,
                     fontSize = 13.sp,
                 )
             }
@@ -245,14 +243,14 @@ private fun ModelInfoCard(
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp))
-                        .background(MaterialTheme.colorScheme.background),
+                        .background(DictusColors.HomeBackground),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(fraction = barFraction)
                             .height(6.dp)
                             .clip(RoundedCornerShape(3.dp))
-                            .background(DictusColors.Accent),
+                            .background(DictusColors.HomeAccent),
                     )
                 }
 
@@ -264,7 +262,7 @@ private fun ModelInfoCard(
                     } else {
                         stringResource(R.string.onboarding_model_download_progress, downloadProgress)
                     },
-                    color = DictusColors.AccentHighlight,
+                    color = DictusColors.HomeAccentHighlight,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,

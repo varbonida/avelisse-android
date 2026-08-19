@@ -18,8 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.ui.onboarding.FakeSettingsCard
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
 
@@ -62,7 +60,7 @@ fun OnboardingKeyboardSetupScreen(
         Icon(
             imageVector = Icons.Default.KeyboardAlt,
             contentDescription = null,
-            tint = DictusColors.Accent,
+            tint = DictusColors.HomeAccent,
             modifier = Modifier.size(64.dp),
         )
 
@@ -70,7 +68,7 @@ fun OnboardingKeyboardSetupScreen(
 
         Text(
             text = stringResource(R.string.onboarding_keyboard_setup_title),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -80,7 +78,7 @@ fun OnboardingKeyboardSetupScreen(
 
         Text(
             text = stringResource(R.string.onboarding_keyboard_setup_body),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.HomeTextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,

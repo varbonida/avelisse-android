@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.core.ui.WaveformBars
 import dev.pivisolutions.dictus.core.ui.WaveformDriver
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
@@ -74,7 +72,7 @@ fun OnboardingWelcomeScreen(
         // "Dictus" wordmark
         Text(
             text = stringResource(R.string.onboarding_welcome_wordmark),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 42.sp,
             fontWeight = FontWeight.ExtraLight,
             letterSpacing = (-0.5).sp,
@@ -85,7 +83,7 @@ fun OnboardingWelcomeScreen(
         // Tagline
         Text(
             text = stringResource(R.string.onboarding_welcome_tagline),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.HomeTextSecondary,
             fontSize = 17.sp,
         )
     }

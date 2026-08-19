@@ -22,20 +22,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
 import dev.pivisolutions.dictus.ui.onboarding.successGradient
 
 /**
  * Onboarding Step 6 — Success / completion screen.
  *
- * Shown after the model has been downloaded. The user sees a green check circle,
- * a "C'est pret !" heading, and a brief confirmation. Tapping "Commencer" calls
- * the ViewModel's advanceStep(), which writes HAS_COMPLETED_ONBOARDING=true to
- * DataStore — causing AppNavHost to switch to the main tab layout.
+ * Shown after the model has been downloaded. The user sees a check circle in the
+ * Home palette's accent-secondary color, a "C'est pret !" heading, and a brief
+ * confirmation. Tapping "Commencer" calls the ViewModel's advanceStep(), which writes
+ * HAS_COMPLETED_ONBOARDING=true to DataStore — causing AppNavHost to switch to the
+ * main tab layout.
  *
- * WHY success gradient on CTA: The green gradient on step 6 reinforces the positive
+ * WHY success gradient on CTA: The distinct gradient on step 6 reinforces the positive
  * completion state visually. It also signals that this step is different from the
  * previous steps (transition from "in progress" to "done").
  *
@@ -56,14 +55,14 @@ fun OnboardingSuccessScreen(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(DictusColors.SuccessSubtle)
-                .border(3.dp, DictusColors.Success, CircleShape),
+                .background(DictusColors.HomeAccentSecondarySubtle)
+                .border(3.dp, DictusColors.HomeAccentSecondary, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
-                tint = DictusColors.Success,
+                tint = DictusColors.HomeAccentSecondary,
                 modifier = Modifier.size(56.dp),
             )
         }
@@ -72,7 +71,7 @@ fun OnboardingSuccessScreen(
 
         Text(
             text = stringResource(R.string.onboarding_success_title),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.HomeTextPrimary,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.5).sp,
@@ -82,7 +81,7 @@ fun OnboardingSuccessScreen(
 
         Text(
             text = stringResource(R.string.onboarding_success_body),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.HomeTextSecondary,
             fontSize = 17.sp,
             textAlign = TextAlign.Center,
         )

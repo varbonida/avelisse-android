@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.MaterialTheme
+import dev.pivisolutions.dictus.core.theme.DictusColors
 
 /**
  * Shared full-screen layout scaffold used by all 6 onboarding step screens.
@@ -52,7 +52,7 @@ fun OnboardingStepScaffold(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(DictusColors.HomeBackground)
             .padding(horizontal = 32.dp),
     ) {
         Column(

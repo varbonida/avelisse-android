@@ -40,3 +40,28 @@ fun GlassCard(
         content = content,
     )
 }
+
+/**
+ * Same shape as [GlassCard] (16dp corner radius, 20dp padding, 1dp border), but sourced from
+ * the fixed Home palette in [DictusColors] instead of the shared Material theme.
+ *
+ * WHY not a parameter on GlassCard: GlassCard's callers (Recording, and previously Home/
+ * Onboarding) all shared the same dark/light theme, so a single theme-driven composable was
+ * enough. The Home tab and onboarding flow now use a fixed brand palette independent of
+ * dark/light mode, so they share this variant instead — without touching GlassCard's
+ * behavior for its remaining theme-driven callers (e.g. RecordingScreen).
+ */
+@Composable
+fun HomeGlassCard(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(DictusColors.HomeSurface)
+            .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
+            .padding(20.dp),
+        content = content,
+    )
+}

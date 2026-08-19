@@ -15,9 +15,9 @@ import dev.pivisolutions.dictus.core.theme.DictusColors
 /**
  * Row of 6 progress dots for the onboarding flow.
  *
- * The active dot uses accent blue for steps 1-5, or success green for step 6.
- * Inactive dots use a low-opacity white to maintain visual hierarchy against the
- * dark background without competing with the active dot.
+ * The active dot uses the Home accent teal for steps 1-5, or the accent-secondary
+ * terracotta for step 6. Inactive dots use the Home palette's subtle border tone to
+ * maintain visual hierarchy against the background without competing with the active dot.
  *
  * WHY 7 fixed dots: The onboarding flow has exactly 7 steps (Welcome, Mic, Keyboard,
  * Mode, Download, Test Recording, Success).
@@ -31,11 +31,11 @@ fun OnboardingProgressDots(
     totalSteps: Int = 7,
     modifier: Modifier = Modifier,
 ) {
-    // Active dot color: success green on step 6 (the "done" state), accent blue otherwise
+    // Active dot color: accent-secondary terracotta on step 6 (the "done" state), accent teal otherwise
     val activeDotColor = if (currentStep == totalSteps) {
-        DictusColors.Success
+        DictusColors.HomeAccentSecondary
     } else {
-        DictusColors.Accent
+        DictusColors.HomeAccent
     }
 
     Row(
@@ -48,7 +48,7 @@ fun OnboardingProgressDots(
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(if (isActive) activeDotColor else DictusColors.InactiveDot),
+                    .background(if (isActive) activeDotColor else DictusColors.HomeSurfaceBorder),
             )
         }
     }

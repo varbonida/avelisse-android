@@ -35,8 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 
 /**
  * Shared CTA button used across all onboarding steps.
@@ -98,8 +96,8 @@ fun OnboardingCTAButton(
                     Modifier.background(brush = gradient)
                 } else {
                     Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .border(1.dp, LocalDictusColors.current.borderSubtle, RoundedCornerShape(14.dp))
+                        .background(DictusColors.HomeSurface)
+                        .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(14.dp))
                 }
             )
             .pointerInput(enabled) {
@@ -124,14 +122,14 @@ fun OnboardingCTAButton(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (enabled) Color.White else LocalDictusColors.current.textSecondary,
+                    tint = if (enabled) Color.White else DictusColors.HomeTextSecondary,
                     modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(10.dp))
             }
             Text(
                 text = text,
-                color = if (enabled) Color.White else LocalDictusColors.current.textSecondary,
+                color = if (enabled) Color.White else DictusColors.HomeTextSecondary,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -143,12 +141,12 @@ fun OnboardingCTAButton(
 // Pre-built gradient brushes shared across onboarding screens
 // ---------------------------------------------------------------------------
 
-/** Accent gradient: left-to-right #3D7EFF → #2563EB */
+/** Accent gradient: left-to-right Home accent teal → its darker shade */
 val accentGradient: Brush = Brush.horizontalGradient(
-    colors = listOf(DictusColors.Accent, DictusColors.AccentDark),
+    colors = listOf(DictusColors.HomeAccent, DictusColors.HomeAccentDark),
 )
 
-/** Success gradient: left-to-right #22C55E → #16A34A (step 6 CTA) */
+/** Success gradient: left-to-right Home accent-secondary terracotta → its darker shade (step 6 CTA) */
 val successGradient: Brush = Brush.horizontalGradient(
-    colors = listOf(DictusColors.Success, DictusColors.SuccessDark),
+    colors = listOf(DictusColors.HomeAccentSecondary, DictusColors.HomeAccentSecondaryDark),
 )

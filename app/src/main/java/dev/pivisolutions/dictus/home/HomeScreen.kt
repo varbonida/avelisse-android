@@ -4,12 +4,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +43,7 @@ import androidx.datastore.preferences.core.Preferences
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.preferences.PreferenceKeys
 import dev.pivisolutions.dictus.core.theme.DictusColors
+import dev.pivisolutions.dictus.core.ui.HomeGlassCard
 import dev.pivisolutions.dictus.model.ModelCatalog
 import kotlinx.coroutines.flow.map
 
@@ -98,7 +97,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Active model card
-        HomeCard(modifier = Modifier.fillMaxWidth()) {
+        HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(R.string.home_active_model),
                 color = DictusColors.HomeTextSecondary,
@@ -148,7 +147,7 @@ fun HomeScreen(
         // Last transcription card (only shown when a transcription exists)
         if (!lastTranscription.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(16.dp))
-            HomeCard(modifier = Modifier.fillMaxWidth()) {
+            HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -221,30 +220,6 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.weight(1f))
     }
-}
-
-/**
- * Home-screen-only card surface.
- *
- * Mirrors [dev.pivisolutions.dictus.core.ui.GlassCard]'s shape (16dp corner radius, 20dp
- * padding, 1dp border) exactly, but sources its colors from the Home palette in [DictusColors]
- * instead of the shared Material theme. Kept local to HomeScreen.kt rather than editing GlassCard itself,
- * since GlassCard is also used by the Recording and Onboarding screens, which must keep the
- * shared dark/light theme.
- */
-@Composable
-private fun HomeCard(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(DictusColors.HomeSurface)
-            .border(1.dp, DictusColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
-            .padding(20.dp),
-        content = content,
-    )
 }
 
 /**

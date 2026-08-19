@@ -43,9 +43,7 @@ import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.service.DictationController
 import dev.pivisolutions.dictus.core.service.DictationState
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
-import dev.pivisolutions.dictus.core.ui.GlassCard
+import dev.pivisolutions.dictus.core.ui.HomeGlassCard
 import dev.pivisolutions.dictus.core.ui.WaveformBars
 import dev.pivisolutions.dictus.core.ui.WaveformDriver
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingCTAButton
@@ -100,7 +98,7 @@ fun OnboardingTestRecordingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(DictusColors.HomeBackground)
             .padding(horizontal = 32.dp),
     ) {
         // ── Layer 1: Upper content (idle text OR result card) ──
@@ -118,7 +116,7 @@ fun OnboardingTestRecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_result),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = DictusColors.HomeTextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -126,12 +124,12 @@ fun OnboardingTestRecordingScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    GlassCard(
+                    HomeGlassCard(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
                             text = transcriptionResult ?: "",
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = DictusColors.HomeTextPrimary,
                             fontSize = 17.sp,
                             lineHeight = 26.sp,
                         )
@@ -156,7 +154,7 @@ fun OnboardingTestRecordingScreen(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.onboarding_test_recording_cd_copy),
-                                tint = if (copied) DictusColors.Success else LocalDictusColors.current.textSecondary,
+                                tint = if (copied) DictusColors.HomeAccentSecondary else DictusColors.HomeTextSecondary,
                                 modifier = Modifier.size(20.dp),
                             )
                         }
@@ -175,7 +173,7 @@ fun OnboardingTestRecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_title),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = DictusColors.HomeTextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -185,7 +183,7 @@ fun OnboardingTestRecordingScreen(
 
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_body),
-                        color = LocalDictusColors.current.textSecondary,
+                        color = DictusColors.HomeTextSecondary,
                         fontSize = 15.sp,
                         lineHeight = (15 * 1.5).sp,
                         textAlign = TextAlign.Center,
@@ -225,7 +223,7 @@ fun OnboardingTestRecordingScreen(
                         val secs = seconds % 60
                         Text(
                             text = "%d:%02d".format(minutes, secs),
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = DictusColors.HomeTextPrimary,
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Medium,
                         )
@@ -236,7 +234,7 @@ fun OnboardingTestRecordingScreen(
                     isTranscribing -> {
                         Text(
                             text = stringResource(R.string.onboarding_test_recording_transcribing),
-                            color = LocalDictusColors.current.textSecondary,
+                            color = DictusColors.HomeTextSecondary,
                             fontSize = 17.sp,
                         )
 
@@ -285,13 +283,13 @@ fun OnboardingTestRecordingScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.surface),
+                                .background(DictusColors.HomeSurface),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Mic,
                                 contentDescription = null,
-                                tint = LocalDictusColors.current.textSecondary,
+                                tint = DictusColors.HomeTextSecondary,
                                 modifier = Modifier.size(36.dp),
                             )
                         }
@@ -302,7 +300,7 @@ fun OnboardingTestRecordingScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(DictusColors.Accent)
+                                .background(DictusColors.HomeAccent)
                                 .clickable {
                                     dictationController?.startRecording()
                                 },
@@ -322,7 +320,7 @@ fun OnboardingTestRecordingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = if (isRecording) stringResource(R.string.onboarding_test_recording_tap_to_stop) else "",
-                    color = LocalDictusColors.current.textSecondary,
+                    color = DictusColors.HomeTextSecondary,
                     fontSize = 13.sp,
                 )
             }
