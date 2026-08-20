@@ -46,8 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.model.AiProvider
 import dev.pivisolutions.dictus.model.ModelInfo
 import kotlin.math.roundToInt
@@ -109,7 +107,12 @@ fun ModelCard(
     val isDownloading = downloadProgress != null
 
     // Active cards get an accent border; others get the default glass border
-    val borderColor = if (isActive) DictusColors.Accent else DictusColors.GlassBorder
+    val borderColor = if (isActive) DictusColors.HomeAccent else DictusColors.HomeSurfaceBorder
+
+    // State-driven accent: the active/selected card is teal-branded (matches models.png),
+    // non-active cards use neutral dark/gray tones. Reused by the badge, bars, and text below.
+    val accentColor = if (isActive) DictusColors.HomeAccent else DictusColors.ModelsTextPrimary
+    val accentColorMuted = if (isActive) DictusColors.HomeAccentDark else DictusColors.ModelsTextSecondary
 
     // Swipe-to-delete state
     val deleteButtonWidth = 80.dp
@@ -167,7 +170,7 @@ fun ModelCard(
                 .offset { IntOffset(animatedOffsetX.roundToInt(), 0) }
                 .onSizeChanged { cardHeightPx = it.height.toFloat() }
                 .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(if (isActive) DictusColors.HomeAccent.copy(alpha = 0.18f) else DictusColors.ModelsSurface)
                 .border(
                     if (isActive) 2.dp else 1.dp,
                     borderColor,
@@ -227,14 +230,15 @@ fun ModelCard(
                         ) {
                             Text(
                                 text = model.displayName,
-                                color = MaterialTheme.colorScheme.onBackground,
+                                color = DictusColors.ModelsTextPrimary,
                                 fontSize = 17.sp,
                                 fontWeight = FontWeight.SemiBold,
                             )
-                            // Provider badge — "WK" (blue) for Whisper, "NV" (amber) for Parakeet/Nvidia
+                            // Provider badge — follows the card's active-state accent (teal when
+                            // active/selected, neutral dark otherwise), matching models.png.
                             val (badgeText, badgeColor) = when (model.provider) {
-                                AiProvider.WHISPER -> "WK" to DictusColors.Accent
-                                AiProvider.PARAKEET -> "NV" to Color(0xFFF59E0B)
+                                AiProvider.WHISPER -> "WK" to accentColor
+                                AiProvider.PARAKEET -> "NV" to accentColor
                             }
                             Box(
                                 modifier = Modifier
@@ -255,12 +259,12 @@ fun ModelCard(
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(8.dp))
-                                    .background(Color(0x206BA3FF))
+                                    .background(DictusColors.HomeAccent.copy(alpha = 0.2f))
                                     .padding(horizontal = 8.dp, vertical = 2.dp),
                             ) {
                                 Text(
                                     text = stringResource(R.string.model_active),
-                                    color = DictusColors.AccentHighlight,
+                                    color = DictusColors.HomeAccentHighlight,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium,
                                 )
@@ -290,7 +294,7 @@ fun ModelCard(
                 if (model.description.isNotBlank()) {
                     Text(
                         text = model.description,
-                        color = LocalDictusColors.current.textSecondary,
+                        color = accentColorMuted,
                         fontSize = 13.sp,
                         lineHeight = 18.sp,
                     )
@@ -304,13 +308,15 @@ fun ModelCard(
                     SegmentedMetricBar(
                         label = stringResource(R.string.model_precision),
                         value = model.precision,
-                        color = DictusColors.Accent,
+                        color = accentColor,
+                        emptyColor = if (isActive) null else DictusColors.HomeSurfaceBorder,
                         modifier = Modifier.weight(1f),
                     )
                     SegmentedMetricBar(
                         label = stringResource(R.string.model_speed),
                         value = model.speed,
-                        color = DictusColors.AccentHighlight,
+                        color = if (isActive) DictusColors.HomeAccentHighlight else accentColor,
+                        emptyColor = if (isActive) null else DictusColors.HomeSurfaceBorder,
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -319,7 +325,7 @@ fun ModelCard(
                 val sizeMb = model.expectedSizeBytes / 1_000_000
                 Text(
                     text = "~$sizeMb Mo",
-                    color = LocalDictusColors.current.textSecondary,
+                    color = accentColorMuted,
                     fontSize = 12.sp,
                 )
 
@@ -332,13 +338,13 @@ fun ModelCard(
                                 .fillMaxWidth()
                                 .height(6.dp)
                                 .clip(RoundedCornerShape(3.dp)),
-                            color = DictusColors.Accent,
-                            trackColor = MaterialTheme.colorScheme.background,
+                            color = DictusColors.HomeAccent,
+                            trackColor = DictusColors.ModelsBackground,
                             strokeCap = StrokeCap.Round,
                         )
                         Text(
                             text = stringResource(R.string.model_extracting),
-                            color = DictusColors.AccentHighlight,
+                            color = DictusColors.HomeAccentHighlight,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -353,13 +359,13 @@ fun ModelCard(
                                 .fillMaxWidth()
                                 .height(6.dp)
                                 .clip(RoundedCornerShape(3.dp)),
-                            color = DictusColors.Accent,
-                            trackColor = MaterialTheme.colorScheme.background,
+                            color = DictusColors.HomeAccent,
+                            trackColor = DictusColors.ModelsBackground,
                             strokeCap = StrokeCap.Round,
                         )
                         Text(
                             text = stringResource(R.string.model_download_progress, percent),
-                            color = DictusColors.AccentHighlight,
+                            color = DictusColors.HomeAccentHighlight,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -398,8 +404,8 @@ fun ModelCard(
                                 .background(
                                     brush = Brush.horizontalGradient(
                                         colors = listOf(
-                                            DictusColors.Accent,
-                                            DictusColors.AccentDark,
+                                            DictusColors.HomeAccent,
+                                            DictusColors.HomeAccentDark,
                                         ),
                                     )
                                 )
@@ -426,26 +432,31 @@ fun ModelCard(
  * iOS-style segmented metric bar with 5 sub-bars.
  *
  * Matches iOS BrandWaveform model card design: each metric shows a label
- * above a row of 5 rounded segments. Filled segments use accent blue,
- * empty segments use a muted background color.
+ * above a row of 5 rounded segments. Filled segments use the caller-provided
+ * accent color, empty segments use a muted background color.
  *
  * @param label Label shown above the segments (e.g. "Précision").
  * @param value Progress value from 0.0 to 1.0 (mapped to 0–5 filled segments).
+ * @param emptyColor Optional explicit color for unfilled segments. When null, defaults to
+ *        [color] at 15% opacity (e.g. models.png's active/teal card, where the empty segments
+ *        are a faded tint of the same hue). Available (non-active) cards pass an explicit tan
+ *        tone instead, since their filled segments are neutral gray but empty segments aren't
+ *        just a faded gray — they match the card's own surface tone.
  * @param modifier Modifier for the outer Column.
  */
 @Composable
 private fun SegmentedMetricBar(
     label: String,
     value: Float,
-    color: Color = DictusColors.Accent,
+    color: Color = DictusColors.HomeAccent,
+    emptyColor: Color? = null,
     modifier: Modifier = Modifier,
 ) {
     val segmentCount = 5
     // Map 0.0–1.0 to 0–5 filled segments (round to nearest)
     val filledCount = (value.coerceIn(0f, 1f) * segmentCount).roundToInt()
     val filledColor = color
-    // iOS uses color.opacity(0.15) for empty segments — same hue, very faded
-    val emptyColor = color.copy(alpha = 0.15f)
+    val resolvedEmptyColor = emptyColor ?: color.copy(alpha = 0.15f)
 
     Column(
         modifier = modifier,
@@ -453,7 +464,7 @@ private fun SegmentedMetricBar(
     ) {
         Text(
             text = label,
-            color = LocalDictusColors.current.textSecondary,
+            color = color,
             fontSize = 12.sp,
         )
         Row(
@@ -465,7 +476,7 @@ private fun SegmentedMetricBar(
                         .weight(1f)
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp))
-                        .background(if (i < filledCount) filledColor else emptyColor),
+                        .background(if (i < filledCount) filledColor else resolvedEmptyColor),
                 )
             }
         }

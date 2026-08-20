@@ -50,9 +50,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
-import dev.pivisolutions.dictus.core.ui.GlassCard
 import dev.pivisolutions.dictus.ui.models.ModelCard
 import kotlinx.coroutines.launch
 
@@ -120,13 +117,13 @@ fun ModelsScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = DictusColors.ModelsBackground,
     ) { innerPadding ->
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(DictusColors.ModelsBackground)
             .verticalScroll(rememberScrollState())
             .padding(innerPadding)
             .padding(horizontal = 16.dp, vertical = 24.dp),
@@ -135,7 +132,7 @@ fun ModelsScreen(
         // Screen title
         Text(
             text = stringResource(R.string.models_title),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -194,7 +191,7 @@ fun ModelsScreen(
             .sumOf { it.expectedSizeBytes } / 1_000_000
         Text(
             text = stringResource(R.string.models_storage_used, storageUsedMb, totalCatalogMb),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.ModelsTextSecondary,
             fontSize = 13.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
@@ -222,7 +219,7 @@ fun ModelsScreen(
                 scope.launch { sheetState.hide() }
             },
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = DictusColors.ModelsSurface,
         ) {
             DeleteConfirmationSheet(
                 modelName = pendingDelete.info.displayName,
@@ -250,7 +247,7 @@ private fun ModelSection(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = title,
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.ModelsTextSecondary,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
         )
@@ -272,13 +269,13 @@ private fun DeleteConfirmationSheet(
     ) {
         Text(
             text = stringResource(R.string.models_delete_confirm_title, modelName),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
         )
         Text(
             text = stringResource(R.string.models_delete_confirm_body),
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.ModelsTextSecondary,
             fontSize = 15.sp,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -293,14 +290,14 @@ private fun DeleteConfirmationSheet(
                 fontWeight = FontWeight.Medium,
             )
         }
-        HorizontalDivider(color = LocalDictusColors.current.borderSubtle)
+        HorizontalDivider(color = DictusColors.HomeSurfaceBorder)
         TextButton(
             onClick = onCancel,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.models_delete_cancel_button),
-                color = LocalDictusColors.current.textSecondary,
+                color = DictusColors.ModelsTextSecondary,
                 fontSize = 16.sp,
             )
         }
@@ -317,12 +314,12 @@ private fun ProviderFooterItem(icon: ImageVector, text: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = LocalDictusColors.current.textSecondary,
+            tint = DictusColors.ModelsTextSecondary,
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.ModelsTextSecondary,
             fontSize = 12.sp,
             lineHeight = 16.sp,
             modifier = Modifier.weight(1f),
