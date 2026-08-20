@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.core.DataStore
@@ -26,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.pivisolutions.dictus.core.preferences.PreferenceKeys
 import dev.pivisolutions.dictus.core.service.DictationController
 import androidx.compose.material3.MaterialTheme
+import dev.pivisolutions.dictus.home.DictusWaveformLogo
 import dev.pivisolutions.dictus.home.HomeScreen
 import dev.pivisolutions.dictus.models.ModelsScreen
 import dev.pivisolutions.dictus.onboarding.OnboardingKeyboardSetupScreen
@@ -84,12 +86,16 @@ fun AppNavHost(
 
     when (hasCompletedOnboarding) {
         null -> {
-            // DataStore not yet read — show blank screen to avoid flash
+            // DataStore not yet read — show the animated brand logo instead of a flash of
+            // nothing. Same DictusWaveformLogo/animation used on Home and onboarding.
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-            )
+                    .background(MaterialTheme.colorScheme.background),
+                contentAlignment = Alignment.Center,
+            ) {
+                DictusWaveformLogo()
+            }
         }
         false -> {
             // Onboarding not complete — show the full 7-step onboarding flow

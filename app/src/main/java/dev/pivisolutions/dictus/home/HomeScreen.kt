@@ -3,6 +3,7 @@
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,9 +26,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +57,7 @@ import dev.pivisolutions.dictus.core.ui.HomeGlassCard
 import dev.pivisolutions.dictus.model.ModelCatalog
 import kotlinx.coroutines.flow.map
 import kotlin.math.abs
+import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 
@@ -233,25 +238,31 @@ fun HomeScreen(
 
 /**
  * Dictus waveform logo — teal/terracotta soundwave mark matching the app icon
- * (drawable/ic_launcher_foreground.xml), which itself is a frozen frame of
- * designs/logo_canvas.html's animated triple sine-wave + particle composition.
+ * (drawable/ic_launcher_foreground.xml), animated to match
+ * designs/logo_canvas.html's traveling triple sine-wave + drifting particle motion.
  *
- * Reuses the exact same geometry (isotropic scale from the reference's coordinate
- * space) and colors as the launcher icon, computed at draw time rather than as a
- * hardcoded path, and scaled to whatever size this composable is given.
+ * Reused across Home, onboarding's Welcome screen, and the app's startup loading
+ * state — animate it once here and every call site gets the same motion for free.
+ *
+ * WHY time read inside Canvas' draw scope (not a List<> rebuilt in the composable
+ * body): reading animated state inside a Canvas draw lambda triggers a redraw only,
+ * not a recomposition of this composable or its callers — the same "lightweight,
+ * frame-synced" approach WaveformDriver.kt already uses via
+ * withInfiniteAnimationFrameNanos, just without a separate driver class since this
+ * animation has no external input (energy/audio) to smooth toward, unlike WaveformBars.
+ *
+ * WHY `time += 1f` per frame (not delta-time scaled): logo_canvas.html advances its
+ * `time` counter by exactly 1 per requestAnimationFrame callback, so its perceived
+ * speed is tied to display refresh rate. Matching that increment reproduces the
+ * reference's motion as closely as possible rather than "fixing" it to be frame-rate
+ * independent.
  */
 private data class LogoWave(
     val amplitude: Float,
     val frequency: Float,
+    val speed: Float,
     val thickness: Float,
     val alpha: Float,
-    val color: Color,
-)
-
-private data class LogoParticle(
-    val dx: Float,
-    val dy: Float,
-    val radius: Float,
     val color: Color,
 )
 
@@ -261,43 +272,57 @@ private const val LOGO_ICON_HALF_WIDTH = 28f
 private const val LOGO_REF_HALF_WIDTH = 58.5f
 private val LOGO_SCALE = LOGO_ICON_HALF_WIDTH / LOGO_REF_HALF_WIDTH
 
+// Particle orbit constants, matching logo_canvas.html's drawParticles() exactly
+// (min(width*0.17, 220) and the fixed 35px y-amplitude, both scaled by LOGO_SCALE).
+private const val LOGO_PARTICLE_COUNT = 16
+private const val LOGO_PARTICLE_X_RADIUS = 69.7f
+private const val LOGO_PARTICLE_Y_AMPLITUDE = 35f
+
 private fun logoEnvelope(normalized: Float): Float =
     (1f - abs(normalized)).coerceAtLeast(0f).pow(0.65f)
 
 @Composable
-private fun DictusWaveformLogo(
+fun DictusWaveformLogo(
     modifier: Modifier = Modifier,
 ) {
+    var time by remember { mutableFloatStateOf(0f) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            withInfiniteAnimationFrameNanos {
+                time += 1f
+            }
+        }
+    }
+
     val waveConfigs = listOf(
-        LogoWave(amplitude = 22f, frequency = 0.035f, thickness = 3.2f, alpha = 0.9f, color = DictusColors.HomeAccent),
-        LogoWave(amplitude = 12f, frequency = 0.055f, thickness = 2.3f, alpha = 0.6f, color = DictusColors.HomeAccentSecondary),
-        LogoWave(amplitude = 34f, frequency = 0.022f, thickness = 2.3f, alpha = 0.35f, color = DictusColors.HomeAccentHighlight),
+        LogoWave(amplitude = 22f, frequency = 0.035f, speed = 0.055f, thickness = 3.2f, alpha = 0.9f, color = DictusColors.HomeAccent),
+        LogoWave(amplitude = 12f, frequency = 0.055f, speed = -0.04f, thickness = 2.3f, alpha = 0.6f, color = DictusColors.HomeAccentSecondary),
+        LogoWave(amplitude = 34f, frequency = 0.022f, speed = 0.025f, thickness = 2.3f, alpha = 0.35f, color = DictusColors.HomeAccentHighlight),
     )
-    val particles = listOf(
-        LogoParticle(dx = -1.60f, dy = 16.75f, radius = 1.60f, color = DictusColors.HomeAccentSecondary),
-        LogoParticle(dx = 24.04f, dy = -10.65f, radius = 2.09f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = 13.05f, dy = 14.73f, radius = 1.21f, color = DictusColors.HomeAccentSecondary),
-        LogoParticle(dx = -16.76f, dy = -15.53f, radius = 2.00f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = -26.89f, dy = 9.14f, radius = 1.11f, color = DictusColors.HomeAccentSecondary),
-        LogoParticle(dx = -1.06f, dy = -16.65f, radius = 1.62f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = 24.40f, dy = 12.03f, radius = 2.08f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = 12.53f, dy = -13.74f, radius = 1.22f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = -17.27f, dy = 16.13f, radius = 2.01f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = -26.53f, dy = -7.51f, radius = 1.11f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = -0.51f, dy = 16.33f, radius = 1.63f, color = DictusColors.HomeAccent),
-        LogoParticle(dx = 24.73f, dy = -13.26f, radius = 2.08f, color = DictusColors.HomeAccentSecondary),
-    )
+    val particleTeal = DictusColors.HomeAccent
+    val particleTerracotta = DictusColors.HomeAccentSecondary
 
     Canvas(modifier = modifier.size(width = 130.dp, height = 80.dp)) {
         val s = size.width / 108f
         val cx = size.width / 2f
         val cy = size.height / 2f
+        val t = time
 
-        for (p in particles) {
+        // Particles (drawn first / behind waves, matching drawParticles() before
+        // drawSoundWaves()). All 16 are drawn unconditionally every frame, exactly
+        // matching the reference — no distance-based filtering.
+        for (i in 0 until LOGO_PARTICLE_COUNT) {
+            val phase = t * 0.025f + i * 0.9f
+            val xRef = sin(phase) * LOGO_PARTICLE_X_RADIUS
+            val yRef = cos(phase * 1.4f + i) * LOGO_PARTICLE_Y_AMPLITUDE
+            val xIcon = xRef * LOGO_SCALE
+            val yIcon = yRef * LOGO_SCALE
+            val radius = 1.6f + 0.5f * sin(phase * 2f)
+            val color = if (i % 3 == 0) particleTerracotta else particleTeal
             drawCircle(
-                color = p.color,
-                radius = p.radius * s,
-                center = Offset(cx + p.dx * s, cy + p.dy * s),
+                color = color,
+                radius = radius * s,
+                center = Offset(cx + xIcon * s, cy + yIcon * s),
                 alpha = 0.35f,
             )
         }
@@ -310,8 +335,8 @@ private fun DictusWaveformLogo(
                 val xRef = x / LOGO_SCALE
                 val normalized = x / LOGO_ICON_HALF_WIDTH
                 val envelope = logoEnvelope(normalized)
-                val primary = sin(xRef * w.frequency)
-                val secondary = sin(xRef * w.frequency * 1.8f)
+                val primary = sin(xRef * w.frequency + t * w.speed)
+                val secondary = sin(xRef * w.frequency * 1.8f - t * w.speed * 0.7f)
                 val deviationRef = (primary * w.amplitude + secondary * w.amplitude * 0.25f) * envelope
                 val deviationIcon = deviationRef * LOGO_SCALE
                 val px = cx + x * s
