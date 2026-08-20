@@ -3,6 +3,7 @@
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,8 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +52,9 @@ import dev.pivisolutions.dictus.core.theme.DictusColors
 import dev.pivisolutions.dictus.core.ui.HomeGlassCard
 import dev.pivisolutions.dictus.model.ModelCatalog
 import kotlinx.coroutines.flow.map
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sin
 
 /**
  * Home tab screen showing the Dictus logo, active model, and new dictation CTA.
@@ -82,7 +90,7 @@ fun HomeScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // Waveform logo (3 bars matching the app icon)
+        // Waveform logo (soundwave mark matching the app icon)
         DictusWaveformLogo()
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -224,52 +232,108 @@ fun HomeScreen(
 }
 
 /**
- * Dictus waveform logo — 3 rounded vertical bars matching the app icon.
+ * Dictus waveform logo — teal/terracotta soundwave mark matching the app icon
+ * (drawable/ic_launcher_foreground.xml), which itself is a frozen frame of
+ * designs/logo_canvas.html's animated triple sine-wave + particle composition.
  *
- * Bar proportions from the brand kit: short left (opacity 0.45),
- * tall center (accent gradient), medium right (opacity 0.65).
+ * Reuses the exact same geometry (isotropic scale from the reference's coordinate
+ * space) and colors as the launcher icon, computed at draw time rather than as a
+ * hardcoded path, and scaled to whatever size this composable is given.
  */
+private data class LogoWave(
+    val amplitude: Float,
+    val frequency: Float,
+    val thickness: Float,
+    val alpha: Float,
+    val color: Color,
+)
+
+private data class LogoParticle(
+    val dx: Float,
+    val dy: Float,
+    val radius: Float,
+    val color: Color,
+)
+
+// Icon-space geometry constants, matching ic_launcher_foreground.xml exactly
+// (viewport treated as 108x108, wave spans x:[-28,28] around the center).
+private const val LOGO_ICON_HALF_WIDTH = 28f
+private const val LOGO_REF_HALF_WIDTH = 58.5f
+private val LOGO_SCALE = LOGO_ICON_HALF_WIDTH / LOGO_REF_HALF_WIDTH
+
+private fun logoEnvelope(normalized: Float): Float =
+    (1f - abs(normalized)).coerceAtLeast(0f).pow(0.65f)
+
 @Composable
 private fun DictusWaveformLogo(
     modifier: Modifier = Modifier,
 ) {
-    val outerBarBase = DictusColors.HomeWaveformMuted
+    val waveConfigs = listOf(
+        LogoWave(amplitude = 22f, frequency = 0.035f, thickness = 3.2f, alpha = 0.9f, color = DictusColors.HomeAccent),
+        LogoWave(amplitude = 12f, frequency = 0.055f, thickness = 2.3f, alpha = 0.6f, color = DictusColors.HomeAccentSecondary),
+        LogoWave(amplitude = 34f, frequency = 0.022f, thickness = 2.3f, alpha = 0.35f, color = DictusColors.HomeAccentHighlight),
+    )
+    val particles = listOf(
+        LogoParticle(dx = -1.60f, dy = 16.75f, radius = 1.60f, color = DictusColors.HomeAccentSecondary),
+        LogoParticle(dx = 24.04f, dy = -10.65f, radius = 2.09f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = 13.05f, dy = 14.73f, radius = 1.21f, color = DictusColors.HomeAccentSecondary),
+        LogoParticle(dx = -16.76f, dy = -15.53f, radius = 2.00f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = -26.89f, dy = 9.14f, radius = 1.11f, color = DictusColors.HomeAccentSecondary),
+        LogoParticle(dx = -1.06f, dy = -16.65f, radius = 1.62f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = 24.40f, dy = 12.03f, radius = 2.08f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = 12.53f, dy = -13.74f, radius = 1.22f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = -17.27f, dy = 16.13f, radius = 2.01f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = -26.53f, dy = -7.51f, radius = 1.11f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = -0.51f, dy = 16.33f, radius = 1.63f, color = DictusColors.HomeAccent),
+        LogoParticle(dx = 24.73f, dy = -13.26f, radius = 2.08f, color = DictusColors.HomeAccentSecondary),
+    )
 
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Bar 1 — short left
-        Box(
-            modifier = Modifier
-                .width(12.dp)
-                .height(32.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .background(outerBarBase.copy(alpha = 0.45f)),
-        )
-        // Bar 2 — tall center (accent gradient)
-        Box(
-            modifier = Modifier
-                .width(12.dp)
-                .height(64.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            DictusColors.HomeAccentHighlight,
-                            DictusColors.HomeAccentDark,
-                        ),
-                    )
+    Canvas(modifier = modifier.size(width = 130.dp, height = 80.dp)) {
+        val s = size.width / 108f
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+
+        for (p in particles) {
+            drawCircle(
+                color = p.color,
+                radius = p.radius * s,
+                center = Offset(cx + p.dx * s, cy + p.dy * s),
+                alpha = 0.35f,
+            )
+        }
+
+        for (w in waveConfigs) {
+            val path = Path()
+            var x = -LOGO_ICON_HALF_WIDTH
+            var first = true
+            while (x <= LOGO_ICON_HALF_WIDTH) {
+                val xRef = x / LOGO_SCALE
+                val normalized = x / LOGO_ICON_HALF_WIDTH
+                val envelope = logoEnvelope(normalized)
+                val primary = sin(xRef * w.frequency)
+                val secondary = sin(xRef * w.frequency * 1.8f)
+                val deviationRef = (primary * w.amplitude + secondary * w.amplitude * 0.25f) * envelope
+                val deviationIcon = deviationRef * LOGO_SCALE
+                val px = cx + x * s
+                val py = cy + deviationIcon * s
+                if (first) {
+                    path.moveTo(px, py)
+                    first = false
+                } else {
+                    path.lineTo(px, py)
+                }
+                x += 0.7f
+            }
+            drawPath(
+                path = path,
+                color = w.color,
+                alpha = w.alpha,
+                style = Stroke(
+                    width = w.thickness * s,
+                    cap = StrokeCap.Round,
+                    join = StrokeJoin.Round,
                 ),
-        )
-        // Bar 3 — medium right
-        Box(
-            modifier = Modifier
-                .width(12.dp)
-                .height(44.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .background(outerBarBase.copy(alpha = 0.65f)),
-        )
+            )
+        }
     }
 }
