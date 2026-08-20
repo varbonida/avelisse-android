@@ -2,19 +2,19 @@
 <resources>
 
     <!-- Onboarding: Welcome screen (Step 1) -->
-    <string name="onboarding_welcome_wordmark">Dictus</string>
+    <string name="onboarding_welcome_wordmark">AVELISSE</string>
     <string name="onboarding_welcome_tagline">Dictation vocale, 100\u00a0% offline</string>
     <string name="onboarding_welcome_cta">Commencer</string>
 
     <!-- Onboarding: Microphone permission screen (Step 2) -->
     <string name="onboarding_mic_permission_title">Microphone</string>
-    <string name="onboarding_mic_permission_body">Dictus a besoin du microphone pour transcrire votre voix. Vos enregistrements restent sur votre appareil.</string>
+    <string name="onboarding_mic_permission_body">AVELISSE a besoin du microphone pour transcrire votre voix. Vos enregistrements restent sur votre appareil.</string>
     <string name="onboarding_mic_permission_cta_grant">Autoriser le micro</string>
     <string name="onboarding_mic_permission_cta_continue">Continuer</string>
 
     <!-- Onboarding: Keyboard setup screen (Step 3) -->
     <string name="onboarding_keyboard_setup_title">Ajouter le clavier</string>
-    <string name="onboarding_keyboard_setup_body">Activez le clavier Dictus dans les r\u00e9glages de votre appareil.</string>
+    <string name="onboarding_keyboard_setup_body">Activez le clavier AVELISSE dans les r\u00e9glages de votre appareil.</string>
     <string name="onboarding_keyboard_setup_cta_open_settings">Ouvrir les R\u00e9glages</string>
     <string name="onboarding_keyboard_setup_cta_continue">Continuer</string>
 
@@ -37,7 +37,7 @@
 
     <!-- Onboarding: Test recording screen (Step 6) -->
     <string name="onboarding_test_recording_title">Testez la dict\u00e9e</string>
-    <string name="onboarding_test_recording_body">Appuyez sur le micro et parlez.\nDictus transcrira votre voix.</string>
+    <string name="onboarding_test_recording_body">Appuyez sur le micro et parlez.\nAVELISSE transcrira votre voix.</string>
     <string name="onboarding_test_recording_result">R\u00e9sultat</string>
     <string name="onboarding_test_recording_transcribing">Transcription en cours\u2026</string>
     <string name="onboarding_test_recording_no_result">(Aucun r\u00e9sultat)</string>
@@ -49,7 +49,7 @@
 
     <!-- Onboarding: Success screen (Step 7) -->
     <string name="onboarding_success_title">C\u2019est pr\u00eat\u00a0!</string>
-    <string name="onboarding_success_body">Dictus est configur\u00e9 et pr\u00eat \u00e0 l\u2019emploi.</string>
+    <string name="onboarding_success_body">AVELISSE est configur\u00e9 et pr\u00eat \u00e0 l\u2019emploi.</string>
     <string name="onboarding_success_cta">Commencer</string>
 
     <!-- Settings: Screen title -->
@@ -127,7 +127,7 @@
     <string name="licences_back_cd">Retour</string>
 
     <!-- ImeStatusCard -->
-    <string name="ime_status_active">Clavier Dictus actif</string>
+    <string name="ime_status_active">Clavier AVELISSE actif</string>
     <string name="ime_status_enabled_not_selected">Clavier activ\u00e9 mais non s\u00e9lectionn\u00e9</string>
     <string name="ime_status_not_enabled">Clavier non activ\u00e9</string>
     <string name="ime_status_select_keyboard">S\u00e9lectionner le clavier</string>
@@ -183,7 +183,7 @@
     <string name="recording_record_cd">Enregistrer</string>
     <string name="recording_new_dictation_cd">Nouvelle dict\u00e9e</string>
     <string name="recording_idle_title">Nouvelle dict\u00e9e</string>
-    <string name="recording_idle_body">Appuyez sur le micro et parlez.\nDictus transcrira votre voix.</string>
+    <string name="recording_idle_body">Appuyez sur le micro et parlez.\nAVELISSE transcrira votre voix.</string>
     <string name="recording_tap_to_stop">Toucher pour arr\u00eater</string>
     <string name="recording_transcribing">Transcription en cours\u2026</string>
     <string name="recording_no_result">(Aucun r\u00e9sultat)</string>

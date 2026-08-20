@@ -62,9 +62,9 @@ import kotlin.math.pow
 import kotlin.math.sin
 
 /**
- * Home tab screen showing the Dictus logo, active model, and new dictation CTA.
+ * Home tab screen showing the AVELISSE logo, active model, and new dictation CTA.
  *
- * Layout matches iOS: centered waveform logo + "Dictus" wordmark, active model card,
+ * Layout matches iOS: centered waveform logo + "AVELISSE" wordmark, active model card,
  * and "Nouvelle dictée" button. Content is vertically centered.
  *
  * @param dataStore Application DataStore for reading active model preference.
@@ -100,9 +100,9 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // "Dictus" wordmark in accent teal
+        // "AVELISSE" wordmark in accent teal
         Text(
-            text = "Dictus",
+            text = "AVELISSE",
             color = DictusColors.HomeAccent,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
@@ -184,7 +184,7 @@ fun HomeScreen(
                                     Context.CLIPBOARD_SERVICE,
                                 ) as ClipboardManager
                                 clipboard.setPrimaryClip(
-                                    ClipData.newPlainText("Dictus", lastTranscription),
+                                    ClipData.newPlainText("AVELISSE", lastTranscription),
                                 )
                             },
                     )

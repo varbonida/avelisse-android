@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Check if Dictus keyboard is enabled and selected in system settings.
+     * Check if AVELISSE keyboard is enabled and selected in system settings.
      *
      * Two-level check:
      * 1. Enabled: Listed in InputMethodManager.enabledInputMethodList (user toggled it on)
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         Timber.d("IME status: enabled=$imeEnabled, selected=$imeSelected")
     }
 
-    /** Opens system keyboard settings where user can enable Dictus keyboard. */
+    /** Opens system keyboard settings where user can enable AVELISSE keyboard. */
     private fun openKeyboardSettings() {
         startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
     }

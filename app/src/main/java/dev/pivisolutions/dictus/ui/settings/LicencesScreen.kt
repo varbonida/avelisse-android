@@ -154,9 +154,9 @@ fun LicencesScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Dictus itself
+        // AVELISSE itself
         LicenceBlock(
-            name = "Dictus",
+            name = "AVELISSE",
             author = "Get Dictus",
             url = "https://github.com/getdictus/dictus",
             licenceText = mitLicence("Copyright (c) 2026 Get Dictus"),

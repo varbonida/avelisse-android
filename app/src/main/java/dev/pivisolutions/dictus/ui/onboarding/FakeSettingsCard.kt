@@ -103,9 +103,9 @@ fun FakeSettingsCard(
             modifier = Modifier.padding(start = 72.dp),
         )
 
-        // Dictus entry (toggle 2 — animates on second)
+        // AVELISSE entry (toggle 2 — animates on second)
         KeyboardEntryRow(
-            name = "Dictus Keyboard",
+            name = "AVELISSE Keyboard",
             subtitle = stringResource(R.string.fake_settings_dictus_subtitle),
             isOn = toggle2On,
             icon = {

@@ -30,14 +30,14 @@ import androidx.compose.material3.MaterialTheme
  * Displays one of three states:
  * 1. Not enabled: Red dot, "Keyboard not enabled", "Enable Keyboard" button
  * 2. Enabled but not selected: Orange dot, "Keyboard enabled but not selected", "Select Keyboard" button
- * 3. Active: Green dot, "Dictus keyboard active", no action button
+ * 3. Active: Green dot, "AVELISSE keyboard active", no action button
  *
- * WHY this card exists: Users must manually enable and select the Dictus keyboard
+ * WHY this card exists: Users must manually enable and select the AVELISSE keyboard
  * in Android system settings. This card guides them through the process and confirms
  * when the keyboard is ready to use.
  *
- * @param isEnabled Whether Dictus keyboard is listed in system enabled IME list
- * @param isSelected Whether Dictus keyboard is the currently active IME
+ * @param isEnabled Whether AVELISSE keyboard is listed in system enabled IME list
+ * @param isSelected Whether AVELISSE keyboard is the currently active IME
  * @param onOpenSettings Callback to open the appropriate system settings screen
  */
 @Composable

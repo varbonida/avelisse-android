@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    FileProvider path configuration for Dictus.
+    FileProvider path configuration for AVELISSE.
 
     <cache-path name="logs" path="."> exposes the entire cacheDir to FileProvider.
     The ZIP archive created by LogExporter is placed at cacheDir/dictus-logs.zip,

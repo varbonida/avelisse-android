@@ -192,7 +192,7 @@ fun SettingsScreen(
         SettingsCard {
             SettingInfoRow(
                 label = stringResource(R.string.settings_version),
-                value = "Dictus ${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
+                value = "AVELISSE ${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
             )
             SettingDivider()
             SettingNavRow(

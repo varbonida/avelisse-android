@@ -42,7 +42,7 @@ fun OnboardingWelcomeScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // "Dictus" wordmark
+        // "AVELISSE" wordmark
         Text(
             text = stringResource(R.string.onboarding_welcome_wordmark),
             color = DictusColors.HomeTextPrimary,
