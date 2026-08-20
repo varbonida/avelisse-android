@@ -1,41 +1,61 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Android Adaptive Icon foreground: waveform bars centered in 108x108 safe zone -->
-    <!-- Safe zone is 66x66 centered (21dp inset on each side) -->
-    <!-- Original 80x80 viewport scaled to fit in safe zone: scale=0.825, offset=21 -->
+    <!--
+        Adaptive Icon foreground: soundwave logo, ported from designs/logo_canvas.html.
+        Geometry is a frozen (t=0) frame of that file's animated triple sine-wave +
+        floating-particle composition, isotropically scaled from the canvas's reference
+        coordinate space into this 108x108 viewport so shape/proportions match exactly.
+        Colors and per-element alpha are copied directly from logo_canvas.html's `colors`
+        object and wave/particle configs (teal #007C92, terracotta #D85C27).
+        Safe zone is the centered 66x66 circle (21dp inset), per adaptive icon convention.
+    -->
 
-    <!-- Bar 1 (short left): 18pt height -->
-    <path
-        android:pathData="M36.68,46.58 C36.68,44.1,38.4,42.58,40.43,42.58 L40.43,42.58 C42.45,42.58,44.18,44.1,44.18,46.58 L44.18,57.43 C44.18,59.91,42.45,61.43,40.43,61.43 L40.43,61.43 C38.4,61.43,36.68,59.91,36.68,57.43 Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.45"/>
+    <!-- Particles (drawn first / behind waves, matching drawParticles() before drawSoundWaves()) -->
+    <path android:pathData="M52.40,70.75 a1.6,1.6 0 1,0 3.20,0 a1.6,1.6 0 1,0 -3.20,0 Z" android:fillColor="#D85C27" android:fillAlpha="0.35"/>
+    <path android:pathData="M78.04,43.35 a2.09,2.09 0 1,0 4.18,0 a2.09,2.09 0 1,0 -4.18,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M67.05,68.73 a1.21,1.21 0 1,0 2.42,0 a1.21,1.21 0 1,0 -2.42,0 Z" android:fillColor="#D85C27" android:fillAlpha="0.35"/>
+    <path android:pathData="M37.24,38.47 a2,2 0 1,0 4.00,0 a2,2 0 1,0 -4.00,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M27.11,63.14 a1.11,1.11 0 1,0 2.22,0 a1.11,1.11 0 1,0 -2.22,0 Z" android:fillColor="#D85C27" android:fillAlpha="0.35"/>
+    <path android:pathData="M52.94,37.35 a1.62,1.62 0 1,0 3.24,0 a1.62,1.62 0 1,0 -3.24,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M78.40,66.03 a2.08,2.08 0 1,0 4.16,0 a2.08,2.08 0 1,0 -4.16,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M66.53,40.26 a1.22,1.22 0 1,0 2.44,0 a1.22,1.22 0 1,0 -2.44,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M36.73,70.13 a2.01,2.01 0 1,0 4.02,0 a2.01,2.01 0 1,0 -4.02,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M27.47,46.49 a1.11,1.11 0 1,0 2.22,0 a1.11,1.11 0 1,0 -2.22,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M53.49,70.33 a1.63,1.63 0 1,0 3.26,0 a1.63,1.63 0 1,0 -3.26,0 Z" android:fillColor="#007C92" android:fillAlpha="0.35"/>
+    <path android:pathData="M78.73,40.74 a2.08,2.08 0 1,0 4.16,0 a2.08,2.08 0 1,0 -4.16,0 Z" android:fillColor="#D85C27" android:fillAlpha="0.35"/>
 
-    <!-- Bar 2 (tall center): 42pt height -->
+    <!-- Wave 1 (main, teal, amplitude 22 in reference) -->
     <path
-        android:pathData="M50.29,36.68 C50.29,34.2,52.01,32.68,54.04,32.68 L54.04,32.68 C56.06,32.68,57.79,34.2,57.79,36.68 L57.79,71.33 C57.79,73.81,56.06,75.33,54.04,75.33 L54.04,75.33 C52.01,75.33,50.29,73.81,50.29,71.33 Z"
-        android:fillAlpha="1.0">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:type="linear"
-                android:startX="50.29"
-                android:startY="32.68"
-                android:endX="57.79"
-                android:endY="75.33">
-                <item android:offset="0.0" android:color="#FF6BA3FF"/>
-                <item android:offset="1.0" android:color="#FF2563EB"/>
-            </gradient>
-        </aapt:attr>
-    </path>
+        android:pathData="M26,54 L26.7,53.23 L27.4,52.73 L28.1,52.28 L28.8,51.83 L29.5,51.4 L30.2,50.97 L30.9,50.55 L31.6,50.13 L32.3,49.73 L33,49.33 L33.7,48.95 L34.4,48.59 L35.1,48.25 L35.8,47.93 L36.5,47.63 L37.2,47.37 L37.9,47.14 L38.6,46.94 L39.3,46.77 L40,46.65 L40.7,46.57 L41.4,46.54 L42.1,46.55 L42.8,46.6 L43.5,46.71 L44.2,46.86 L44.9,47.07 L45.6,47.32 L46.3,47.63 L47,47.98 L47.7,48.39 L48.4,48.84 L49.1,49.34 L49.8,49.89 L50.5,50.48 L51.2,51.12 L51.9,51.79 L52.6,52.49 L53.3,53.23 L54,54 L54.7,54.77 L55.4,55.51 L56.1,56.21 L56.8,56.88 L57.5,57.52 L58.2,58.11 L58.9,58.66 L59.6,59.16 L60.3,59.61 L61,60.02 L61.7,60.37 L62.4,60.68 L63.1,60.93 L63.8,61.14 L64.5,61.29 L65.2,61.4 L65.9,61.45 L66.6,61.46 L67.3,61.43 L68,61.35 L68.7,61.23 L69.4,61.06 L70.1,60.86 L70.8,60.63 L71.5,60.37 L72.2,60.07 L72.9,59.75 L73.6,59.41 L74.3,59.05 L75,58.67 L75.7,58.27 L76.4,57.87 L77.1,57.45 L77.8,57.03 L78.5,56.6 L79.2,56.17 L79.9,55.72 L80.6,55.27 L81.3,54.77 L82,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#007C92"
+        android:strokeWidth="3.2"
+        android:strokeAlpha="0.9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
 
-    <!-- Bar 3 (medium right): 27pt height -->
+    <!-- Wave 2 (terracotta, amplitude 12 in reference) -->
     <path
-        android:pathData="M63.9,42.45 C63.9,39.97,65.63,38.45,67.65,38.45 L67.65,38.45 C69.68,38.45,71.4,39.97,71.4,42.45 L71.4,64.73 C71.4,67.2,69.68,68.73,67.65,68.73 L67.65,68.73 C65.63,68.73,63.9,67.2,63.9,64.73 Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.65"/>
+        android:pathData="M26,54 L26.7,54.08 L27.4,54.07 L28.1,54.04 L28.8,53.97 L29.5,53.87 L30.2,53.75 L30.9,53.6 L31.6,53.42 L32.3,53.22 L33,52.99 L33.7,52.74 L34.4,52.48 L35.1,52.2 L35.8,51.91 L36.5,51.6 L37.2,51.3 L37.9,50.99 L38.6,50.69 L39.3,50.4 L40,50.12 L40.7,49.87 L41.4,49.64 L42.1,49.44 L42.8,49.29 L43.5,49.17 L44.2,49.11 L44.9,49.09 L45.6,49.13 L46.3,49.23 L47,49.39 L47.7,49.6 L48.4,49.88 L49.1,50.22 L49.8,50.62 L50.5,51.07 L51.2,51.57 L51.9,52.12 L52.6,52.71 L53.3,53.34 L54,54 L54.7,54.66 L55.4,55.29 L56.1,55.88 L56.8,56.43 L57.5,56.93 L58.2,57.38 L58.9,57.78 L59.6,58.12 L60.3,58.4 L61,58.61 L61.7,58.77 L62.4,58.87 L63.1,58.91 L63.8,58.89 L64.5,58.83 L65.2,58.71 L65.9,58.56 L66.6,58.36 L67.3,58.13 L68,57.88 L68.7,57.6 L69.4,57.31 L70.1,57.01 L70.8,56.7 L71.5,56.4 L72.2,56.09 L72.9,55.8 L73.6,55.52 L74.3,55.26 L75,55.01 L75.7,54.78 L76.4,54.58 L77.1,54.4 L77.8,54.25 L78.5,54.13 L79.2,54.03 L79.9,53.96 L80.6,53.93 L81.3,53.92 L82,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#D85C27"
+        android:strokeWidth="2.3"
+        android:strokeAlpha="0.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Wave 3 (faint broad teal, amplitude 34 in reference — drawn last/on top, matching source order) -->
+    <path
+        android:pathData="M26,54 L26.7,52.31 L27.4,51.35 L28.1,50.56 L28.8,49.87 L29.5,49.25 L30.2,48.69 L30.9,48.19 L31.6,47.73 L32.3,47.31 L33,46.94 L33.7,46.6 L34.4,46.31 L35.1,46.06 L35.8,45.84 L36.5,45.67 L37.2,45.54 L37.9,45.44 L38.6,45.39 L39.3,45.37 L40,45.4 L40.7,45.47 L41.4,45.58 L42.1,45.73 L42.8,45.92 L43.5,46.15 L44.2,46.42 L44.9,46.73 L45.6,47.07 L46.3,47.46 L47,47.88 L47.7,48.35 L48.4,48.84 L49.1,49.38 L49.8,49.94 L50.5,50.54 L51.2,51.18 L51.9,51.84 L52.6,52.53 L53.3,53.25 L54,54 L54.7,54.75 L55.4,55.47 L56.1,56.16 L56.8,56.82 L57.5,57.46 L58.2,58.06 L58.9,58.62 L59.6,59.16 L60.3,59.65 L61,60.12 L61.7,60.54 L62.4,60.93 L63.1,61.27 L63.8,61.58 L64.5,61.85 L65.2,62.08 L65.9,62.27 L66.6,62.42 L67.3,62.53 L68,62.6 L68.7,62.63 L69.4,62.61 L70.1,62.56 L70.8,62.46 L71.5,62.33 L72.2,62.16 L72.9,61.94 L73.6,61.69 L74.3,61.4 L75,61.06 L75.7,60.69 L76.4,60.27 L77.1,59.81 L77.8,59.31 L78.5,58.75 L79.2,58.13 L79.9,57.44 L80.6,56.65 L81.3,55.69 L82,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#007C92"
+        android:strokeWidth="2.3"
+        android:strokeAlpha="0.35"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
 
 </vector>
