@@ -52,6 +52,9 @@
     <string name="onboarding_success_body">Dictus is configured and ready to use.</string>
     <string name="onboarding_success_cta">Start</string>
 
+    <!-- Settings: Screen title -->
+    <string name="settings_title">Settings</string>
+
     <!-- Settings: Section headers -->
     <string name="settings_section_transcription">TRANSCRIPTION</string>
     <string name="settings_section_keyboard">KEYBOARD</string>

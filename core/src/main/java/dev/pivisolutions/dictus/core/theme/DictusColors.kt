@@ -70,4 +70,9 @@ object DictusColors {
     val ModelsSurface = Color(0xFFFAF6EC)
     val ModelsTextPrimary = Color(0xFF16181B)
     val ModelsTextSecondary = Color(0xFF5B6472)
+
+    // --- Settings palette (fixed brand palette for the Settings tab; not dark/light reactive) ---
+    // Background/surface/text reuse the Home and Models palettes above; this is the one
+    // color genuinely new to Settings — the warm tan chip behind picker-row values.
+    val SettingsChip = Color(0xFFE8CE93)
 }

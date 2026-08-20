@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -56,7 +58,6 @@ import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.logging.TimberSetup
 import dev.pivisolutions.dictus.core.theme.DictusColors
 import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
 
 /**
  * Full settings screen with 4 sections: TRANSCRIPTION, CLAVIER, APPARENCE, A PROPOS.
@@ -99,9 +100,18 @@ fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(DictusColors.ModelsBackground)
             .verticalScroll(rememberScrollState()),
     ) {
+        // Screen title (matches Home/Models screen title treatment)
+        Text(
+            text = stringResource(R.string.settings_title),
+            color = DictusColors.ModelsTextPrimary,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+        )
+
         // ---------- SECTION: TRANSCRIPTION ----------
         SectionHeader(text = stringResource(R.string.settings_section_transcription))
         SettingsCard {
@@ -319,7 +329,7 @@ fun SettingsScreen(
 private fun SectionHeader(text: String) {
     Text(
         text = text,
-        color = LocalDictusColors.current.textSecondary,
+        color = DictusColors.HomeAccent,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -345,8 +355,8 @@ private fun SettingsCard(content: @Composable ColumnScope.() -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surface),
+            .shadow(elevation = 3.dp, shape = RoundedCornerShape(20.dp), clip = true)
+            .background(DictusColors.ModelsSurface),
         content = content,
     )
 }
@@ -375,23 +385,32 @@ private fun SettingPickerRow(
     ) {
         Text(
             text = label,
-            color = if (enabled) MaterialTheme.colorScheme.onBackground else LocalDictusColors.current.textSecondary,
+            color = if (enabled) DictusColors.ModelsTextPrimary else DictusColors.ModelsTextSecondary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        Text(
-            text = value,
-            color = LocalDictusColors.current.textSecondary,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Normal,
-        )
-        Spacer(Modifier.width(4.dp))
-        Icon(
-            imageVector = Icons.Default.ChevronRight,
-            contentDescription = null,
-            tint = LocalDictusColors.current.textSecondary,
-        )
+        // Picker value chip (matches settings.png's rounded tan value pill)
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50))
+                .background(DictusColors.SettingsChip)
+                .padding(start = 12.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = value,
+                color = DictusColors.HomeTextPrimary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+            )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = null,
+                tint = DictusColors.HomeTextPrimary,
+                modifier = Modifier.size(18.dp),
+            )
+        }
     }
 }
 
@@ -412,14 +431,14 @@ private fun SettingInfoRow(
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
         Text(
             text = value,
-            color = LocalDictusColors.current.textSecondary,
+            color = DictusColors.ModelsTextSecondary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
         )
@@ -445,12 +464,12 @@ private fun SettingToggleRow(
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        DictusToggle(checked = checked, onToggle = onToggle)
+        DictusToggle(checked = checked, onToggle = onToggle, trackColorOn = DictusColors.HomeAccent)
     }
 }
 
@@ -472,7 +491,7 @@ private fun SettingActionRow(
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -498,7 +517,7 @@ private fun SettingNavRow(
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -506,7 +525,7 @@ private fun SettingNavRow(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = LocalDictusColors.current.textSecondary,
+            tint = DictusColors.ModelsTextSecondary,
         )
     }
 }
@@ -533,7 +552,7 @@ private fun SettingLinkRow(
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -541,7 +560,7 @@ private fun SettingLinkRow(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = LocalDictusColors.current.textSecondary,
+            tint = DictusColors.ModelsTextSecondary,
         )
     }
 }
@@ -554,7 +573,7 @@ private fun SettingLinkRow(
 @Composable
 private fun SettingDivider() {
     HorizontalDivider(
-        color = LocalDictusColors.current.borderSubtle,
+        color = DictusColors.HomeSurfaceBorder,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
     )
@@ -576,12 +595,17 @@ private fun SettingDivider() {
  * WHY custom (not Material Switch): Material Switch does not match the design
  * spec (51x31dp, specific corner radius, specific on/off colors). A custom
  * Composable is 30 lines and gives pixel-perfect control.
+ *
+ * @param trackColorOn Fill color when checked. Defaults to the original green
+ *        (still used by SoundSettingsScreen); the Settings screen passes the Home
+ *        accent teal to match settings.png without touching that other screen.
  */
 @Composable
 fun DictusToggle(
     checked: Boolean,
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
+    trackColorOn: Color = DictusColors.Success,
 ) {
     val toggleWidth = 51.dp
     val toggleHeight = 31.dp
@@ -594,7 +618,7 @@ fun DictusToggle(
         label = "knob_offset",
     )
 
-    val trackColor = if (checked) DictusColors.Success else LocalDictusColors.current.textSecondary
+    val trackColor = if (checked) trackColorOn else LocalDictusColors.current.textSecondary
 
     Box(
         modifier = modifier
@@ -642,11 +666,11 @@ private fun PickerBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = DictusColors.ModelsSurface,
     ) {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DictusColors.ModelsTextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
@@ -675,13 +699,13 @@ private fun PickerBottomSheet(
                         onDismiss()
                     },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = DictusColors.Accent,
-                        unselectedColor = LocalDictusColors.current.textSecondary,
+                        selectedColor = DictusColors.HomeAccent,
+                        unselectedColor = DictusColors.ModelsTextSecondary,
                     ),
                 )
                 Text(
                     text = label,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = DictusColors.ModelsTextPrimary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                 )
