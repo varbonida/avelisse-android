@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import androidx.compose.material3.MaterialTheme
 import dev.pivisolutions.dictus.navigation.AppDestination
 
 /**
@@ -63,7 +62,7 @@ fun DictusBottomNavBar(
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .height(80.dp)
             .clip(RoundedCornerShape(31.dp))
-            .background(MaterialTheme.colorScheme.surface),
+            .background(Color.White),
         contentAlignment = Alignment.Center,
     ) {
         Row(
@@ -102,18 +101,18 @@ private fun NavTab(
     isActive: Boolean,
     onClick: () -> Unit,
 ) {
-    // Active tab uses AccentHighlight tint; unselected uses theme-aware muted color
-    // In dark theme: white at 70% opacity. In light theme: dark gray (matches iOS).
-    val unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-    val iconTint = if (isActive) DictusColors.AccentHighlight else unselectedColor
-    val labelColor = if (isActive) DictusColors.AccentHighlight else unselectedColor
+    // Active tab uses the Home accent teal; unselected uses a fixed neutral gray.
+    // Matches designs/home.png — the nav bar is a fixed light treatment, not dark/light reactive.
+    val unselectedColor = DictusColors.HomeTextSecondary
+    val iconTint = if (isActive) DictusColors.HomeAccent else unselectedColor
+    val labelColor = if (isActive) DictusColors.HomeAccent else unselectedColor
 
     // Filled pill background behind active tab for iOS visual parity and improved visibility
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .background(
-                if (isActive) DictusColors.Accent.copy(alpha = 0.15f) else Color.Transparent
+                if (isActive) DictusColors.HomeAccent.copy(alpha = 0.15f) else Color.Transparent
             )
             .clickable(role = Role.Tab, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
