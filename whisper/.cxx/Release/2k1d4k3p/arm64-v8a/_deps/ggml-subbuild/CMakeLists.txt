@@ -14,8 +14,8 @@ project(ggml-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(ggml-populate
                      "UPDATE_DISCONNECTED" "False"
-                    SOURCE_DIR          "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/src/main/jni/whisper/../../../../../third_party/whisper.cpp/ggml"
-                    BINARY_DIR          "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build"
+                    SOURCE_DIR          "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/src/main/jni/whisper/../../../../../third_party/whisper.cpp/ggml"
+                    BINARY_DIR          "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

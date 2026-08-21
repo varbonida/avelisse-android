@@ -1,67 +1,67 @@
 {
   "buildFiles": [
-    "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\third_party\\whisper.cpp\\ggml\\CMakeLists.txt",
-    "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\third_party\\whisper.cpp\\ggml\\src\\CMakeLists.txt",
-    "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\third_party\\whisper.cpp\\ggml\\src\\ggml-cpu\\CMakeLists.txt",
-    "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\src\\main\\jni\\whisper\\CMakeLists.txt"
+    "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\third_party\\whisper.cpp\\ggml\\CMakeLists.txt",
+    "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\third_party\\whisper.cpp\\ggml\\src\\CMakeLists.txt",
+    "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\third_party\\whisper.cpp\\ggml\\src\\ggml-cpu\\CMakeLists.txt",
+    "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\src\\main\\jni\\whisper\\CMakeLists.txt"
   ],
   "cleanCommandsComponents": [
     [
       "C:\\Users\\Vergel\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
       "-C",
-      "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\.cxx\\Release\\2k1d4k3p\\arm64-v8a",
+      "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\.cxx\\Release\\2k1d4k3p\\arm64-v8a",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
     "C:\\Users\\Vergel\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
     "-C",
-    "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\.cxx\\Release\\2k1d4k3p\\arm64-v8a",
+    "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\.cxx\\Release\\2k1d4k3p\\arm64-v8a",
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {
     "ggml-base::@13ca10ed1afff475bcb7": {
       "artifactName": "ggml-base",
       "abi": "arm64-v8a",
-      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so",
+      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so",
       "runtimeFiles": []
     },
     "ggml-cpu::@13ca10ed1afff475bcb7": {
       "artifactName": "ggml-cpu",
       "abi": "arm64-v8a",
-      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
+      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
       "runtimeFiles": [
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so",
         "C:\\Users\\Vergel\\AppData\\Local\\Android\\Sdk\\ndk\\27.2.12479018\\toolchains\\llvm\\prebuilt\\windows-x86_64\\lib\\clang\\18\\lib\\linux\\aarch64\\libomp.so"
       ]
     },
     "whisper::@6890427a1f51a3e7e1df": {
       "artifactName": "whisper",
       "abi": "arm64-v8a",
-      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libwhisper.so",
+      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libwhisper.so",
       "runtimeFiles": [
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
       ]
     },
     "whisper_v8fp16_va::@6890427a1f51a3e7e1df": {
       "artifactName": "whisper_v8fp16_va",
       "abi": "arm64-v8a",
-      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libwhisper_v8fp16_va.so",
+      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libwhisper_v8fp16_va.so",
       "runtimeFiles": [
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
       ]
     },
     "ggml::@13ca10ed1afff475bcb7": {
       "artifactName": "ggml",
       "abi": "arm64-v8a",
-      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
+      "output": "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml.so",
       "runtimeFiles": [
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
-        "C:\\Users\\Vergel\\Documents\\development\\ewn\\dictus-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-cpu.so",
+        "C:\\Users\\Vergel\\Documents\\development\\ewn\\avelisse-android\\whisper\\build\\intermediates\\cxx\\Release\\2k1d4k3p\\obj\\arm64-v8a\\libggml-base.so"
       ]
     }
   }

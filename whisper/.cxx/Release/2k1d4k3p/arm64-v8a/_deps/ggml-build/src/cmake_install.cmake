@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/src
+# Install script for directory: C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/src/ggml-cpu/cmake_install.cmake")
+  include("C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/src/ggml-cpu/cmake_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -54,7 +54,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-cpu.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml-cpu.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml-cpu.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-cpu.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-cpu.so")
     if(CMAKE_INSTALL_DO_STRIP)

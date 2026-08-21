@@ -158,7 +158,7 @@ rule CXX_SHARED_LIBRARY_LINKER__ggml-cpu_Release
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = C:\Users\Vergel\AppData\Local\Android\Sdk\cmake\3.22.1\bin\cmake.exe --regenerate-during-build -SC:\Users\Vergel\Documents\development\ewn\dictus-android\whisper\src\main\jni\whisper -BC:\Users\Vergel\Documents\development\ewn\dictus-android\whisper\.cxx\Release\2k1d4k3p\arm64-v8a
+  command = C:\Users\Vergel\AppData\Local\Android\Sdk\cmake\3.22.1\bin\cmake.exe --regenerate-during-build -SC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\src\main\jni\whisper -BC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\arm64-v8a
   description = Re-running CMake...
   generator = 1
 

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild
+# Install script for directory: C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-subbuild/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

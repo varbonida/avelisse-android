@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml
+# Install script for directory: C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/src/cmake_install.cmake")
+  include("C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/src/cmake_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -54,7 +54,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -68,24 +68,24 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-cpu.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-alloc.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-backend.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-blas.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-cann.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-cpp.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-cuda.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-opt.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-metal.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-rpc.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-virtgpu.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-sycl.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-vulkan.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-webgpu.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-zendnn.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/ggml-openvino.h"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/third_party/whisper.cpp/ggml/include/gguf.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-cpu.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-alloc.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-backend.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-blas.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-cann.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-cpp.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-cuda.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-opt.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-metal.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-rpc.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-virtgpu.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-sycl.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-vulkan.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-webgpu.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-zendnn.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/ggml-openvino.h"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/third_party/whisper.cpp/ggml/include/gguf.h"
     )
 endif()
 
@@ -96,7 +96,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-base.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml-base.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/build/intermediates/cxx/Release/2k1d4k3p/obj/arm64-v8a/libggml-base.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-base.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libggml-base.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -110,8 +110,8 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/ggml" TYPE FILE FILES
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/ggml-config.cmake"
-    "C:/Users/Vergel/Documents/development/ewn/dictus-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/ggml-version.cmake"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/ggml-config.cmake"
+    "C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/arm64-v8a/_deps/ggml-build/ggml-version.cmake"
     )
 endif()
 

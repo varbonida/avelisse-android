@@ -1,0 +1,21 @@
+# ninja log v5
+1	358	8090132391215961	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-mkdir	f5779609f1516ca9
+1	358	8090132391215961	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-mkdir	f5779609f1516ca9
+359	507	8090132392690915	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-download	4a0a39f1a1c5fae9
+359	507	8090132392690915	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-download	4a0a39f1a1c5fae9
+508	652	8090132393952779	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-update	d870b02b250d1a31
+508	652	8090132393952779	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-update	d870b02b250d1a31
+653	749	8090132395144886	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-patch	fb9c9077817c3c1f
+653	749	8090132395144886	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-patch	fb9c9077817c3c1f
+749	954	8090132397176325	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-configure	d7e9c49e8e5f0aae
+749	954	8090132397176325	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-configure	d7e9c49e8e5f0aae
+955	1075	8090132398384753	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-build	61729b4af47bd871
+955	1075	8090132398384753	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-build	61729b4af47bd871
+1075	1191	8090132399550142	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-install	1e559d3d100ab1e0
+1075	1191	8090132399550142	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-install	1e559d3d100ab1e0
+1191	1406	8090132401574910	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-test	7e0d14908108f89c
+1191	1406	8090132401574910	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-test	7e0d14908108f89c
+1407	1857	8090132405951328	CMakeFiles/ggml-populate-complete	5f7a36ede8859c59
+1407	1857	8090132405951328	ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-done	5f7a36ede8859c59
+1407	1857	8090132405951328	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/CMakeFiles/ggml-populate-complete	5f7a36ede8859c59
+1407	1857	8090132405951328	C:/Users/Vergel/Documents/development/ewn/avelisse-android/whisper/.cxx/Release/2k1d4k3p/armeabi-v7a/_deps/ggml-subbuild/ggml-populate-prefix/src/ggml-populate-stamp/ggml-populate-done	5f7a36ede8859c59
