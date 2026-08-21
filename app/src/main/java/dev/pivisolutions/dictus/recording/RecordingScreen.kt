@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Stop
@@ -44,10 +44,9 @@ import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.core.service.DictationController
 import dev.pivisolutions.dictus.core.service.DictationState
 import dev.pivisolutions.dictus.core.theme.DictusColors
-import dev.pivisolutions.dictus.core.theme.LocalDictusColors
-import androidx.compose.material3.MaterialTheme
-import dev.pivisolutions.dictus.core.ui.GlassCard
+import dev.pivisolutions.dictus.core.ui.HomeGlassCard
 import dev.pivisolutions.dictus.core.ui.WaveformBars
+import dev.pivisolutions.dictus.core.ui.WaveformBlob
 import dev.pivisolutions.dictus.core.ui.WaveformDriver
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.launch
@@ -60,15 +59,16 @@ import kotlinx.coroutines.launch
  *
  * Layout uses a layered Box so the mic/stop button stays at a fixed position
  * (200dp from bottom) regardless of state:
- * 1. Upper content (idle text OR result card) — fills the area above the button
- * 2. Bottom block (waveform + timer + button) — anchored to BottomCenter
- * 3. Back button — top-left, always visible
+ * 1. Upper content (idle text, "Recording..." + timer, or result card) — fills
+ *    the area above the button
+ * 2. Bottom block (waveform + button) — anchored to BottomCenter
+ * 3. Close button — top-left, always visible
  *
  * Recording auto-starts on first composition so the user lands directly in recording
  * state — matching iOS Dictus behavior where tapping "Nouvelle dictée" starts immediately.
  *
  * @param dictationController Controller for the DictationService (may be null if not yet bound).
- * @param onBack Called when the user taps the back arrow to return to Home.
+ * @param onBack Called when the user taps the close button to return to Home.
  */
 @Composable
 fun RecordingScreen(
@@ -112,43 +112,46 @@ fun RecordingScreen(
 
     val noResultLabel = stringResource(R.string.recording_no_result)
 
+    // No horizontal padding on the root Box: the recording waveform bleeds to the
+    // full screen width (matches recording.png). Everything else (close button,
+    // text, mic/stop button) applies its own 32dp horizontal padding below instead.
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 32.dp),
+            .background(DictusColors.HomeBackground),
     ) {
-        // ── Back button (top-left, always visible) ──
+        // ── Close button (top-left, always visible) ──
         Box(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(top = 16.dp)
+                .padding(start = 32.dp, top = 16.dp)
                 .clip(CircleShape)
                 .clickable(onClick = onBack)
                 .padding(8.dp),
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.recording_back_cd),
-                tint = MaterialTheme.colorScheme.onBackground,
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(R.string.recording_close_cd),
+                tint = DictusColors.HomeTextPrimary,
                 modifier = Modifier.size(24.dp),
             )
         }
 
-        // ── Layer 1: Upper content (idle text OR result card) ──
+        // ── Layer 1: Upper content (idle text, "Recording..." + timer, or result card) ──
         when {
             hasResult -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
                         .padding(top = 160.dp, bottom = 240.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
                         text = stringResource(R.string.recording_result_title),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = DictusColors.HomeTextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -156,12 +159,12 @@ fun RecordingScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    GlassCard(
+                    HomeGlassCard(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
                             text = transcriptionResult ?: "",
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = DictusColors.HomeTextPrimary,
                             fontSize = 17.sp,
                             lineHeight = 26.sp,
                         )
@@ -186,7 +189,7 @@ fun RecordingScreen(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.recording_copy_cd),
-                                tint = if (copied) DictusColors.Success else LocalDictusColors.current.textSecondary,
+                                tint = if (copied) DictusColors.HomeAccentSecondary else DictusColors.HomeTextSecondary,
                                 modifier = Modifier.size(20.dp),
                             )
                         }
@@ -194,18 +197,50 @@ fun RecordingScreen(
                 }
             }
 
-            !isRecording && !isTranscribing -> {
+            isRecording -> {
+                // "Recording..." label + timer, centered above the waveform (matches recording.png).
+                val recording = dictationState as DictationState.Recording
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
+                        .padding(top = 200.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = stringResource(R.string.recording_recording_label),
+                        color = DictusColors.HomeTextSecondary,
+                        fontSize = 20.sp,
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val seconds = (recording.elapsedMs / 1000).toInt()
+                    val minutes = seconds / 60
+                    val secs = seconds % 60
+                    Text(
+                        text = "%d:%02d".format(minutes, secs),
+                        color = DictusColors.HomeTextPrimary,
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+            }
+
+            !isTranscribing -> {
                 // Idle: title + subtitle centered above the button
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
                         .padding(top = 200.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(R.string.recording_idle_title),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = DictusColors.HomeTextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -215,7 +250,7 @@ fun RecordingScreen(
 
                     Text(
                         text = stringResource(R.string.recording_idle_body),
-                        color = LocalDictusColors.current.textSecondary,
+                        color = DictusColors.HomeTextSecondary,
                         fontSize = 15.sp,
                         lineHeight = (15 * 1.5).sp,
                         textAlign = TextAlign.Center,
@@ -224,11 +259,11 @@ fun RecordingScreen(
             }
         }
 
-        // ── Layer 2: Bottom block (waveform + timer + button) ──
-        // For recording/transcribing: waveform, timer, and button are grouped together
-        // in the lower portion of the screen.
+        // ── Layer 2: Bottom block (waveform + button) ──
+        // For recording: waveform (teal, matches recording.png) grouped with the button.
+        // "Recording..." + timer now live in Layer 1, above the waveform (matches reference layout).
         // For idle: just the mic button.
-        // For result: blue mic button to re-record.
+        // For result: teal mic button to re-record.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -237,28 +272,26 @@ fun RecordingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (!hasResult) {
-                // Waveform + timer (only during recording/transcribing)
+                // Waveform (only during recording/transcribing)
                 when {
                     isRecording -> {
                         val recording = dictationState as DictationState.Recording
 
-                        WaveformBars(
-                            energyLevels = recording.energy,
+                        // Animation style/movement from designs/waveform_canvas.html;
+                        // amplitude reacts to real mic input via the existing energy
+                        // history already exposed on DictationState.Recording — composed
+                        // only while isRecording is true, so it starts/stops/resets with it.
+                        // Full screen width (no horizontal padding) and taller container
+                        // so the shape reads as prominently as in recording.png — the
+                        // drawing itself scales its amplitude relative to this size,
+                        // so no change was needed inside WaveformBlob.
+                        WaveformBlob(
+                            volume = recording.energy.lastOrNull() ?: 0f,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(80.dp),
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        val seconds = (recording.elapsedMs / 1000).toInt()
-                        val minutes = seconds / 60
-                        val secs = seconds % 60
-                        Text(
-                            text = "%d:%02d".format(minutes, secs),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Medium,
+                                .height(200.dp),
+                            color = DictusColors.HomeAccent,
+                            edgeColor = DictusColors.HomeAccentHighlight,
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -267,19 +300,31 @@ fun RecordingScreen(
                     isTranscribing -> {
                         Text(
                             text = stringResource(R.string.recording_transcribing),
-                            color = LocalDictusColors.current.textSecondary,
+                            color = DictusColors.HomeTextSecondary,
                             fontSize = 17.sp,
+                            modifier = Modifier.padding(horizontal = 32.dp),
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
+                        // Kept inset at the original 32dp margin (unlike the recording
+                        // waveform above) since the root Box no longer supplies that
+                        // padding for the whole screen — this state's look is unchanged.
+                        // Colors overridden to the AVELISSE Home palette (teal inner
+                        // bars, muted secondary-text outer bars) instead of the
+                        // default blue/white — the app's default dark theme would
+                        // otherwise render near-invisible white bars against this
+                        // screen's ivory background.
                         WaveformBars(
                             energyLevels = emptyList(),
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(horizontal = 32.dp)
                                 .height(80.dp),
                             isProcessing = true,
                             processingPhase = processingPhase,
+                            innerColor = DictusColors.HomeAccent,
+                            outerColor = DictusColors.HomeTextSecondary,
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -290,12 +335,12 @@ fun RecordingScreen(
             // Button — changes appearance based on state
             when {
                 isRecording -> {
-                    // Red stop button during recording
+                    // Terracotta stop button during recording (matches recording.png)
                     Box(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(DictusColors.Recording)
+                            .background(DictusColors.HomeAccentSecondary)
                             .clickable {
                                 scope.launch {
                                     val result = dictationController?.confirmAndTranscribe()
@@ -325,25 +370,25 @@ fun RecordingScreen(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface),
+                            .background(DictusColors.HomeSurface),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             imageVector = Icons.Default.Mic,
                             contentDescription = null,
-                            tint = LocalDictusColors.current.textSecondary,
+                            tint = DictusColors.HomeTextSecondary,
                             modifier = Modifier.size(36.dp),
                         )
                     }
                 }
 
                 hasResult -> {
-                    // Blue mic button in result state — tapping re-records
+                    // Teal mic button in result state — tapping re-records
                     Box(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(DictusColors.Accent)
+                            .background(DictusColors.HomeAccent)
                             .clickable {
                                 transcriptionResult = null
                                 copied = false
@@ -361,12 +406,12 @@ fun RecordingScreen(
                 }
 
                 else -> {
-                    // Idle state: blue mic button to start recording
+                    // Idle state: teal mic button to start recording
                     Box(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(DictusColors.Accent)
+                            .background(DictusColors.HomeAccent)
                             .clickable {
                                 dictationController?.startRecording()
                             },
@@ -390,7 +435,7 @@ fun RecordingScreen(
                     hasResult -> stringResource(R.string.recording_idle_title)
                     else -> ""
                 },
-                color = LocalDictusColors.current.textSecondary,
+                color = DictusColors.HomeTextSecondary,
                 fontSize = 13.sp,
             )
         }
