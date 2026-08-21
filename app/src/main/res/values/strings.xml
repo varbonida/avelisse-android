@@ -22,6 +22,8 @@
     <string name="onboarding_mode_selection_title">Choose your keyboard</string>
     <string name="onboarding_mode_selection_body">ABC is selected by default. Switch if you prefer to open on numbers.</string>
     <string name="onboarding_mode_selection_cta">Continue</string>
+    <string name="onboarding_mode_letters">Letters</string>
+    <string name="onboarding_mode_numbers">Numbers</string>
 
     <!-- Onboarding: Model download screen (Step 5) -->
     <string name="onboarding_model_download_title">Voice model</string>
@@ -125,6 +127,7 @@
     <!-- LicencesScreen -->
     <string name="licences_title">Licences</string>
     <string name="licences_back_cd">Back</string>
+    <string name="licences_vendored_section">Vendored &amp; Non-Maven</string>
 
     <!-- ImeStatusCard -->
     <string name="ime_status_active">AVELISSE keyboard active</string>
@@ -168,6 +171,20 @@
     <string name="model_precision">Precision</string>
     <string name="model_speed">Speed</string>
     <string name="model_delete_cd">Delete</string>
+    <string name="model_size_mb">~%1$d MB</string>
+
+    <!-- ModelCatalog quality labels and descriptions (ModelManager.kt) -->
+    <string name="model_quality_fast">Fast</string>
+    <string name="model_quality_balanced">Balanced</string>
+    <string name="model_quality_precise">Precise</string>
+    <string name="model_quality_premium">Premium</string>
+    <string name="model_desc_tiny">Fast and lightweight</string>
+    <string name="model_desc_base">Precise and balanced</string>
+    <string name="model_desc_small">High precision</string>
+    <string name="model_desc_small_q5">Best trade-off</string>
+    <string name="model_desc_medium">Best precision</string>
+    <string name="model_desc_parakeet_110m">English only \u2014 fast and precise</string>
+    <string name="model_desc_parakeet_06b">25 languages \u2014 automatic detection</string>
 
     <!-- HomeScreen -->
     <string name="home_active_model">Active model</string>
@@ -213,5 +230,8 @@
     <!-- Shared content descriptions -->
     <string name="cd_back">Back</string>
     <string name="cd_selected">Selected</string>
+
+    <!-- Recording notification channel (DictationService) -->
+    <string name="notification_channel_recording_description">Active recording notification</string>
 
 </resources>

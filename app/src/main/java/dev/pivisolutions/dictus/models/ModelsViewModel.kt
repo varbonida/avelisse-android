@@ -257,7 +257,8 @@ class ModelsViewModel @Inject constructor(
 
             // Language mismatch check for English-only models
             if (info.isEnglishOnly) {
-                val lang = dataStore.data.first()[PreferenceKeys.TRANSCRIPTION_LANGUAGE] ?: "auto"
+                val lang = dataStore.data.first()[PreferenceKeys.TRANSCRIPTION_LANGUAGE]
+                    ?: PreferenceKeys.defaultTranscriptionLanguage()
                 if (lang != "en") {
                     _showParakeetLanguageDialog.value = key
                     return@launch

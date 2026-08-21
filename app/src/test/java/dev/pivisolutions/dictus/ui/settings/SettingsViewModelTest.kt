@@ -65,8 +65,15 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `language defaults to auto`() = testScope.runTest {
-        assertEquals("auto", viewModel.language.value)
+    @Config(qualifiers = "fr")
+    fun `language defaults to system language when supported`() = testScope.runTest {
+        assertEquals("fr", viewModel.language.value)
+    }
+
+    @Test
+    @Config(qualifiers = "de")
+    fun `language defaults to English when system language is unsupported`() = testScope.runTest {
+        assertEquals("en", viewModel.language.value)
     }
 
     @Test
@@ -74,6 +81,14 @@ class SettingsViewModelTest {
         viewModel.setLanguage("fr")
         advanceUntilIdle()
         assertEquals("fr", viewModel.language.value)
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `explicit auto selection is preserved even when system language is supported`() = testScope.runTest {
+        viewModel.setLanguage("auto")
+        advanceUntilIdle()
+        assertEquals("auto", viewModel.language.value)
     }
 
     @Test

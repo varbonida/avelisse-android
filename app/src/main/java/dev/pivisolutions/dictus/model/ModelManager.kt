@@ -1,6 +1,7 @@
 package dev.pivisolutions.dictus.model
 
 import android.content.Context
+import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.model.ModelCatalog.isDirectoryModel
 import java.io.File
 
@@ -25,8 +26,9 @@ enum class AiProvider { WHISPER, PARAKEET }
  * @param fileName        File name on disk and in the HuggingFace repo.
  * @param displayName     Human-readable name shown in the model list UI.
  * @param expectedSizeBytes Expected byte size used to detect complete downloads.
- * @param qualityLabel    Short quality descriptor shown as a badge (e.g. "Rapide").
- * @param description     Short human-readable description shown on model card.
+ * @param qualityLabelRes Localized string resource for the quality badge (e.g. "Fast"/"Rapide").
+ * @param descriptionRes  Localized string resource for the short description on the model card,
+ *                        or 0 if none.
  * @param precision       Relative accuracy score 0.0–1.0 for the Precision bar.
  * @param speed           Relative speed score 0.0–1.0 for the Vitesse bar.
  * @param provider        Download source and inference engine.
@@ -37,8 +39,8 @@ data class ModelInfo(
     val fileName: String,
     val displayName: String,
     val expectedSizeBytes: Long,
-    val qualityLabel: String,
-    val description: String = "",
+    val qualityLabelRes: Int,
+    val descriptionRes: Int = 0,
     val precision: Float = 0f,
     val speed: Float = 0f,
     val provider: AiProvider = AiProvider.WHISPER,
@@ -90,8 +92,8 @@ object ModelCatalog {
             fileName = "ggml-tiny.bin",
             displayName = "Tiny",
             expectedSizeBytes = 77_691_713L,
-            qualityLabel = "Rapide",
-            description = "Rapide et leger",
+            qualityLabelRes = R.string.model_quality_fast,
+            descriptionRes = R.string.model_desc_tiny,
             precision = 0.4f,
             speed = 1.0f,
         ),
@@ -100,8 +102,8 @@ object ModelCatalog {
             fileName = "ggml-base.bin",
             displayName = "Base",
             expectedSizeBytes = 147_951_465L,
-            qualityLabel = "Equilibre",
-            description = "Precis et equilibre",
+            qualityLabelRes = R.string.model_quality_balanced,
+            descriptionRes = R.string.model_desc_base,
             precision = 0.6f,
             speed = 0.7f,
         ),
@@ -110,8 +112,8 @@ object ModelCatalog {
             fileName = "ggml-small.bin",
             displayName = "Small",
             expectedSizeBytes = 487_601_967L,
-            qualityLabel = "Precis",
-            description = "Haute precision",
+            qualityLabelRes = R.string.model_quality_precise,
+            descriptionRes = R.string.model_desc_small,
             precision = 0.9f,
             speed = 0.35f,
         ),
@@ -120,8 +122,8 @@ object ModelCatalog {
             fileName = "ggml-small-q5_1.bin",
             displayName = "Small Q5",
             expectedSizeBytes = 190_085_487L,
-            qualityLabel = "Precis",
-            description = "Meilleur compromis",
+            qualityLabelRes = R.string.model_quality_precise,
+            descriptionRes = R.string.model_desc_small_q5,
             precision = 0.85f,
             speed = 0.55f,
         ),
@@ -130,8 +132,8 @@ object ModelCatalog {
             fileName = "ggml-medium-q5_0.bin",
             displayName = "Medium",
             expectedSizeBytes = 539_212_467L,
-            qualityLabel = "Precis",
-            description = "Meilleure precision",
+            qualityLabelRes = R.string.model_quality_precise,
+            descriptionRes = R.string.model_desc_medium,
             precision = 0.9f,
             speed = 0.3f,
         ),
@@ -142,8 +144,8 @@ object ModelCatalog {
             fileName = "model.int8.onnx",
             displayName = "Parakeet 110M",
             expectedSizeBytes = 131_628_000L,
-            qualityLabel = "Rapide",
-            description = "Anglais uniquement - Rapide et precis",
+            qualityLabelRes = R.string.model_quality_fast,
+            descriptionRes = R.string.model_desc_parakeet_110m,
             precision = 0.75f,
             speed = 0.85f,
             provider = AiProvider.PARAKEET,
@@ -154,8 +156,8 @@ object ModelCatalog {
             fileName = "encoder.int8.onnx",
             displayName = "Parakeet 0.6B",
             expectedSizeBytes = 622_000_000L,
-            qualityLabel = "Premium",
-            description = "25 langues - Detection automatique",
+            qualityLabelRes = R.string.model_quality_premium,
+            descriptionRes = R.string.model_desc_parakeet_06b,
             precision = 0.95f,
             speed = 0.40f,
             provider = AiProvider.PARAKEET,

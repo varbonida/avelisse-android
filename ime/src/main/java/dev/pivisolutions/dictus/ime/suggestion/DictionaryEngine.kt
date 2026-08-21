@@ -45,7 +45,8 @@ class DictionaryEngine(
     init {
         coroutineScope.launch(ioDispatcher) {
             val name = assetName ?: run {
-                val lang = dataStore.data.first()[PreferenceKeys.TRANSCRIPTION_LANGUAGE] ?: "fr"
+                val lang = dataStore.data.first()[PreferenceKeys.TRANSCRIPTION_LANGUAGE]
+                    ?: PreferenceKeys.defaultTranscriptionLanguage()
                 if (lang == "en") "dict_en.txt" else "dict_fr.txt"
             }
             val entries = context.assets.open(name).bufferedReader().useLines { lines ->

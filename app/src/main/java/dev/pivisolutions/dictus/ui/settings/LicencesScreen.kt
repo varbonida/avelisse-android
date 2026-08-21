@@ -113,7 +113,7 @@ fun LicencesScreen(
         // Section header for vendored / non-Maven dependencies
         if (mavenLicenses.isNotEmpty()) {
             Text(
-                text = "Vendored & Non-Maven",
+                text = stringResource(R.string.licences_vendored_section),
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,

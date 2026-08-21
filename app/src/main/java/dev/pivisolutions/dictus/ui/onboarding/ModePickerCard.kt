@@ -66,7 +66,7 @@ fun ModePickerCard(
     ) {
         LayoutOptionCard(
             label = "ABC",
-            description = "Lettres",
+            description = stringResource(R.string.onboarding_mode_letters),
             layoutKey = "azerty",
             isSelected = selectedLayout == "azerty",
             onSelect = onSelect,
@@ -74,7 +74,7 @@ fun ModePickerCard(
         )
         LayoutOptionCard(
             label = "123",
-            description = "Chiffres",
+            description = stringResource(R.string.onboarding_mode_numbers),
             layoutKey = "numeric",
             isSelected = selectedLayout == "numeric",
             onSelect = onSelect,

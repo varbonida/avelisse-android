@@ -302,8 +302,11 @@ class DictationService : Service(), DictationController {
             //    without needing a service restart.
             val prefs = dataStore.data.first()
             val activeModelKey = prefs[PreferenceKeys.ACTIVE_MODEL] ?: ModelCatalog.DEFAULT_KEY
-            val languagePref = prefs[PreferenceKeys.TRANSCRIPTION_LANGUAGE] ?: "auto"
-            // "auto" maps to null for whisper.cpp which triggers its own language detection.
+            // No explicit choice yet -> system language if supported, else English
+            // (PreferenceKeys.defaultTranscriptionLanguage()). An explicit "auto" choice
+            // is preserved as-is and still maps to null for whisper.cpp's own detection.
+            val languagePref = prefs[PreferenceKeys.TRANSCRIPTION_LANGUAGE]
+                ?: PreferenceKeys.defaultTranscriptionLanguage()
             val whisperLanguage = if (languagePref == "auto") null else languagePref
 
             Timber.d(
@@ -469,7 +472,7 @@ class DictationService : Service(), DictationController {
             "AVELISSE Recording",
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
-            description = "Active recording notification"
+            description = getString(R.string.notification_channel_recording_description)
             setShowBadge(false)
         }
         val manager = getSystemService(NotificationManager::class.java)

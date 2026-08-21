@@ -171,7 +171,7 @@ fun RecordingScreen(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = "Settings",
+                    contentDescription = stringResource(R.string.ime_cd_settings),
                     tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                     modifier = Modifier
                         .width(20.dp)

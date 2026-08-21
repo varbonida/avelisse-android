@@ -22,6 +22,8 @@
     <string name="onboarding_mode_selection_title">Choisissez votre clavier</string>
     <string name="onboarding_mode_selection_body">ABC est s\u00e9lectionn\u00e9 par d\u00e9faut. Changez si vous pr\u00e9f\u00e9rez ouvrir sur les chiffres.</string>
     <string name="onboarding_mode_selection_cta">Continuer</string>
+    <string name="onboarding_mode_letters">Lettres</string>
+    <string name="onboarding_mode_numbers">Chiffres</string>
 
     <!-- Onboarding: Model download screen (Step 5) -->
     <string name="onboarding_model_download_title">Mod\u00e8le vocal</string>
@@ -125,6 +127,7 @@
     <!-- LicencesScreen -->
     <string name="licences_title">Licences</string>
     <string name="licences_back_cd">Retour</string>
+    <string name="licences_vendored_section">Intégrées et hors Maven</string>
 
     <!-- ImeStatusCard -->
     <string name="ime_status_active">Clavier AVELISSE actif</string>
@@ -168,6 +171,20 @@
     <string name="model_precision">Pr\u00e9cision</string>
     <string name="model_speed">Vitesse</string>
     <string name="model_delete_cd">Supprimer</string>
+    <string name="model_size_mb">~%1$d Mo</string>
+
+    <!-- ModelCatalog quality labels and descriptions (ModelManager.kt) -->
+    <string name="model_quality_fast">Rapide</string>
+    <string name="model_quality_balanced">Équilibré</string>
+    <string name="model_quality_precise">Précis</string>
+    <string name="model_quality_premium">Premium</string>
+    <string name="model_desc_tiny">Rapide et léger</string>
+    <string name="model_desc_base">Précis et équilibré</string>
+    <string name="model_desc_small">Haute précision</string>
+    <string name="model_desc_small_q5">Meilleur compromis</string>
+    <string name="model_desc_medium">Meilleure précision</string>
+    <string name="model_desc_parakeet_110m">Anglais uniquement — rapide et précis</string>
+    <string name="model_desc_parakeet_06b">25 langues — détection automatique</string>
 
     <!-- HomeScreen -->
     <string name="home_active_model">Mod\u00e8le actif</string>
@@ -213,5 +230,8 @@
     <!-- Shared content descriptions -->
     <string name="cd_back">Retour</string>
     <string name="cd_selected">S\u00e9lectionn\u00e9</string>
+
+    <!-- Recording notification channel (DictationService) -->
+    <string name="notification_channel_recording_description">Notification d\'enregistrement actif</string>
 
 </resources>

@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -197,7 +198,7 @@ private fun OnboardingScreen(dictationController: DictationController?) {
         5 -> OnboardingModelDownloadScreen(
             modelName = recommendedModel.displayName,
             modelSize = "~$modelSizeMb MB",
-            modelQualityLabel = recommendedModel.qualityLabel,
+            modelQualityLabel = stringResource(recommendedModel.qualityLabelRes),
             isExtracting = isExtracting,
             downloadProgress = downloadProgress,
             downloadComplete = downloadComplete,

@@ -134,7 +134,7 @@ fun HomeScreen(
                     if (activeModel != null) {
                         val sizeMb = activeModel.expectedSizeBytes / 1_000_000
                         Text(
-                            text = "~$sizeMb Mo",
+                            text = stringResource(R.string.model_size_mb, sizeMb),
                             color = DictusColors.HomeTextSecondary,
                             fontSize = 13.sp,
                         )

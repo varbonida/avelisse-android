@@ -291,9 +291,9 @@ fun ModelCard(
                 }
 
                 // Description below name (matches iOS vertical layout)
-                if (model.description.isNotBlank()) {
+                if (model.descriptionRes != 0) {
                     Text(
-                        text = model.description,
+                        text = stringResource(model.descriptionRes),
                         color = accentColorMuted,
                         fontSize = 13.sp,
                         lineHeight = 18.sp,
@@ -324,7 +324,7 @@ fun ModelCard(
                 // Size label
                 val sizeMb = model.expectedSizeBytes / 1_000_000
                 Text(
-                    text = "~$sizeMb Mo",
+                    text = stringResource(R.string.model_size_mb, sizeMb),
                     color = accentColorMuted,
                     fontSize = 12.sp,
                 )

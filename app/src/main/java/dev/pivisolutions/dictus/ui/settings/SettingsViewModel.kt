@@ -46,10 +46,16 @@ class SettingsViewModel @Inject constructor(
     private val modelManager: ModelManager,
 ) : ViewModel() {
 
-    /** Currently selected transcription language ("auto", "fr", or "en"). */
+    /**
+     * Currently selected transcription language ("auto", "fr", or "en").
+     *
+     * Falls back to [PreferenceKeys.defaultTranscriptionLanguage] (system language if
+     * supported, else English) rather than "auto" when nothing has been explicitly
+     * chosen yet — an explicit "auto" selection is preserved once the user picks it.
+     */
     val language: StateFlow<String> = dataStore.data
-        .map { it[PreferenceKeys.TRANSCRIPTION_LANGUAGE] ?: "auto" }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, "auto")
+        .map { it[PreferenceKeys.TRANSCRIPTION_LANGUAGE] ?: PreferenceKeys.defaultTranscriptionLanguage() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, PreferenceKeys.defaultTranscriptionLanguage())
 
     /** Key of the currently active Whisper model. */
     val activeModel: StateFlow<String> = dataStore.data

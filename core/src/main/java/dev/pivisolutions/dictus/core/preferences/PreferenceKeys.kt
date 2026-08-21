@@ -1,5 +1,6 @@
 package dev.pivisolutions.dictus.core.preferences
 
+import android.content.res.Resources
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -52,4 +53,26 @@ object PreferenceKeys {
     // --- Personal dictionary (Phase 8) ---
     /** Set of words the user has typed at least twice, persisted across restarts. */
     val PERSONAL_DICTIONARY = stringSetPreferencesKey("personal_dictionary")
+
+    /**
+     * Transcription target languages the app actually exposes/supports as a choice
+     * (matches the Settings language picker's "fr"/"en" options — not whisper.cpp's
+     * much larger internal language vocabulary).
+     */
+    private val SUPPORTED_TRANSCRIPTION_LANGUAGES = setOf("fr", "en")
+
+    /**
+     * Default transcription language to use when [TRANSCRIPTION_LANGUAGE] has never
+     * been explicitly set: the device's system language if supported, otherwise English.
+     *
+     * WHY Resources.getSystem() (not Locale.getDefault()): the app's interface language
+     * can be overridden independently via AppCompatDelegate.setApplicationLocales(),
+     * which also updates Locale.getDefault() on this process. Resources.getSystem()
+     * always reflects the true device/system configuration regardless of that override,
+     * keeping interface and transcription language decisions independent as required.
+     */
+    fun defaultTranscriptionLanguage(): String {
+        val systemLanguage = Resources.getSystem().configuration.locales[0].language
+        return if (systemLanguage in SUPPORTED_TRANSCRIPTION_LANGUAGES) systemLanguage else "en"
+    }
 }

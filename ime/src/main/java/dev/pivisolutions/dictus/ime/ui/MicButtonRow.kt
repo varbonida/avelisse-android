@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.pivisolutions.dictus.core.theme.DictusColors
 import androidx.compose.material3.MaterialTheme
@@ -62,7 +63,7 @@ fun MicButtonRow(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_settings),
-                contentDescription = "Settings",
+                contentDescription = stringResource(R.string.ime_cd_settings),
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 modifier = Modifier.size(20.dp),
             )
@@ -91,7 +92,7 @@ fun MicButtonRow(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_mic),
-                contentDescription = "Microphone",
+                contentDescription = stringResource(R.string.ime_cd_microphone),
                 tint = Color.White,
                 modifier = Modifier.size(22.dp),
             )
