@@ -17,6 +17,7 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
+import dev.pivisolutions.dictus.BuildConfig
 import dev.pivisolutions.dictus.R
 import dev.pivisolutions.dictus.audio.DictationSoundPlayer
 import dev.pivisolutions.dictus.core.preferences.PreferenceKeys
@@ -350,7 +351,11 @@ class DictationService : Service(), DictationController {
 
             // 6. Post-process (trim + punctuation)
             val processedText = TextPostProcessor.process(rawText)
-            Timber.d("Transcription result: raw='%s', processed='%s'", rawText, processedText)
+            if (BuildConfig.DEBUG) {
+                Timber.d("Transcription result: raw='%s', processed='%s'", rawText, processedText)
+            } else {
+                Timber.d("Transcription complete (%d chars)", processedText.length)
+            }
 
             _state.value = DictationState.Idle
             stopForeground(STOP_FOREGROUND_REMOVE)

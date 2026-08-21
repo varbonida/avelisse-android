@@ -23,6 +23,10 @@ android {
         jvmTarget = "17"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     // Force Release build for native libs even in debug APK.
     // whisper.cpp without -O3 is ~70x slower (34s vs <1s for tiny model).
     defaultConfig {

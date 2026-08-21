@@ -384,7 +384,11 @@ class DictusImeService : LifecycleInputMethodService() {
                                     val text = controller.confirmAndTranscribe()
                                     if (text != null) {
                                         commitText(text)
-                                        Timber.d("Transcribed text inserted: '%s'", text)
+                                        if (BuildConfig.DEBUG) {
+                                            Timber.d("Transcribed text inserted: '%s'", text)
+                                        } else {
+                                            Timber.d("Transcribed text inserted (%d chars)", text.length)
+                                        }
                                         // Clear suggestions after voice transcription so the bar
                                         // does not show stale suggestions from the last typed word.
                                         // Suggestions resume when user types on keyboard.
