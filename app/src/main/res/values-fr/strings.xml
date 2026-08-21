@@ -187,6 +187,7 @@
     <string name="model_desc_parakeet_06b">25 langues — détection automatique</string>
 
     <!-- HomeScreen -->
+    <string name="home_tagline">Application de dict\u00e9e</string>
     <string name="home_active_model">Mod\u00e8le actif</string>
     <string name="home_last_transcription">Derni\u00e8re transcription</string>
     <string name="home_copy_cd">Copier</string>

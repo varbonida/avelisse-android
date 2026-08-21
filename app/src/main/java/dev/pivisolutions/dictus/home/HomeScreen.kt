@@ -108,6 +108,15 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold,
         )
 
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // Subtitle beneath the wordmark — secondary color/size, centered with it.
+        Text(
+            text = stringResource(R.string.home_tagline),
+            color = DictusColors.HomeTextSecondary,
+            fontSize = 13.sp,
+        )
+
         Spacer(modifier = Modifier.height(32.dp))
 
         // Active model card
