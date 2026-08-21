@@ -23,15 +23,15 @@ import dev.pivisolutions.dictus.ui.onboarding.OnboardingStepScaffold
 /**
  * Onboarding Step 4 — Keyboard layout mode selection.
  *
- * Lets the user choose between starting the keyboard on the letters layout ("azerty")
- * or the numbers layout ("numeric"). The default is "azerty" so the CTA is always
+ * Lets the user choose between starting the keyboard on the letters layout ("qwerty")
+ * or the numbers layout ("numeric"). The default is "qwerty" so the CTA is always
  * enabled — the user only needs to tap "Continuer" to proceed.
  *
  * WHY always-enabled CTA: There is no invalid selection here. Both layouts are valid
  * choices and the user can change their mind in Settings later. A locked CTA would
  * create unnecessary friction for a preference that has a sensible default.
  *
- * @param selectedLayout    Current layout key ("azerty" or "numeric").
+ * @param selectedLayout    Current layout key ("qwerty" or "numeric").
  * @param onSelectLayout    Called when the user taps a layout card.
  * @param onNext            Called when the user taps "Continuer".
  */

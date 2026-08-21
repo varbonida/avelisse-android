@@ -295,8 +295,8 @@ class DictusImeService : LifecycleInputMethodService() {
         // the layout in Settings, DataStore emits a new value, Compose recomposes, and
         // KeyboardScreen receives the updated layout immediately.
         val keyboardLayout by entryPoint.dataStore().data
-            .map { it[PreferenceKeys.KEYBOARD_LAYOUT] ?: "azerty" }
-            .collectAsState(initial = "azerty")
+            .map { it[PreferenceKeys.KEYBOARD_LAYOUT] ?: "qwerty" }
+            .collectAsState(initial = "qwerty")
 
         val switchKeyboard = {
             val imm = getSystemService(INPUT_METHOD_SERVICE)

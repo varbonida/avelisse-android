@@ -55,8 +55,8 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `lettersForLayout defaults to azerty for unknown`() {
-        assertSame(KeyboardLayouts.azertyLetters, KeyboardLayouts.lettersForLayout("dvorak"))
+    fun `lettersForLayout defaults to qwerty for unknown`() {
+        assertSame(KeyboardLayouts.qwertyLetters, KeyboardLayouts.lettersForLayout("dvorak"))
     }
 
     @Test

@@ -6,8 +6,8 @@ package dev.pivisolutions.dictus.ime.model
  * Each layout is a List<List<KeyDefinition>> representing rows of keys.
  * Row 1-2: character keys. Row 3: shift + characters + delete. Row 4: utility keys.
  *
- * The AZERTY layout is the default for French users (fr_FR locale).
- * The QWERTY layout is used for English (en_US locale).
+ * QWERTY is the app's default layout; AZERTY remains available as a manual
+ * selection (Settings > Keyboard layout).
  * Numbers and symbols layers are shared across both layouts.
  */
 object KeyboardLayouts {
@@ -106,11 +106,11 @@ object KeyboardLayouts {
 
     /**
      * Returns the letter layout for the given layout name.
-     * Defaults to AZERTY if the layout name is not recognized.
+     * Defaults to QWERTY if the layout name is not recognized.
      */
     fun lettersForLayout(layout: String): List<List<KeyDefinition>> = when (layout) {
         "azerty" -> azertyLetters
         "qwerty" -> qwertyLetters
-        else -> azertyLetters
+        else -> qwertyLetters
     }
 }

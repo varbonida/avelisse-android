@@ -49,7 +49,7 @@ fun KeyboardScreen(
     themeMode: ThemeMode = ThemeMode.DARK,
     initialLayer: KeyboardLayer = KeyboardLayer.LETTERS,
     hapticsEnabled: Boolean = true,
-    keyboardLayout: String = "azerty",  // NEW — AZERTY/QWERTY from DataStore
+    keyboardLayout: String = "qwerty",  // AZERTY/QWERTY from DataStore; defaults to QWERTY
 ) {
     // Keyboard state — initialLayer drives the starting layer from the KEYBOARD_MODE preference.
     // remember(initialLayer) ensures recomposition resets the layer if the preference changes.

@@ -86,9 +86,9 @@ class OnboardingViewModel @Inject constructor(
 
     // --- Keyboard layout selection (transient — user can re-select after process death) ---
 
-    private val _selectedLayout = MutableStateFlow("azerty")
+    private val _selectedLayout = MutableStateFlow("qwerty")
 
-    /** The keyboard layout chosen by the user. Defaults to "azerty". */
+    /** The keyboard layout chosen by the user. Defaults to "qwerty". */
     val selectedLayout: StateFlow<String> = _selectedLayout.asStateFlow()
 
     // --- Model download progress (transient — download restarts on process death) ---

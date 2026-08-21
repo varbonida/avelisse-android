@@ -77,10 +77,10 @@ class SettingsViewModel @Inject constructor(
         .map { it[PreferenceKeys.SOUND_ENABLED] ?: false }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    /** Currently selected keyboard layout key ("azerty" or "qwerty"). */
+    /** Currently selected keyboard layout key ("azerty" or "qwerty"). Defaults to "qwerty". */
     val keyboardLayout: StateFlow<String> = dataStore.data
-        .map { it[PreferenceKeys.KEYBOARD_LAYOUT] ?: "azerty" }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, "azerty")
+        .map { it[PreferenceKeys.KEYBOARD_LAYOUT] ?: "qwerty" }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, "qwerty")
 
     /**
      * List of model keys currently downloaded on disk.

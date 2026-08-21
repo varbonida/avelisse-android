@@ -41,7 +41,8 @@ import dev.pivisolutions.dictus.core.theme.DictusColors
  * Two side-by-side keyboard mode selection cards for onboarding step 4.
  *
  * Presents two options:
- * - "ABC" (azerty/abc layout) — starts with letters visible
+ * - "ABC" (qwerty/abc layout) — starts with letters visible, QWERTY arrangement
+ *   (the app default; AZERTY remains available afterward via Settings)
  * - "123" (numeric layout) — starts with numbers visible
  *
  * The selected card gets a Home accent-teal border (2dp) and teal text.
@@ -51,7 +52,7 @@ import dev.pivisolutions.dictus.core.theme.DictusColors
  * cards that clearly show what each layout looks like. The visual differentiation
  * (size, emoji-style label, color) is intentional for users unfamiliar with IME settings.
  *
- * @param selectedLayout Layout key — "azerty" for letters, "numeric" for numbers.
+ * @param selectedLayout Layout key — "qwerty" for letters, "numeric" for numbers.
  * @param onSelect       Called with the newly selected layout key.
  */
 @Composable
@@ -67,8 +68,8 @@ fun ModePickerCard(
         LayoutOptionCard(
             label = "ABC",
             description = stringResource(R.string.onboarding_mode_letters),
-            layoutKey = "azerty",
-            isSelected = selectedLayout == "azerty",
+            layoutKey = "qwerty",
+            isSelected = selectedLayout == "qwerty",
             onSelect = onSelect,
             modifier = Modifier.weight(1f),
         )

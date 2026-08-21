@@ -62,8 +62,8 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `initial state - selectedLayout is azerty`() = runTest(testDispatcher) {
-        assertEquals("azerty", viewModel.selectedLayout.value)
+    fun `initial state - selectedLayout is qwerty`() = runTest(testDispatcher) {
+        assertEquals("qwerty", viewModel.selectedLayout.value)
     }
 
     @Test
