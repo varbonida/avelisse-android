@@ -200,32 +200,14 @@ fun RecordingScreen(
             isRecording -> {
                 // "Recording..." label + timer, centered above the waveform (matches recording.png).
                 val recording = dictationState as DictationState.Recording
-                Column(
+                RecordingLabelAndTimer(
+                    elapsedMs = recording.elapsedMs,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
                         .padding(horizontal = 32.dp)
                         .padding(top = 200.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = stringResource(R.string.recording_recording_label),
-                        color = DictusColors.HomeTextSecondary,
-                        fontSize = 20.sp,
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    val seconds = (recording.elapsedMs / 1000).toInt()
-                    val minutes = seconds / 60
-                    val secs = seconds % 60
-                    Text(
-                        text = "%d:%02d".format(minutes, secs),
-                        color = DictusColors.HomeTextPrimary,
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
-                }
+                )
             }
 
             !isTranscribing -> {
@@ -282,50 +264,22 @@ fun RecordingScreen(
                         // history already exposed on DictationState.Recording — composed
                         // only while isRecording is true, so it starts/stops/resets with it.
                         // Full screen width (no horizontal padding) and taller container
-                        // so the shape reads as prominently as in recording.png — the
-                        // drawing itself scales its amplitude relative to this size,
-                        // so no change was needed inside WaveformBlob.
-                        WaveformBlob(
+                        // so the shape reads as prominently as in recording.png.
+                        RecordingWaveform(
                             volume = recording.energy.lastOrNull() ?: 0f,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp),
-                            color = DictusColors.HomeAccent,
-                            edgeColor = DictusColors.HomeAccentHighlight,
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }
 
                     isTranscribing -> {
-                        Text(
-                            text = stringResource(R.string.recording_transcribing),
-                            color = DictusColors.HomeTextSecondary,
-                            fontSize = 17.sp,
-                            modifier = Modifier.padding(horizontal = 32.dp),
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
                         // Kept inset at the original 32dp margin (unlike the recording
                         // waveform above) since the root Box no longer supplies that
                         // padding for the whole screen — this state's look is unchanged.
-                        // Colors overridden to the AVELISSE Home palette (teal inner
-                        // bars, muted secondary-text outer bars) instead of the
-                        // default blue/white — the app's default dark theme would
-                        // otherwise render near-invisible white bars against this
-                        // screen's ivory background.
-                        WaveformBars(
-                            energyLevels = emptyList(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp)
-                                .height(80.dp),
-                            isProcessing = true,
-                            processingPhase = processingPhase,
-                            innerColor = DictusColors.HomeAccent,
-                            outerColor = DictusColors.HomeTextSecondary,
-                        )
+                        TranscribingIndicator(processingPhase = processingPhase)
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }
@@ -439,5 +393,91 @@ fun RecordingScreen(
                 fontSize = 13.sp,
             )
         }
+    }
+}
+
+/**
+ * "Recording..." label + timer shown above the waveform while isRecording is
+ * true — shared by [RecordingScreen] and OnboardingTestRecordingScreen so both
+ * stay visually identical for this state (matches recording.png).
+ */
+@Composable
+fun RecordingLabelAndTimer(elapsedMs: Long, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = stringResource(R.string.recording_recording_label),
+            color = DictusColors.HomeTextSecondary,
+            fontSize = 20.sp,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val seconds = (elapsedMs / 1000).toInt()
+        val minutes = seconds / 60
+        val secs = seconds % 60
+        Text(
+            text = "%d:%02d".format(minutes, secs),
+            color = DictusColors.HomeTextPrimary,
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
+/**
+ * Mic-reactive waveform shown while isRecording is true, with the AVELISSE Home
+ * palette colors baked in — shared by [RecordingScreen] and
+ * OnboardingTestRecordingScreen so both use identical shape/animation/colors
+ * (matches recording.png). [volume] should be the caller's most recent mic
+ * energy sample (see [dev.pivisolutions.dictus.core.service.DictationState.Recording.energy]).
+ */
+@Composable
+fun RecordingWaveform(volume: Float, modifier: Modifier = Modifier) {
+    WaveformBlob(
+        volume = volume,
+        modifier = modifier,
+        color = DictusColors.HomeAccent,
+        edgeColor = DictusColors.HomeAccentHighlight,
+    )
+}
+
+/**
+ * "Transcribing..." label + bars shown while isTranscribing is true, with the
+ * AVELISSE Home palette colors baked in — shared by [RecordingScreen] and
+ * OnboardingTestRecordingScreen so both stay visually identical for this state.
+ */
+@Composable
+fun TranscribingIndicator(processingPhase: Double, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = stringResource(R.string.recording_transcribing),
+            color = DictusColors.HomeTextSecondary,
+            fontSize = 17.sp,
+            modifier = Modifier.padding(horizontal = 32.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Colors overridden to the AVELISSE Home palette (teal inner bars, muted
+        // secondary-text outer bars) instead of the default blue/white — the
+        // app's default dark theme would otherwise render near-invisible white
+        // bars against this screen's ivory background.
+        WaveformBars(
+            energyLevels = emptyList(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .height(80.dp),
+            isProcessing = true,
+            processingPhase = processingPhase,
+            innerColor = DictusColors.HomeAccent,
+            outerColor = DictusColors.HomeTextSecondary,
+        )
     }
 }

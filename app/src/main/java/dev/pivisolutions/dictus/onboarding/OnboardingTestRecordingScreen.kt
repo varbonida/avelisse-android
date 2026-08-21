@@ -44,8 +44,10 @@ import dev.pivisolutions.dictus.core.service.DictationController
 import dev.pivisolutions.dictus.core.service.DictationState
 import dev.pivisolutions.dictus.core.theme.DictusColors
 import dev.pivisolutions.dictus.core.ui.HomeGlassCard
-import dev.pivisolutions.dictus.core.ui.WaveformBars
 import dev.pivisolutions.dictus.core.ui.WaveformDriver
+import dev.pivisolutions.dictus.recording.RecordingLabelAndTimer
+import dev.pivisolutions.dictus.recording.RecordingWaveform
+import dev.pivisolutions.dictus.recording.TranscribingIndicator
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingCTAButton
 import dev.pivisolutions.dictus.ui.onboarding.OnboardingProgressDots
 import dev.pivisolutions.dictus.ui.onboarding.accentGradient
@@ -95,21 +97,22 @@ fun OnboardingTestRecordingScreen(
     val isRecording = dictationState is DictationState.Recording
     val isTranscribing = dictationState is DictationState.Transcribing
 
+    // No horizontal padding on the root Box: the recording waveform bleeds to the
+    // full screen width, matching RecordingScreen. Everything else applies its
+    // own 32dp horizontal padding below instead.
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DictusColors.HomeBackground)
-            .padding(horizontal = 32.dp),
+            .background(DictusColors.HomeBackground),
     ) {
-        // ── Layer 1: Upper content (idle text OR result card) ──
-        // Only used for idle and result states. Recording/transcribing put everything
-        // in the bottom block to match the iOS layout.
+        // ── Layer 1: Upper content (idle text, "Recording..." + timer, or result card) ──
         when {
             hasResult -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
                         .padding(top = 180.dp, bottom = 240.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -162,12 +165,26 @@ fun OnboardingTestRecordingScreen(
                 }
             }
 
-            !isRecording && !isTranscribing -> {
+            isRecording -> {
+                // "Recording..." label + timer, centered above the waveform (matches RecordingScreen).
+                val recording = dictationState as DictationState.Recording
+                RecordingLabelAndTimer(
+                    elapsedMs = recording.elapsedMs,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
+                        .padding(top = 200.dp),
+                )
+            }
+
+            !isTranscribing -> {
                 // Idle: title + subtitle centered
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
                         .padding(top = 200.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -204,50 +221,24 @@ fun OnboardingTestRecordingScreen(
                     .padding(bottom = 120.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                // Waveform + timer (only during recording/transcribing)
+                // Waveform (only during recording/transcribing) — shared with
+                // RecordingScreen so both screens look/animate identically.
                 when {
                     isRecording -> {
                         val recording = dictationState as DictationState.Recording
 
-                        WaveformBars(
-                            energyLevels = recording.energy,
+                        RecordingWaveform(
+                            volume = recording.energy.lastOrNull() ?: 0f,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(80.dp),
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        val seconds = (recording.elapsedMs / 1000).toInt()
-                        val minutes = seconds / 60
-                        val secs = seconds % 60
-                        Text(
-                            text = "%d:%02d".format(minutes, secs),
-                            color = DictusColors.HomeTextPrimary,
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Medium,
+                                .height(200.dp),
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }
 
                     isTranscribing -> {
-                        Text(
-                            text = stringResource(R.string.onboarding_test_recording_transcribing),
-                            color = DictusColors.HomeTextSecondary,
-                            fontSize = 17.sp,
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        WaveformBars(
-                            energyLevels = emptyList(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(80.dp),
-                            isProcessing = true,
-                            processingPhase = processingPhase,
-                        )
+                        TranscribingIndicator(processingPhase = processingPhase)
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }
@@ -256,11 +247,12 @@ fun OnboardingTestRecordingScreen(
                 // Button (same position in all non-result states)
                 when {
                     isRecording -> {
+                        // Terracotta stop button during recording (matches RecordingScreen).
                         Box(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(DictusColors.Recording)
+                                .background(DictusColors.HomeAccentSecondary)
                                 .clickable {
                                     scope.launch {
                                         val result = dictationController?.confirmAndTranscribe()
