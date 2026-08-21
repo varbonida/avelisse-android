@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.pivisolutions.dictus"
+    namespace = "dev.avelissesolutions.avelisse"
     compileSdk = 35
 
     signingConfigs {
@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.pivisolutions.dictus"
+        applicationId = "dev.avelissesolutions.avelisse"
         minSdk = 29
         targetSdk = 35
         versionCode = 1

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.pivisolutions.dictus.ime"
+    namespace = "dev.avelissesolutions.avelisse.ime"
     compileSdk = 35
 
     defaultConfig {

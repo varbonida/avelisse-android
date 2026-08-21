@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "dictus-android"
+rootProject.name = "avelisse-android"
 include(":app", ":ime", ":core", ":whisper", ":asr")

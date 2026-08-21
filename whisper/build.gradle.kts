@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.pivisolutions.dictus.whisper"
+    namespace = "dev.avelissesolutions.avelisse.whisper"
     compileSdk = 35
 
     defaultConfig {

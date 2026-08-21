@@ -21,7 +21,7 @@ static inline int max(int a, int b) {
 }
 
 JNIEXPORT jlong JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_initContext(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_initContext(
         JNIEnv *env, jobject thiz, jstring model_path_str) {
     UNUSED(thiz);
     struct whisper_context *context = NULL;
@@ -36,7 +36,7 @@ Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_initContext(
 }
 
 JNIEXPORT void JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_freeContext(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_freeContext(
         JNIEnv *env, jobject thiz, jlong context_ptr) {
     UNUSED(env);
     UNUSED(thiz);
@@ -45,7 +45,7 @@ Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_freeContext(
 }
 
 JNIEXPORT void JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_fullTranscribe(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_fullTranscribe(
         JNIEnv *env, jobject thiz, jlong context_ptr, jint num_threads,
         jfloatArray audio_data, jstring language_str) {
     UNUSED(thiz);
@@ -83,7 +83,7 @@ Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_fullTranscribe(
 }
 
 JNIEXPORT jint JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_getTextSegmentCount(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_getTextSegmentCount(
         JNIEnv *env, jobject thiz, jlong context_ptr) {
     UNUSED(env);
     UNUSED(thiz);
@@ -92,7 +92,7 @@ Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_getTextSegmentCo
 }
 
 JNIEXPORT jstring JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_getTextSegment(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_getTextSegment(
         JNIEnv *env, jobject thiz, jlong context_ptr, jint index) {
     UNUSED(thiz);
     struct whisper_context *context = (struct whisper_context *) context_ptr;
@@ -102,7 +102,7 @@ Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_getTextSegment(
 }
 
 JNIEXPORT jstring JNICALL
-Java_dev_pivisolutions_dictus_whisper_WhisperLib_00024Companion_getSystemInfo(
+Java_dev_avelissesolutions_avelisse_whisper_WhisperLib_00024Companion_getSystemInfo(
         JNIEnv *env, jobject thiz) {
     UNUSED(thiz);
     const char *sysinfo = whisper_print_system_info();
