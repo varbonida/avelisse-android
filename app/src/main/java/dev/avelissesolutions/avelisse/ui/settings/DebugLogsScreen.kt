@@ -36,8 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.logging.TimberSetup
-import dev.avelissesolutions.avelisse.core.theme.LocalAvelisseColors
-import androidx.compose.material3.MaterialTheme
+import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -72,7 +71,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(AvelisseColors.ModelsBackground),
     ) {
         LazyColumn(
             modifier = Modifier
@@ -89,7 +88,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                     ) {
                         Text(
                             text = stringResource(R.string.debug_logs_empty),
-                            color = LocalAvelisseColors.current.textSecondary,
+                            color = AvelisseColors.ModelsTextSecondary,
                             fontSize = 16.sp,
                         )
                     }
@@ -100,7 +99,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                         text = line,
                         fontSize = 11.sp,
                         fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = AvelisseColors.ModelsTextPrimary,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 1.dp),
                     )
                 }
@@ -111,7 +110,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
+                .background(AvelisseColors.ModelsBackground)
                 .padding(horizontal = 4.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -119,12 +118,12 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.debug_logs_back_cd),
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = AvelisseColors.ModelsTextPrimary,
                 )
             }
             Text(
                 text = stringResource(R.string.debug_logs_title),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AvelisseColors.ModelsTextPrimary,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
@@ -135,15 +134,21 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = stringResource(R.string.debug_logs_menu_cd),
-                        tint = MaterialTheme.colorScheme.onBackground,
+                        tint = AvelisseColors.ModelsTextPrimary,
                     )
                 }
                 DropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
+                    containerColor = AvelisseColors.ModelsSurface,
                 ) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.debug_logs_clear)) },
+                        text = {
+                            Text(
+                                text = stringResource(R.string.debug_logs_clear),
+                                color = AvelisseColors.ModelsTextPrimary,
+                            )
+                        },
                         onClick = {
                             showMenu = false
                             logFile?.writeText("")
@@ -151,7 +156,12 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                         },
                     )
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.debug_logs_copy)) },
+                        text = {
+                            Text(
+                                text = stringResource(R.string.debug_logs_copy),
+                                color = AvelisseColors.ModelsTextPrimary,
+                            )
+                        },
                         onClick = {
                             showMenu = false
                             clipboardManager.setText(AnnotatedString(lines.joinToString("\n")))

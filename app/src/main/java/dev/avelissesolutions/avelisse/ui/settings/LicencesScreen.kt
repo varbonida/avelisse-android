@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -33,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
-import dev.avelissesolutions.avelisse.core.theme.LocalAvelisseColors
 
 /**
  * Dedicated licences screen matching iOS LicensesView.
@@ -55,7 +53,7 @@ fun LicencesScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(AvelisseColors.ModelsBackground)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar with back button
@@ -69,12 +67,12 @@ fun LicencesScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.licences_back_cd),
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = AvelisseColors.ModelsTextPrimary,
                 )
             }
             Text(
                 text = stringResource(R.string.licences_title),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AvelisseColors.ModelsTextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -114,7 +112,7 @@ fun LicencesScreen(
         if (mavenLicenses.isNotEmpty()) {
             Text(
                 text = stringResource(R.string.licences_vendored_section),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AvelisseColors.ModelsTextPrimary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -223,34 +221,34 @@ private fun LicenceBlock(
     ) {
         Text(
             text = name,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = AvelisseColors.ModelsTextPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = author,
-            color = LocalAvelisseColors.current.textSecondary,
+            color = AvelisseColors.ModelsTextSecondary,
             fontSize = 14.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = url,
-            color = AvelisseColors.Accent,
+            color = AvelisseColors.HomeAccent,
             fontSize = 14.sp,
             modifier = Modifier.clickable { onLinkClick(url) },
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = licenceText,
-            color = LocalAvelisseColors.current.textSecondary,
+            color = AvelisseColors.ModelsTextSecondary,
             fontSize = 11.sp,
             fontFamily = FontFamily.Monospace,
             lineHeight = 16.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(AvelisseColors.ModelsSurface)
                 .padding(12.dp),
         )
     }
