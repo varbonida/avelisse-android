@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -40,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
-import dev.avelissesolutions.avelisse.core.theme.LocalAvelisseColors
 
 /**
  * Sound picker list screen — shows all available WAV files grouped by family.
@@ -83,7 +81,7 @@ fun SoundPickerScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(AvelisseColors.ModelsBackground)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar
@@ -97,12 +95,12 @@ fun SoundPickerScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.cd_back),
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = AvelisseColors.ModelsTextPrimary,
                 )
             }
             Text(
                 text = title,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AvelisseColors.ModelsTextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -236,7 +234,7 @@ private class PreviewSoundPlayer(context: Context) {
 private fun PickerSectionHeader(text: String) {
     Text(
         text = text,
-        color = LocalAvelisseColors.current.textSecondary,
+        color = AvelisseColors.ModelsTextSecondary,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -250,7 +248,7 @@ private fun PickerCard(content: @Composable () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surface),
+            .background(AvelisseColors.ModelsSurface),
     ) {
         content()
     }
@@ -272,7 +270,7 @@ private fun SoundRow(
     ) {
         Text(
             text = formatPickerSoundName(soundName),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = AvelisseColors.ModelsTextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -281,7 +279,7 @@ private fun SoundRow(
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(R.string.cd_selected),
-                tint = AvelisseColors.Accent,
+                tint = AvelisseColors.HomeAccent,
                 modifier = Modifier.size(22.dp),
             )
         }
@@ -291,7 +289,7 @@ private fun SoundRow(
 @Composable
 private fun PickerDivider() {
     HorizontalDivider(
-        color = LocalAvelisseColors.current.borderSubtle,
+        color = AvelisseColors.HomeSurfaceBorder,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
     )
