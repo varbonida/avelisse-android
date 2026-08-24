@@ -15,7 +15,7 @@ Voir PRD.md pour les specs completes.
 
 ## Design Reference
 
-Les maquettes sont dans `design/dictus-android-design.pen`.
+Les maquettes sont dans `design/avelisse-android-design.pen`.
 Utiliser les outils MCP Pencil (batch_get, get_screenshot) pour consulter les ecrans.
 Voir `design/README.md` pour la liste des frames et IDs.
 
