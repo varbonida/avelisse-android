@@ -233,7 +233,7 @@ fun SettingsScreen(
             SettingDivider()
             SettingLinkRow(
                 label = stringResource(R.string.settings_github),
-                url = "https://github.com/Pivii/avelisse",
+                url = "https://github.com/varbonida/avelisse-android",
                 context = context,
             )
             SettingDivider()

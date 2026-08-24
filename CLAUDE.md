@@ -1,8 +1,8 @@
-# CLAUDE.md — Dictus Android
+# CLAUDE.md — AVELISSE Android
 
 ## Projet
 
-Dictus Android — Application native Android de dictation vocale offline.
+AVELISSE Android — Application native Android de dictation vocale offline.
 Port de l'application iOS existante (voir repo dictus).
 Voir PRD.md pour les specs completes.
 

@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/getdictus/dictus-brand/main/source/appicon-light.svg" alt="Dictus" width="120" height="120" />
+  <img src="[TBA]" alt="AVELISSE" width="120" height="120" />
 </p>
 
-<h1 align="center">Dictus for Android</h1>
+<h1 align="center">AVELISSE for Android</h1>
 
 <p align="center">
   <strong>Free, open-source Android keyboard for voice dictation — 100% on-device.</strong><br />
@@ -10,26 +10,26 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/getdictus/dictus-android/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/getdictus/dictus-android/ci.yml?branch=main&label=CI" alt="CI" /></a>
-  <a href="https://github.com/getdictus/dictus-android/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/getdictus/dictus-android/release.yml?branch=main&label=Release" alt="Release" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/getdictus/dictus-android" alt="License: MIT" /></a>
+  <a href="https://github.com/varbonida/avelisse-android/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/varbonida/avelisse-android/ci.yml?branch=main&label=CI" alt="CI" /></a>
+  <a href="https://github.com/varbonida/avelisse-android/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/varbonida/avelisse-android/release.yml?branch=main&label=Release" alt="Release" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/varbonida/avelisse-android" alt="License: MIT" /></a>
   <a href="https://developer.android.com/about/versions/10"><img src="https://img.shields.io/badge/Android-10%2B%20(API%2029%2B)-3DDC84?logo=android&logoColor=white" alt="Android 10+" /></a>
-  <a href="https://github.com/getdictus/dictus-android/stargazers"><img src="https://img.shields.io/github/stars/getdictus/dictus-android?style=social" alt="Stars" /></a>
+  <a href="https://github.com/varbonida/avelisse-android/stargazers"><img src="https://img.shields.io/github/stars/varbonida/avelisse-android?style=social" alt="Stars" /></a>
 </p>
 
 <p align="center">
-  <a href="https://getdictus.com">Website</a> ·
-  <a href="https://github.com/getdictus/dictus-android/releases/latest">Download APK</a> ·
+  <a href="[TBA]">Website</a> ·
+  <a href="https://github.com/varbonida/avelisse-android/releases/latest">Download APK</a> ·
   <a href="https://github.com/getdictus/dictus-ios">iOS</a> ·
   <a href="https://github.com/getdictus/dictus-desktop">Desktop</a> ·
-  <a href="https://t.me/getdictus">Community</a>
+  <a href="[TBA]">Community</a>
 </p>
 
 ---
 
-Dictus is a free, open-source Android keyboard that adds voice dictation to any app. All speech recognition runs **on-device** via Whisper (whisper.cpp) and NVIDIA Parakeet (sherpa-onnx) — no server, no account, no subscription.
+AVELISSE is a free, open-source Android keyboard that adds voice dictation to any app. All speech recognition runs **on-device** via Whisper (whisper.cpp) and NVIDIA Parakeet (sherpa-onnx) — no server, no account, no subscription.
 
-## Why Dictus?
+## Why AVELISSE?
 
 - 🔒 **100% on-device** — your voice never leaves your phone. No cloud, no telemetry, no account.
 - 🆓 **Free & open source** — MIT licensed, no subscription, fully auditable code.
@@ -37,29 +37,29 @@ Dictus is a free, open-source Android keyboard that adds voice dictation to any 
 - ⚡ **Multi-engine** — Whisper (multilingual) or Parakeet (English, fast).
 - 🌐 **FR + EN dictionaries** — smart word predictions while typing.
 
-## How Dictus compares
+## How AVELISSE compares
 
-| Feature | **Dictus** | Wispr Flow | Gboard Voice | SuperWhisper |
+| Feature | **AVELISSE** | Wispr Flow | Gboard Voice | SuperWhisper |
 | --- | :---: | :---: | :---: | :---: |
 | Price | **Free** | Free / $15/mo | Free | Free / $8.49/mo |
 | 100% offline | ✅ | ❌ | ⚠️ | ⚠️ |
 | Privacy-first | ✅ | ❌ | ⚠️ | ⚠️ |
 | Open source | ✅ | ❌ | ❌ | ❌ |
 | System keyboard | ✅ | ❌ | ✅ | ❌ |
-| Cross-platform | ✅ ([iOS](https://github.com/getdictus/dictus-ios) · [Android](https://github.com/getdictus/dictus-android) · [Desktop](https://github.com/getdictus/dictus-desktop)) | iOS · macOS · Win · Android | Android · Wear OS | iOS · macOS · Win |
+| Cross-platform | ✅ ([iOS](https://github.com/getdictus/dictus-ios) · [Android](https://github.com/varbonida/avelisse-android) · [Desktop](https://github.com/getdictus/dictus-desktop)) | iOS · macOS · Win · Android | Android · Wear OS | iOS · macOS · Win |
 
-See the full comparison on [getdictus.com](https://getdictus.com).
+See the full comparison on [AVELISSE's website]([TBA]).
 
 ## Install the beta
 
-Dictus is currently in public beta — install by sideloading the APK from [GitHub Releases](https://github.com/getdictus/dictus-android/releases/latest).
+AVELISSE is currently in public beta — install by sideloading the APK from [GitHub Releases](https://github.com/varbonida/avelisse-android/releases/latest).
 
 1. On your Android device, go to **Settings → Apps → Special app access → Install unknown apps** and allow your browser.
-2. Download the latest APK from [Releases](https://github.com/getdictus/dictus-android/releases/latest).
+2. Download the latest APK from [Releases](https://github.com/varbonida/avelisse-android/releases/latest).
 3. Open the `.apk` and tap **Install**.
 4. Go to **Settings → System → Languages & input → On-screen keyboard → Manage on-screen keyboards**.
-5. Enable **Dictus**.
-6. Open any text field, tap the keyboard icon in the navigation bar, and select **Dictus**.
+5. Enable **AVELISSE**.
+6. Open any text field, tap the keyboard icon in the navigation bar, and select **AVELISSE**.
 
 **Requirements:** Android 10 (API 29) or higher · ~150 MB for the smallest Whisper model.
 
@@ -87,9 +87,9 @@ Dictus is currently in public beta — install by sideloading the APK from [GitH
 - [ ] Custom vocabulary (technical terms, names)
 - [ ] Searchable local transcription history
 - [ ] Audio-file transcription
-- [ ] Sync settings across Dictus iOS / Android / Desktop (offline-first)
+- [ ] Sync settings across AVELISSE iOS / Android / Desktop (offline-first)
 
-Have an idea? Open a [feature request](https://github.com/getdictus/dictus-android/issues/new) — we prioritize the most-upvoted ones.
+Have an idea? Open a [feature request](https://github.com/varbonida/avelisse-android/issues/new) — we prioritize the most-upvoted ones.
 
 ## Tech stack
 
@@ -102,24 +102,24 @@ Have an idea? Open a [feature request](https://github.com/getdictus/dictus-andro
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for build setup, module overview, and PR guidelines. Good entry points:
 
-- `good first issue` and `help wanted` in [Issues](https://github.com/getdictus/dictus-android/issues)
+- `good first issue` and `help wanted` in [Issues](https://github.com/varbonida/avelisse-android/issues)
 - Bug reports with logs from a recent build
 - Translations & locale tuning
 
 ## Privacy
 
-Dictus collects no user data. All speech processing happens on your device. See our [Privacy Policy](https://www.getdictus.com/en/privacy).
+AVELISSE collects no user data. All speech processing happens on your device. See our [Privacy Policy]([TBA]).
 
 ## Support the project
 
-Dictus is free and will stay free. If it helps you every day, consider [supporting development](https://getdictus.com/donate) — it directly funds new features and platform support.
+AVELISSE is free and will stay free. If it helps you every day, consider [supporting development]([TBA]) — it directly funds new features and platform support.
 
 ## Community
 
-- 🌐 [getdictus.com](https://getdictus.com)
-- 💬 [Telegram](https://t.me/getdictus)
-- 🐛 [Issues](https://github.com/getdictus/dictus-android/issues)
-- 📧 [hello@getdictus.com](mailto:hello@getdictus.com)
+- 🌐 [Website]([TBA])
+- 💬 [Telegram]([TBA])
+- 🐛 [Issues](https://github.com/varbonida/avelisse-android/issues)
+- 📧 [Email](mailto:[TBA])
 
 ## License
 
@@ -128,5 +128,5 @@ MIT — see [LICENSE](LICENSE).
 ---
 
 <p align="center">
-  <sub>Made with ❤️ by <a href="https://pivi.solutions">PIVI Solutions</a> · <a href="https://github.com/getdictus">@getdictus</a></sub>
+  <sub>Made with ❤️ by <a href="[TBA]">AVELISSE Solutions</a> · <a href="https://github.com/varbonida">@varbonida</a></sub>
 </p>

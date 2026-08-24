@@ -1,4 +1,4 @@
-# Dictus Android — Design Reference
+# AVELISSE Android — Design Reference
 
 Maquettes de l'application Android dans `dictus-android-design.pen`.
 Ce fichier est lisible via les outils MCP Pencil (`batch_get`, `get_screenshot`, `snapshot_layout`).

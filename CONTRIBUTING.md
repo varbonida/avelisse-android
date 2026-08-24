@@ -1,4 +1,4 @@
-# Contributing to Dictus
+# Contributing to AVELISSE
 
 Thanks for your interest in contributing! This guide covers everything you need to build and contribute to the project.
 
@@ -11,8 +11,8 @@ Thanks for your interest in contributing! This guide covers everything you need 
 ## Build
 
 ```bash
-git clone https://github.com/getdictus/dictus-android.git
-cd dictus-android
+git clone https://github.com/varbonida/avelisse-android.git
+cd avelisse-android
 ./gradlew assembleDebug
 ```
 
@@ -21,7 +21,7 @@ cd dictus-android
 | Module | Purpose | Key entry point |
 |--------|---------|-----------------|
 | `app` | Main app UI, onboarding, settings, model manager | `MainActivity.kt` |
-| `ime` | System keyboard, suggestion bar, recording UI | `DictusImeService.kt` |
+| `ime` | System keyboard, suggestion bar, recording UI | `AvelisseImeService.kt` |
 | `core` | Shared models, design system, STT interface | `SttProvider.kt` |
 | `whisper` | Whisper.cpp JNI bridge and native libs | `WhisperProvider.kt` |
 | `asr` | Sherpa-onnx Kotlin API and Parakeet provider | `ParakeetProvider.kt` |
@@ -29,7 +29,7 @@ cd dictus-android
 ## Testing
 
 - Run unit tests: `./gradlew testDebugUnitTest`
-- To test the keyboard on a device: enable Dictus in **Settings > System > Languages & input > On-screen keyboard > Manage on-screen keyboards**, then switch to it in any text field
+- To test the keyboard on a device: enable AVELISSE in **Settings > System > Languages & input > On-screen keyboard > Manage on-screen keyboards**, then switch to it in any text field
 
 ## Contributing Guidelines
 
