@@ -152,9 +152,9 @@ fun LicencesScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // AVELISSE itself
+        // Dictus — the original open-source project AVELISSE is built on
         LicenceBlock(
-            name = "AVELISSE",
+            name = "Dictus",
             author = "Get Dictus",
             url = "https://github.com/getdictus/dictus",
             licenceText = mitLicence("Copyright (c) 2026 Get Dictus"),
