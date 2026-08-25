@@ -5,7 +5,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 ## Prerequisites
 
 - JDK 17
-- Android SDK (API 34 target, API 29 minimum)
+- Android SDK (API 35 target, API 29 minimum)
 - Android NDK 27.2 (required for whisper.cpp and sherpa-onnx native builds)
 
 ## Build
@@ -23,7 +23,7 @@ cd avelisse-android
 | `app` | Main app UI, onboarding, settings, model manager | `MainActivity.kt` |
 | `ime` | System keyboard, suggestion bar, recording UI | `AvelisseImeService.kt` |
 | `core` | Shared models, design system, STT interface | `SttProvider.kt` |
-| `whisper` | Whisper.cpp JNI bridge and native libs | `WhisperProvider.kt` |
+| `whisper` | Whisper.cpp JNI bridge and native libs | `WhisperLib.kt` |
 | `asr` | Sherpa-onnx Kotlin API and Parakeet provider | `ParakeetProvider.kt` |
 
 ## Testing

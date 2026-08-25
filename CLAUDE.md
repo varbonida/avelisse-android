@@ -9,7 +9,7 @@ Voir PRD.md pour les specs completes.
 ## Stack
 
 - Kotlin + Jetpack Compose
-- WhisperKit / Whisper.cpp pour STT offline
+- Whisper.cpp (JNI) et NVIDIA Parakeet (sherpa-onnx) pour STT offline
 - Material Design 3 / Material You
 - Minimum SDK: 29 (Android 10)
 
@@ -26,7 +26,10 @@ Voir `design/README.md` pour la liste des frames et IDs.
 ## Architecture cible
 
 - **app/** — Application principale (onboarding, settings, model manager, recording)
-- **core/** — Module partage (modeles, preferences, design system)
+- **core/** — Module partage (modeles, preferences, design system, interface STT)
+- **ime/** — Clavier systeme (IME), barre de suggestions, UI d'enregistrement
+- **whisper/** — Pont JNI Whisper.cpp et libs natives
+- **asr/** — API Kotlin sherpa-onnx et provider Parakeet
 
 ## Conventions
 

@@ -34,7 +34,7 @@ AVELISSE is a free, open-source Android keyboard that adds voice dictation to an
 - 🔒 **100% on-device** — your voice never leaves your phone. No cloud, no telemetry, no account.
 - 🆓 **Free & open source** — MIT licensed, no subscription, fully auditable code.
 - ⌨️ **System-wide IME** — works in every app as your default keyboard.
-- ⚡ **Multi-engine** — Whisper (multilingual) or Parakeet (English, fast).
+- ⚡ **Multi-engine** — Whisper (multilingual, 5 model sizes) or NVIDIA Parakeet (a fast English-only model, or a 25-language high-accuracy model for capable devices).
 - 🌐 **FR + EN dictionaries** — smart word predictions while typing.
 
 ## How AVELISSE compares
@@ -61,7 +61,7 @@ AVELISSE is currently in public beta — install by sideloading the APK from [Gi
 5. Enable **AVELISSE**.
 6. Open any text field, tap the keyboard icon in the navigation bar, and select **AVELISSE**.
 
-**Requirements:** Android 10 (API 29) or higher · ~150 MB for the smallest Whisper model.
+**Requirements:** Android 10 (API 29) or higher · ~80 MB for the smallest model (Whisper Tiny) — onboarding recommends a larger model automatically based on your device's available RAM.
 
 ## Screenshots
 
@@ -72,7 +72,7 @@ AVELISSE is currently in public beta — install by sideloading the APK from [Gi
 ## Features
 
 - **Offline voice dictation** — Whisper + NVIDIA Parakeet, entirely on-device
-- **Multi-engine STT** — Whisper (multilingual) or Parakeet (English, fast)
+- **Multi-engine STT** — Whisper (multilingual, 5 model sizes) or NVIDIA Parakeet (fast English-only, or 25-language high-accuracy)
 - **Smart suggestions** — word predictions from FR+EN dictionaries while typing
 - **Personal dictionary** — learns your frequently typed words
 - **System keyboard** — works in any app as your default IME
@@ -108,7 +108,9 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for build s
 
 ## Privacy
 
-AVELISSE collects no user data. All speech processing happens on your device. See our [Privacy Policy]([TBA]).
+AVELISSE collects no personal data and includes no analytics, telemetry, or crash reporting. All speech recognition and transcription happen entirely on-device — your voice and dictated text are never sent to a server.
+
+The app's only network access is for downloading speech models the first time you select them (Whisper models from Hugging Face, Parakeet models from GitHub Releases) — no data is uploaded as part of this. See our [Privacy Policy]([TBA]).
 
 ## Support the project
 
