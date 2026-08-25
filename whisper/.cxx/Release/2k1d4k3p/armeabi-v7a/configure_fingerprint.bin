@@ -1,28 +1,34 @@
-C/C++ Structured Log‡
-„
-C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\additional_project_files.txtC
-A
-?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	‚¿ìŸ‚4ú ¸½ìŸ‚4ƒ
-€
-~C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\android_gradle_build.json	‚¿ìŸ‚4Î& »½ìŸ‚4‰
-†
-ƒC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\android_gradle_build_mini.json	‚¿ìŸ‚4ï! ·¾ìŸ‚4t
-r
-pC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build.ninja	‚¿ìŸ‚4ü‰ İ¸ìŸ‚4x
-v
-tC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build.ninja.txt	‚¿ìŸ‚4}
-{
-yC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build_file_index.txt	‚¿ìŸ‚4¯ Ä¾ìŸ‚4~
-|
-zC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\compile_commands.json	‚¿ìŸ‚4‘ı Ö¸ìŸ‚4ƒ
-€
-~C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\compile_commands.json.bin	‚¿ìŸ‚4	 K Ö¸ìŸ‚4Š
-‡
-„C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\metadata_generation_command.txt	‚¿ìŸ‚4
-¨	 ½¾ìŸ‚4{
-y
-wC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\prefab_config.json	‚¿ìŸ‚4( ¿¾ìŸ‚4€
-~
-|C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\symbol_folder_index.txt	‚¿ìŸ‚4{ Á¾ìŸ‚4j
+C/C++ Structured Logj
 h
-fC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\src\main\jni\whisper\CMakeLists.txt	‚¿ìŸ‚4¤ î‰·Õÿ3
+fC:\Users\Vergel\Documents\development\ewn\avelisse-android\third_party\whisper.cpp\ggml\CMakeLists.txtC
+A
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	‹¯—Êƒ4ù§ ûõ§ûÿ3n
+l
+jC:\Users\Vergel\Documents\development\ewn\avelisse-android\third_party\whisper.cpp\ggml\src\CMakeLists.txt	‹¯—Êƒ4È˜ •ö§ûÿ3w
+u
+sC:\Users\Vergel\Documents\development\ewn\avelisse-android\third_party\whisper.cpp\ggml\src\ggml-cpu\CMakeLists.txt	‹¯—Êƒ4Àˆ ¶ö§ûÿ3‡
+„
+C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\additional_project_files.txt	‹¯—Êƒ4ú ¸½ìŸ‚4ƒ
+€
+~C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\android_gradle_build.json	‹¯—Êƒ4Î& »½ìŸ‚4‰
+†
+ƒC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\android_gradle_build_mini.json	‹¯—Êƒ4ï! ·¾ìŸ‚4t
+r
+pC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build.ninja	‹¯—Êƒ4ü‰ İ¸ìŸ‚4x
+v
+tC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build.ninja.txt	‹¯—Êƒ4	}
+{
+yC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\build_file_index.txt	‹¯—Êƒ4
+¯ Ä¾ìŸ‚4~
+|
+zC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\compile_commands.json	‹¯—Êƒ4‘ı Ö¸ìŸ‚4ƒ
+€
+~C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\compile_commands.json.bin	‹¯—Êƒ4 K Ö¸ìŸ‚4Š
+‡
+„C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\metadata_generation_command.txt	‹¯—Êƒ4¨	 ½¾ìŸ‚4{
+y
+wC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\prefab_config.json	‹¯—Êƒ4( ¿¾ìŸ‚4€
+~
+|C:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\.cxx\Release\2k1d4k3p\armeabi-v7a\symbol_folder_index.txt	‹¯—Êƒ4{ Á¾ìŸ‚4j
+h
+fC:\Users\Vergel\Documents\development\ewn\avelisse-android\whisper\src\main\jni\whisper\CMakeLists.txt	‹¯—Êƒ4¤ î‰·Õÿ3
