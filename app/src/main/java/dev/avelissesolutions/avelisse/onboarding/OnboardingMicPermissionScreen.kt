@@ -98,7 +98,7 @@ fun OnboardingMicPermissionScreen(
         Icon(
             imageVector = Icons.Default.Mic,
             contentDescription = null,
-            tint = AvelisseColors.HomeAccent,
+            tint = AvelisseColors.Primary,
             modifier = Modifier.size(72.dp),
         )
 
@@ -106,7 +106,7 @@ fun OnboardingMicPermissionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mic_permission_title),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -116,7 +116,7 @@ fun OnboardingMicPermissionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mic_permission_body),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,

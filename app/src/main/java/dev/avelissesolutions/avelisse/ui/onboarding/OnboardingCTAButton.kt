@@ -96,8 +96,8 @@ fun OnboardingCTAButton(
                     Modifier.background(brush = gradient)
                 } else {
                     Modifier
-                        .background(AvelisseColors.HomeSurface)
-                        .border(1.dp, AvelisseColors.HomeSurfaceBorder, RoundedCornerShape(14.dp))
+                        .background(AvelisseColors.Surface)
+                        .border(1.dp, AvelisseColors.Border, RoundedCornerShape(14.dp))
                 }
             )
             .pointerInput(enabled) {
@@ -122,14 +122,14 @@ fun OnboardingCTAButton(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (enabled) Color.White else AvelisseColors.HomeTextSecondary,
+                    tint = if (enabled) Color.White else AvelisseColors.TextSecondary,
                     modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(10.dp))
             }
             Text(
                 text = text,
-                color = if (enabled) Color.White else AvelisseColors.HomeTextSecondary,
+                color = if (enabled) Color.White else AvelisseColors.TextSecondary,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -143,10 +143,10 @@ fun OnboardingCTAButton(
 
 /** Accent gradient: left-to-right Home accent teal → its darker shade */
 val accentGradient: Brush = Brush.horizontalGradient(
-    colors = listOf(AvelisseColors.HomeAccent, AvelisseColors.HomeAccentDark),
+    colors = listOf(AvelisseColors.Primary, AvelisseColors.PrimaryDark),
 )
 
 /** Success gradient: left-to-right Home accent-secondary terracotta → its darker shade (step 6 CTA) */
 val successGradient: Brush = Brush.horizontalGradient(
-    colors = listOf(AvelisseColors.HomeAccentSecondary, AvelisseColors.HomeAccentSecondaryDark),
+    colors = listOf(AvelisseColors.Secondary, AvelisseColors.SecondaryDark),
 )

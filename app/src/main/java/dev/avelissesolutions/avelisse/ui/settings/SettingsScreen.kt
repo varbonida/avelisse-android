@@ -100,13 +100,13 @@ fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground)
+            .background(AvelisseColors.Background)
             .verticalScroll(rememberScrollState()),
     ) {
         // Screen title (matches Home/Models screen title treatment)
         Text(
             text = stringResource(R.string.settings_title),
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp),
@@ -329,7 +329,7 @@ fun SettingsScreen(
 private fun SectionHeader(text: String) {
     Text(
         text = text,
-        color = AvelisseColors.HomeAccent,
+        color = AvelisseColors.Primary,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -356,7 +356,7 @@ private fun SettingsCard(content: @Composable ColumnScope.() -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .shadow(elevation = 3.dp, shape = RoundedCornerShape(20.dp), clip = true)
-            .background(AvelisseColors.ModelsSurface),
+            .background(AvelisseColors.Surface),
         content = content,
     )
 }
@@ -385,7 +385,7 @@ private fun SettingPickerRow(
     ) {
         Text(
             text = label,
-            color = if (enabled) AvelisseColors.ModelsTextPrimary else AvelisseColors.ModelsTextSecondary,
+            color = if (enabled) AvelisseColors.TextPrimary else AvelisseColors.TextSecondary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -394,20 +394,20 @@ private fun SettingPickerRow(
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(50))
-                .background(AvelisseColors.SettingsChip)
+                .background(AvelisseColors.SurfaceVariant)
                 .padding(start = 12.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = value,
-                color = AvelisseColors.HomeTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
                 contentDescription = null,
-                tint = AvelisseColors.HomeTextPrimary,
+                tint = AvelisseColors.TextPrimary,
                 modifier = Modifier.size(18.dp),
             )
         }
@@ -431,14 +431,14 @@ private fun SettingInfoRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
         Text(
             text = value,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
         )
@@ -464,12 +464,12 @@ private fun SettingToggleRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.HomeAccent)
+        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.Primary)
     }
 }
 
@@ -491,7 +491,7 @@ private fun SettingActionRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -517,7 +517,7 @@ private fun SettingNavRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -525,7 +525,7 @@ private fun SettingNavRow(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = AvelisseColors.ModelsTextSecondary,
+            tint = AvelisseColors.TextSecondary,
         )
     }
 }
@@ -552,7 +552,7 @@ private fun SettingLinkRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -560,7 +560,7 @@ private fun SettingLinkRow(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = AvelisseColors.ModelsTextSecondary,
+            tint = AvelisseColors.TextSecondary,
         )
     }
 }
@@ -573,7 +573,7 @@ private fun SettingLinkRow(
 @Composable
 private fun SettingDivider() {
     HorizontalDivider(
-        color = AvelisseColors.HomeSurfaceBorder,
+        color = AvelisseColors.Border,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
     )
@@ -605,7 +605,7 @@ fun AvelisseToggle(
     checked: Boolean,
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
-    trackColorOn: Color = AvelisseColors.Success,
+    trackColorOn: Color = AvelisseColors.Primary,
 ) {
     val toggleWidth = 51.dp
     val toggleHeight = 31.dp
@@ -666,11 +666,11 @@ private fun PickerBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = AvelisseColors.ModelsSurface,
+        containerColor = AvelisseColors.Surface,
     ) {
         Text(
             text = title,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
@@ -699,13 +699,13 @@ private fun PickerBottomSheet(
                         onDismiss()
                     },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = AvelisseColors.HomeAccent,
-                        unselectedColor = AvelisseColors.ModelsTextSecondary,
+                        selectedColor = AvelisseColors.Primary,
+                        unselectedColor = AvelisseColors.TextSecondary,
                     ),
                 )
                 Text(
                     text = label,
-                    color = AvelisseColors.ModelsTextPrimary,
+                    color = AvelisseColors.TextPrimary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                 )

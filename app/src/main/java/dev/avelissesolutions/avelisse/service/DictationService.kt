@@ -436,11 +436,17 @@ class DictationService : Service(), DictationController {
 
         // Energy updates come from the capture read loop (Dispatchers.Default).
         // We update the state flow with the latest energy history each time.
+        // Guarded on the current state (not just AudioCaptureManager's own
+        // stop-guard) as defense in depth: a straggler update must never
+        // revert the state machine once it has moved past Recording (e.g. to
+        // Transcribing or Idle) -- see confirmAndTranscribe/stopRecordingInternal.
         manager.onEnergyUpdate = { _ ->
-            _state.value = DictationState.Recording(
-                elapsedMs = elapsedMs,
-                energy = manager.getEnergyHistory(),
-            )
+            if (_state.value is DictationState.Recording) {
+                _state.value = DictationState.Recording(
+                    elapsedMs = elapsedMs,
+                    energy = manager.getEnergyHistory(),
+                )
+            }
         }
 
         manager.start(serviceScope)

@@ -2,8 +2,6 @@ package dev.avelissesolutions.avelisse.core.ui
 
 import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +32,7 @@ import kotlin.math.sin
  *
  * Color scheme (matching iOS BrandWaveform.resolvedBarColor), overridable via
  * [innerColor]/[outerColor] for callers on a different palette:
- *   - Center 40% of bars: brand blue by default (AvelisseColors.Accent)
+ *   - Center 40% of bars: brand blue by default (AvelisseColors.Primary)
  *   - Outer 60%: white/gray by default (theme-dependent) with opacity decreasing toward edges
  *
  * Bar height formula (matching iOS):
@@ -55,16 +53,13 @@ fun WaveformBars(
     modifier: Modifier = Modifier,
     isProcessing: Boolean = false,
     processingPhase: Double = 0.0,
-    innerColor: Color = AvelisseColors.Accent,
+    innerColor: Color = AvelisseColors.Primary,
     outerColor: Color? = null,
 ) {
     val paddedLevels = padEnergy(energyLevels)
-    // Outer bar base color: white in dark theme, gray in light theme (matches iOS),
-    // unless the caller explicitly overrides it (e.g. for a fixed light-palette
-    // screen like Recording, where the ambient dark-theme default would render
-    // near-invisible white bars against its ivory background).
-    val isDark = MaterialTheme.colorScheme.background == AvelisseColors.Background
-    val outerBarBase = outerColor ?: if (isDark) Color.White else Color(0xFF8E8E93)
+    // Outer bar base color: the app has a single fixed palette (no dark theme),
+    // so this always resolves to the muted text token unless the caller overrides it.
+    val outerBarBase = outerColor ?: AvelisseColors.TextSecondary
 
     Canvas(modifier = modifier) {
         val barCount = WaveformDriver.BAR_COUNT
@@ -132,7 +127,7 @@ internal fun padEnergy(levels: List<Float>): List<Float> {
  *   brand blue; callers on a different palette (e.g. the Home-palette Recording
  *   screen) can override it without affecting other callers.
  */
-internal fun barColor(index: Int, barCount: Int, outerBase: Color = Color.White, innerColor: Color = AvelisseColors.Accent): Color {
+internal fun barColor(index: Int, barCount: Int, outerBase: Color = Color.White, innerColor: Color = AvelisseColors.Primary): Color {
     val center = (barCount - 1) / 2f
     val distanceFromCenter = abs(index - center) / center
 
@@ -189,8 +184,8 @@ internal fun barColor(index: Int, barCount: Int, outerBase: Color = Color.White,
 fun WaveformBlob(
     volume: Float = WAVEFORM_BLOB_VOLUME,
     modifier: Modifier = Modifier,
-    color: Color = AvelisseColors.Accent,
-    edgeColor: Color = AvelisseColors.Accent,
+    color: Color = AvelisseColors.Primary,
+    edgeColor: Color = AvelisseColors.Primary,
 ) {
     val currentVolume by rememberUpdatedState(volume)
     var time by remember { mutableFloatStateOf(0f) }

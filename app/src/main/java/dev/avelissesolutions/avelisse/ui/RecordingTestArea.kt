@@ -75,7 +75,7 @@ fun RecordingTestArea(
                     Button(
                         onClick = onStartRecording,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = AvelisseColors.Accent,
+                            containerColor = AvelisseColors.Primary,
                         ),
                     ) {
                         Text(stringResource(R.string.recording_test_start_button))

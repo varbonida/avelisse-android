@@ -37,6 +37,17 @@ class AudioCaptureManager {
     private var recorder: AudioRecord? = null
     private var captureJob: Job? = null
     private val samples = ArrayList<Float>()
+
+    // Guards onEnergyUpdate against firing after stop()/cancel() has returned.
+    // captureJob.cancel() is cooperative -- the read loop can be blocked inside
+    // a synchronous AudioRecord.read() call and still deliver one more energy
+    // update after cancellation is requested. Without this guard, that straggler
+    // update can land after the caller has already moved the state machine past
+    // Recording (e.g. into Transcribing), silently reverting it. Both the flip
+    // (in stop()/cancel()) and the check-and-invoke (in the read loop) hold
+    // [captureLock] so one fully happens-before the other -- no torn read.
+    private val captureLock = Any()
+    private var isCapturing = false
     private val energyHistory = ArrayDeque<Float>(MAX_ENERGY_HISTORY).apply {
         // Pre-fill with zeros so the waveform renders all 30 bars immediately.
         // Without this, bars appear to "slide in" from the left as the history fills up.
@@ -84,6 +95,8 @@ class AudioCaptureManager {
             Timber.d("AudioRecord started: ${SAMPLE_RATE}Hz mono Float32, buffer=$bufferSize")
         }
 
+        synchronized(captureLock) { isCapturing = true }
+
         // Read loop on a background thread.
         // Each read produces a chunk of float samples. We accumulate them
         // and compute RMS energy for the waveform display.
@@ -100,7 +113,9 @@ class AudioCaptureManager {
                     val rms = calculateRmsEnergy(readBuffer, read)
                     val normalized = normalizeEnergy(rms)
                     addEnergyToHistory(normalized)
-                    onEnergyUpdate?.invoke(normalized)
+                    synchronized(captureLock) {
+                        if (isCapturing) onEnergyUpdate?.invoke(normalized)
+                    }
                 }
             }
         }
@@ -112,6 +127,7 @@ class AudioCaptureManager {
      * @return FloatArray of all captured samples at 16kHz mono.
      */
     fun stop(): FloatArray {
+        synchronized(captureLock) { isCapturing = false }
         captureJob?.cancel()
         captureJob = null
         recorder?.stop()
@@ -131,6 +147,7 @@ class AudioCaptureManager {
      * Cancel capturing and discard all audio data.
      */
     fun cancel() {
+        synchronized(captureLock) { isCapturing = false }
         captureJob?.cancel()
         captureJob = null
         recorder?.stop()

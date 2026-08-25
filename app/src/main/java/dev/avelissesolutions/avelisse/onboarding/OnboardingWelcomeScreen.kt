@@ -45,7 +45,7 @@ fun OnboardingWelcomeScreen(
         // "AVELISSE" wordmark
         Text(
             text = stringResource(R.string.onboarding_welcome_wordmark),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 42.sp,
             fontWeight = FontWeight.ExtraLight,
             letterSpacing = (-0.5).sp,
@@ -56,7 +56,7 @@ fun OnboardingWelcomeScreen(
         // Tagline
         Text(
             text = stringResource(R.string.onboarding_welcome_tagline),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 17.sp,
         )
     }

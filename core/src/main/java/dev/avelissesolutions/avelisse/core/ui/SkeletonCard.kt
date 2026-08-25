@@ -61,7 +61,7 @@ fun SkeletonCard(modifier: Modifier = Modifier) {
             .height(88.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, AvelisseColors.GlassBorder, RoundedCornerShape(16.dp))
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp))
             .background(
                 Brush.linearGradient(
                     colors = shimmerColors,

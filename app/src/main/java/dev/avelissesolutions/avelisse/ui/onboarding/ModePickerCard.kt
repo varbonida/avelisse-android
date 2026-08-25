@@ -106,16 +106,16 @@ private fun LayoutOptionCard(
         label = "card_scale_$layoutKey",
     )
 
-    val borderColor = if (isSelected) AvelisseColors.HomeAccent else AvelisseColors.HomeSurfaceBorder
+    val borderColor = if (isSelected) AvelisseColors.Primary else AvelisseColors.Border
     val borderWidth = if (isSelected) 2.dp else 1.dp
-    val labelColor = if (isSelected) AvelisseColors.HomeAccent else AvelisseColors.HomeTextSecondary
-    val descColor = if (isSelected) AvelisseColors.HomeTextPrimary else AvelisseColors.HomeTextSecondary
+    val labelColor = if (isSelected) AvelisseColors.Primary else AvelisseColors.TextSecondary
+    val descColor = if (isSelected) AvelisseColors.TextPrimary else AvelisseColors.TextSecondary
 
     Column(
         modifier = modifier
             .scale(scale)
             .clip(RoundedCornerShape(16.dp))
-            .background(AvelisseColors.HomeSurface)
+            .background(AvelisseColors.Surface)
             .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -152,7 +152,7 @@ private fun LayoutOptionCard(
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = stringResource(R.string.cd_selected),
-                tint = AvelisseColors.HomeAccent,
+                tint = AvelisseColors.Primary,
                 modifier = Modifier.size(24.dp),
             )
         } else {
@@ -161,7 +161,7 @@ private fun LayoutOptionCard(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(CircleShape)
-                    .border(2.dp, AvelisseColors.HomeSurfaceBorder, CircleShape),
+                    .border(2.dp, AvelisseColors.Border, CircleShape),
             )
         }
     }

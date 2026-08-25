@@ -117,13 +117,13 @@ fun ModelsScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = AvelisseColors.ModelsBackground,
+        containerColor = AvelisseColors.Background,
     ) { innerPadding ->
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground)
+            .background(AvelisseColors.Background)
             .verticalScroll(rememberScrollState())
             .padding(innerPadding)
             .padding(horizontal = 16.dp, vertical = 24.dp),
@@ -132,7 +132,7 @@ fun ModelsScreen(
         // Screen title
         Text(
             text = stringResource(R.string.models_title),
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -191,7 +191,7 @@ fun ModelsScreen(
             .sumOf { it.expectedSizeBytes } / 1_000_000
         Text(
             text = stringResource(R.string.models_storage_used, storageUsedMb, totalCatalogMb),
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 13.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
@@ -219,7 +219,7 @@ fun ModelsScreen(
                 scope.launch { sheetState.hide() }
             },
             sheetState = sheetState,
-            containerColor = AvelisseColors.ModelsSurface,
+            containerColor = AvelisseColors.Surface,
         ) {
             DeleteConfirmationSheet(
                 modelName = pendingDelete.info.displayName,
@@ -247,7 +247,7 @@ private fun ModelSection(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = title,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
         )
@@ -269,13 +269,13 @@ private fun DeleteConfirmationSheet(
     ) {
         Text(
             text = stringResource(R.string.models_delete_confirm_title, modelName),
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
         )
         Text(
             text = stringResource(R.string.models_delete_confirm_body),
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 15.sp,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -290,14 +290,14 @@ private fun DeleteConfirmationSheet(
                 fontWeight = FontWeight.Medium,
             )
         }
-        HorizontalDivider(color = AvelisseColors.HomeSurfaceBorder)
+        HorizontalDivider(color = AvelisseColors.Border)
         TextButton(
             onClick = onCancel,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.models_delete_cancel_button),
-                color = AvelisseColors.ModelsTextSecondary,
+                color = AvelisseColors.TextSecondary,
                 fontSize = 16.sp,
             )
         }
@@ -314,12 +314,12 @@ private fun ProviderFooterItem(icon: ImageVector, text: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = AvelisseColors.ModelsTextSecondary,
+            tint = AvelisseColors.TextSecondary,
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 12.sp,
             lineHeight = 16.sp,
             modifier = Modifier.weight(1f),

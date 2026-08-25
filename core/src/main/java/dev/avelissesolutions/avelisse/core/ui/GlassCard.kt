@@ -35,7 +35,7 @@ fun GlassCard(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, AvelisseColors.GlassBorder, RoundedCornerShape(16.dp))
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp))
             .padding(20.dp),
         content = content,
     )
@@ -59,8 +59,8 @@ fun HomeGlassCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(AvelisseColors.HomeSurface)
-            .border(1.dp, AvelisseColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
+            .background(AvelisseColors.Surface)
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp))
             .padding(20.dp),
         content = content,
     )

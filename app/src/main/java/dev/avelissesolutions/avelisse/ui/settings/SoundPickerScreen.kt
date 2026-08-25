@@ -81,7 +81,7 @@ fun SoundPickerScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground)
+            .background(AvelisseColors.Background)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar
@@ -95,12 +95,12 @@ fun SoundPickerScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.cd_back),
-                    tint = AvelisseColors.ModelsTextPrimary,
+                    tint = AvelisseColors.TextPrimary,
                 )
             }
             Text(
                 text = title,
-                color = AvelisseColors.ModelsTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -234,7 +234,7 @@ private class PreviewSoundPlayer(context: Context) {
 private fun PickerSectionHeader(text: String) {
     Text(
         text = text,
-        color = AvelisseColors.ModelsTextSecondary,
+        color = AvelisseColors.TextSecondary,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -248,7 +248,7 @@ private fun PickerCard(content: @Composable () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(AvelisseColors.ModelsSurface),
+            .background(AvelisseColors.Surface),
     ) {
         content()
     }
@@ -270,7 +270,7 @@ private fun SoundRow(
     ) {
         Text(
             text = formatPickerSoundName(soundName),
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
@@ -279,7 +279,7 @@ private fun SoundRow(
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(R.string.cd_selected),
-                tint = AvelisseColors.HomeAccent,
+                tint = AvelisseColors.Primary,
                 modifier = Modifier.size(22.dp),
             )
         }
@@ -289,7 +289,7 @@ private fun SoundRow(
 @Composable
 private fun PickerDivider() {
     HorizontalDivider(
-        color = AvelisseColors.HomeSurfaceBorder,
+        color = AvelisseColors.Border,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
     )

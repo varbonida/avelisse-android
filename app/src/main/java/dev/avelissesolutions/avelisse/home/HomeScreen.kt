@@ -89,7 +89,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.HomeBackground)
+            .background(AvelisseColors.Background)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -103,7 +103,7 @@ fun HomeScreen(
         // "AVELISSE" wordmark in accent teal
         Text(
             text = "AVELISSE",
-            color = AvelisseColors.HomeAccent,
+            color = AvelisseColors.Primary,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -113,7 +113,7 @@ fun HomeScreen(
         // Subtitle beneath the wordmark — secondary color/size, centered with it.
         Text(
             text = stringResource(R.string.home_tagline),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 13.sp,
         )
 
@@ -123,7 +123,7 @@ fun HomeScreen(
         HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(R.string.home_active_model),
-                color = AvelisseColors.HomeTextSecondary,
+                color = AvelisseColors.TextSecondary,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
             )
@@ -136,7 +136,7 @@ fun HomeScreen(
                 Column {
                     Text(
                         text = activeModel?.displayName ?: activeModelKey,
-                        color = AvelisseColors.HomeTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -144,7 +144,7 @@ fun HomeScreen(
                         val sizeMb = activeModel.expectedSizeBytes / 1_000_000
                         Text(
                             text = stringResource(R.string.model_size_mb, sizeMb),
-                            color = AvelisseColors.HomeTextSecondary,
+                            color = AvelisseColors.TextSecondary,
                             fontSize = 13.sp,
                         )
                     }
@@ -154,7 +154,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .size(28.dp)
                         .clip(CircleShape)
-                        .background(AvelisseColors.HomeAccentSecondary),
+                        .background(AvelisseColors.Secondary),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -178,14 +178,14 @@ fun HomeScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.home_last_transcription),
-                        color = AvelisseColors.HomeTextSecondary,
+                        color = AvelisseColors.TextSecondary,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                     )
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.home_copy_cd),
-                        tint = AvelisseColors.HomeTextSecondary,
+                        tint = AvelisseColors.TextSecondary,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
@@ -201,7 +201,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = lastTranscription ?: "",
-                    color = AvelisseColors.HomeTextPrimary,
+                    color = AvelisseColors.TextPrimary,
                     fontSize = 16.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
@@ -219,7 +219,7 @@ fun HomeScreen(
                 .clip(RoundedCornerShape(14.dp))
                 .background(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(AvelisseColors.HomeAccent, AvelisseColors.HomeAccentDark),
+                        colors = listOf(AvelisseColors.Primary, AvelisseColors.PrimaryDark),
                     )
                 ),
             contentAlignment = Alignment.Center,
@@ -304,12 +304,12 @@ fun AvelisseWaveformLogo(
     }
 
     val waveConfigs = listOf(
-        LogoWave(amplitude = 22f, frequency = 0.035f, speed = 0.055f, thickness = 3.2f, alpha = 0.9f, color = AvelisseColors.HomeAccent),
-        LogoWave(amplitude = 12f, frequency = 0.055f, speed = -0.04f, thickness = 2.3f, alpha = 0.6f, color = AvelisseColors.HomeAccentSecondary),
-        LogoWave(amplitude = 34f, frequency = 0.022f, speed = 0.025f, thickness = 2.3f, alpha = 0.35f, color = AvelisseColors.HomeAccentHighlight),
+        LogoWave(amplitude = 22f, frequency = 0.035f, speed = 0.055f, thickness = 3.2f, alpha = 0.9f, color = AvelisseColors.Primary),
+        LogoWave(amplitude = 12f, frequency = 0.055f, speed = -0.04f, thickness = 2.3f, alpha = 0.6f, color = AvelisseColors.Secondary),
+        LogoWave(amplitude = 34f, frequency = 0.022f, speed = 0.025f, thickness = 2.3f, alpha = 0.35f, color = AvelisseColors.Accent),
     )
-    val particleTeal = AvelisseColors.HomeAccent
-    val particleTerracotta = AvelisseColors.HomeAccentSecondary
+    val particleTeal = AvelisseColors.Primary
+    val particleTerracotta = AvelisseColors.Secondary
 
     Canvas(modifier = modifier.size(width = 130.dp, height = 80.dp)) {
         val s = size.width / 108f

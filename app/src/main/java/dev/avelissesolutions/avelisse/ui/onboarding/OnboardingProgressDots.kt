@@ -33,9 +33,9 @@ fun OnboardingProgressDots(
 ) {
     // Active dot color: accent-secondary terracotta on step 6 (the "done" state), accent teal otherwise
     val activeDotColor = if (currentStep == totalSteps) {
-        AvelisseColors.HomeAccentSecondary
+        AvelisseColors.Secondary
     } else {
-        AvelisseColors.HomeAccent
+        AvelisseColors.Primary
     }
 
     Row(
@@ -48,7 +48,7 @@ fun OnboardingProgressDots(
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(if (isActive) activeDotColor else AvelisseColors.HomeSurfaceBorder),
+                    .background(if (isActive) activeDotColor else AvelisseColors.Border),
             )
         }
     }

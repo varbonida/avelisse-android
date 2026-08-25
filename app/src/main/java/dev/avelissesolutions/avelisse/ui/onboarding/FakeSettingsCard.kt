@@ -72,20 +72,20 @@ fun FakeSettingsCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(AvelisseColors.HomeSurface)
-            .border(1.dp, AvelisseColors.HomeSurfaceBorder, RoundedCornerShape(16.dp)),
+            .background(AvelisseColors.Surface)
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp)),
     ) {
         // Section header: "Manage keyboards" — matches Android system settings label
         Text(
             text = stringResource(R.string.fake_settings_manage_keyboards),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         )
 
         HorizontalDivider(
-            color = AvelisseColors.HomeSurfaceBorder,
+            color = AvelisseColors.Border,
             thickness = 1.dp,
         )
 
@@ -98,7 +98,7 @@ fun FakeSettingsCard(
         )
 
         HorizontalDivider(
-            color = AvelisseColors.HomeSurfaceBorder,
+            color = AvelisseColors.Border,
             thickness = 1.dp,
             modifier = Modifier.padding(start = 72.dp),
         )
@@ -154,12 +154,12 @@ private fun KeyboardEntryRow(
         ) {
             Text(
                 text = name,
-                color = AvelisseColors.HomeTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 16.sp,
             )
             Text(
                 text = subtitle,
-                color = AvelisseColors.HomeTextSecondary,
+                color = AvelisseColors.TextSecondary,
                 fontSize = 13.sp,
             )
         }

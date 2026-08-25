@@ -103,16 +103,16 @@ private fun NavTab(
 ) {
     // Active tab uses the Home accent teal; unselected uses a fixed neutral gray.
     // Matches designs/home.png — the nav bar is a fixed light treatment, not dark/light reactive.
-    val unselectedColor = AvelisseColors.HomeTextSecondary
-    val iconTint = if (isActive) AvelisseColors.HomeAccent else unselectedColor
-    val labelColor = if (isActive) AvelisseColors.HomeAccent else unselectedColor
+    val unselectedColor = AvelisseColors.TextSecondary
+    val iconTint = if (isActive) AvelisseColors.Primary else unselectedColor
+    val labelColor = if (isActive) AvelisseColors.Primary else unselectedColor
 
     // Filled pill background behind active tab for iOS visual parity and improved visibility
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .background(
-                if (isActive) AvelisseColors.HomeAccent.copy(alpha = 0.15f) else Color.Transparent
+                if (isActive) AvelisseColors.Primary.copy(alpha = 0.15f) else Color.Transparent
             )
             .clickable(role = Role.Tab, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),

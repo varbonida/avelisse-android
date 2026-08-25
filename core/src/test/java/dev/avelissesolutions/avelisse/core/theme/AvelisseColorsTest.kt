@@ -7,45 +7,55 @@ import org.junit.Test
 class AvelisseColorsTest {
 
     @Test
-    fun `background color matches iOS token 0A1628`() {
-        assertEquals(Color(0xFF0A1628), AvelisseColors.Background)
+    fun `background color matches Mediterranean Coastal token F7F7F7`() {
+        assertEquals(Color(0xFFF7F7F7), AvelisseColors.Background)
     }
 
     @Test
-    fun `accent color matches iOS token 3D7EFF`() {
-        assertEquals(Color(0xFF3D7EFF), AvelisseColors.Accent)
+    fun `primary color matches Mediterranean Coastal token 007C92`() {
+        assertEquals(Color(0xFF007C92), AvelisseColors.Primary)
     }
 
     @Test
-    fun `surface color matches iOS token 161C2C`() {
-        assertEquals(Color(0xFF161C2C), AvelisseColors.Surface)
+    fun `accent color matches Mediterranean Coastal token FFB74D`() {
+        assertEquals(Color(0xFFFFB74D), AvelisseColors.Accent)
     }
 
     @Test
-    fun `recording color matches iOS token EF4444`() {
-        assertEquals(Color(0xFFEF4444), AvelisseColors.Recording)
+    fun `surface color matches Mediterranean Coastal token FFFFFF`() {
+        assertEquals(Color(0xFFFFFFFF), AvelisseColors.Surface)
     }
 
     @Test
-    fun `success color matches iOS token 22C55E`() {
-        assertEquals(Color(0xFF22C55E), AvelisseColors.Success)
+    fun `recording color matches Mediterranean Coastal token C0392B`() {
+        assertEquals(Color(0xFFC0392B), AvelisseColors.Recording)
+    }
+
+    @Test
+    fun `success color matches Mediterranean Coastal token 6B8E4E`() {
+        assertEquals(Color(0xFF6B8E4E), AvelisseColors.Success)
     }
 
     @Test
     fun `all brand colors are defined`() {
         val colors = listOf(
-            AvelisseColors.Background,
+            AvelisseColors.Primary,
+            AvelisseColors.PrimaryContainer,
+            AvelisseColors.PrimaryDark,
+            AvelisseColors.Secondary,
+            AvelisseColors.SecondaryContainer,
+            AvelisseColors.SecondaryDark,
             AvelisseColors.Accent,
-            AvelisseColors.AccentHighlight,
+            AvelisseColors.Background,
             AvelisseColors.Surface,
+            AvelisseColors.SurfaceVariant,
+            AvelisseColors.TextPrimary,
+            AvelisseColors.TextSecondary,
+            AvelisseColors.Border,
+            AvelisseColors.Error,
             AvelisseColors.Recording,
-            AvelisseColors.SmartMode,
             AvelisseColors.Success,
-            AvelisseColors.OnBackground,
-            AvelisseColors.OnSurface,
-            AvelisseColors.KeyBackground,
-            AvelisseColors.KeyText,
         )
-        assertEquals(11, colors.size)
+        assertEquals(16, colors.size)
     }
 }

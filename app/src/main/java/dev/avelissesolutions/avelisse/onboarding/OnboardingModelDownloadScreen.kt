@@ -94,7 +94,7 @@ fun OnboardingModelDownloadScreen(
         Icon(
             imageVector = Icons.Default.Download,
             contentDescription = null,
-            tint = AvelisseColors.HomeAccent,
+            tint = AvelisseColors.Primary,
             modifier = Modifier.size(64.dp),
         )
 
@@ -102,7 +102,7 @@ fun OnboardingModelDownloadScreen(
 
         Text(
             text = stringResource(R.string.onboarding_model_download_title),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -112,7 +112,7 @@ fun OnboardingModelDownloadScreen(
 
         Text(
             text = stringResource(R.string.onboarding_model_download_body),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,
@@ -171,15 +171,15 @@ private fun ModelInfoCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(AvelisseColors.HomeSurface)
-            .border(1.dp, AvelisseColors.HomeSurfaceBorder, RoundedCornerShape(16.dp))
+            .background(AvelisseColors.Surface)
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp))
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         // Model name — dynamic from ModelInfo
         Text(
             text = modelName,
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
         )
@@ -187,7 +187,7 @@ private fun ModelInfoCard(
         // Subtitle: recommended badge
         Text(
             text = stringResource(R.string.onboarding_model_download_recommended),
-            color = AvelisseColors.HomeAccent,
+            color = AvelisseColors.Primary,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
         )
@@ -204,12 +204,12 @@ private fun ModelInfoCard(
                 Icon(
                     imageVector = Icons.Outlined.Storage,
                     contentDescription = null,
-                    tint = AvelisseColors.HomeTextSecondary,
+                    tint = AvelisseColors.TextSecondary,
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = modelSize,
-                    color = AvelisseColors.HomeTextSecondary,
+                    color = AvelisseColors.TextSecondary,
                     fontSize = 13.sp,
                 )
             }
@@ -220,12 +220,12 @@ private fun ModelInfoCard(
                 Icon(
                     imageVector = Icons.Outlined.Bolt,
                     contentDescription = null,
-                    tint = AvelisseColors.HomeTextSecondary,
+                    tint = AvelisseColors.TextSecondary,
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = modelQualityLabel,
-                    color = AvelisseColors.HomeTextSecondary,
+                    color = AvelisseColors.TextSecondary,
                     fontSize = 13.sp,
                 )
             }
@@ -243,14 +243,14 @@ private fun ModelInfoCard(
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp))
-                        .background(AvelisseColors.HomeBackground),
+                        .background(AvelisseColors.Background),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(fraction = barFraction)
                             .height(6.dp)
                             .clip(RoundedCornerShape(3.dp))
-                            .background(AvelisseColors.HomeAccent),
+                            .background(AvelisseColors.Primary),
                     )
                 }
 
@@ -262,7 +262,7 @@ private fun ModelInfoCard(
                     } else {
                         stringResource(R.string.onboarding_model_download_progress, downloadProgress)
                     },
-                    color = AvelisseColors.HomeAccentHighlight,
+                    color = AvelisseColors.Accent,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,

@@ -53,7 +53,7 @@ fun LicencesScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground)
+            .background(AvelisseColors.Background)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar with back button
@@ -67,12 +67,12 @@ fun LicencesScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.licences_back_cd),
-                    tint = AvelisseColors.ModelsTextPrimary,
+                    tint = AvelisseColors.TextPrimary,
                 )
             }
             Text(
                 text = stringResource(R.string.licences_title),
-                color = AvelisseColors.ModelsTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -112,7 +112,7 @@ fun LicencesScreen(
         if (mavenLicenses.isNotEmpty()) {
             Text(
                 text = stringResource(R.string.licences_vendored_section),
-                color = AvelisseColors.ModelsTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -221,34 +221,34 @@ private fun LicenceBlock(
     ) {
         Text(
             text = name,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = author,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 14.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = url,
-            color = AvelisseColors.HomeAccent,
+            color = AvelisseColors.Primary,
             fontSize = 14.sp,
             modifier = Modifier.clickable { onLinkClick(url) },
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = licenceText,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 11.sp,
             fontFamily = FontFamily.Monospace,
             lineHeight = 16.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .background(AvelisseColors.ModelsSurface)
+                .background(AvelisseColors.Surface)
                 .padding(12.dp),
         )
     }

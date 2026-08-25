@@ -52,7 +52,7 @@ fun OnboardingStepScaffold(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.HomeBackground)
+            .background(AvelisseColors.Background)
             .padding(horizontal = 32.dp),
     ) {
         Column(

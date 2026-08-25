@@ -55,14 +55,14 @@ fun OnboardingSuccessScreen(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(AvelisseColors.HomeAccentSecondarySubtle)
-                .border(3.dp, AvelisseColors.HomeAccentSecondary, CircleShape),
+                .background(AvelisseColors.Secondary.copy(alpha = 0.2f))
+                .border(3.dp, AvelisseColors.Secondary, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
-                tint = AvelisseColors.HomeAccentSecondary,
+                tint = AvelisseColors.Secondary,
                 modifier = Modifier.size(56.dp),
             )
         }
@@ -71,7 +71,7 @@ fun OnboardingSuccessScreen(
 
         Text(
             text = stringResource(R.string.onboarding_success_title),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.5).sp,
@@ -81,7 +81,7 @@ fun OnboardingSuccessScreen(
 
         Text(
             text = stringResource(R.string.onboarding_success_body),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 17.sp,
             textAlign = TextAlign.Center,
         )

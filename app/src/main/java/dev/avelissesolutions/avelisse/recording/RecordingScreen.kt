@@ -118,7 +118,7 @@ fun RecordingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.HomeBackground),
+            .background(AvelisseColors.Background),
     ) {
         // ── Close button (top-left, always visible) ──
         Box(
@@ -132,7 +132,7 @@ fun RecordingScreen(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(R.string.recording_close_cd),
-                tint = AvelisseColors.HomeTextPrimary,
+                tint = AvelisseColors.TextPrimary,
                 modifier = Modifier.size(24.dp),
             )
         }
@@ -151,7 +151,7 @@ fun RecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.recording_result_title),
-                        color = AvelisseColors.HomeTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -164,7 +164,7 @@ fun RecordingScreen(
                     ) {
                         Text(
                             text = transcriptionResult ?: "",
-                            color = AvelisseColors.HomeTextPrimary,
+                            color = AvelisseColors.TextPrimary,
                             fontSize = 17.sp,
                             lineHeight = 26.sp,
                         )
@@ -189,7 +189,7 @@ fun RecordingScreen(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.recording_copy_cd),
-                                tint = if (copied) AvelisseColors.HomeAccentSecondary else AvelisseColors.HomeTextSecondary,
+                                tint = if (copied) AvelisseColors.Secondary else AvelisseColors.TextSecondary,
                                 modifier = Modifier.size(20.dp),
                             )
                         }
@@ -222,7 +222,7 @@ fun RecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.recording_idle_title),
-                        color = AvelisseColors.HomeTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -232,7 +232,7 @@ fun RecordingScreen(
 
                     Text(
                         text = stringResource(R.string.recording_idle_body),
-                        color = AvelisseColors.HomeTextSecondary,
+                        color = AvelisseColors.TextSecondary,
                         fontSize = 15.sp,
                         lineHeight = (15 * 1.5).sp,
                         textAlign = TextAlign.Center,
@@ -294,7 +294,7 @@ fun RecordingScreen(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(AvelisseColors.HomeAccentSecondary)
+                            .background(AvelisseColors.Secondary)
                             .clickable {
                                 scope.launch {
                                     val result = dictationController?.confirmAndTranscribe()
@@ -324,13 +324,13 @@ fun RecordingScreen(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(AvelisseColors.HomeSurface),
+                            .background(AvelisseColors.Surface),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             imageVector = Icons.Default.Mic,
                             contentDescription = null,
-                            tint = AvelisseColors.HomeTextSecondary,
+                            tint = AvelisseColors.TextSecondary,
                             modifier = Modifier.size(36.dp),
                         )
                     }
@@ -342,7 +342,7 @@ fun RecordingScreen(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(AvelisseColors.HomeAccent)
+                            .background(AvelisseColors.Primary)
                             .clickable {
                                 transcriptionResult = null
                                 copied = false
@@ -365,7 +365,7 @@ fun RecordingScreen(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
-                            .background(AvelisseColors.HomeAccent)
+                            .background(AvelisseColors.Primary)
                             .clickable {
                                 dictationController?.startRecording()
                             },
@@ -389,7 +389,7 @@ fun RecordingScreen(
                     hasResult -> stringResource(R.string.recording_idle_title)
                     else -> ""
                 },
-                color = AvelisseColors.HomeTextSecondary,
+                color = AvelisseColors.TextSecondary,
                 fontSize = 13.sp,
             )
         }
@@ -409,7 +409,7 @@ fun RecordingLabelAndTimer(elapsedMs: Long, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(R.string.recording_recording_label),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 20.sp,
         )
 
@@ -420,7 +420,7 @@ fun RecordingLabelAndTimer(elapsedMs: Long, modifier: Modifier = Modifier) {
         val secs = seconds % 60
         Text(
             text = "%d:%02d".format(minutes, secs),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 48.sp,
             fontWeight = FontWeight.Medium,
         )
@@ -439,8 +439,8 @@ fun RecordingWaveform(volume: Float, modifier: Modifier = Modifier) {
     WaveformBlob(
         volume = volume,
         modifier = modifier,
-        color = AvelisseColors.HomeAccent,
-        edgeColor = AvelisseColors.HomeAccentHighlight,
+        color = AvelisseColors.Primary,
+        edgeColor = AvelisseColors.Accent,
     )
 }
 
@@ -457,7 +457,7 @@ fun TranscribingIndicator(processingPhase: Double, modifier: Modifier = Modifier
     ) {
         Text(
             text = stringResource(R.string.recording_transcribing),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 17.sp,
             modifier = Modifier.padding(horizontal = 32.dp),
         )
@@ -476,8 +476,8 @@ fun TranscribingIndicator(processingPhase: Double, modifier: Modifier = Modifier
                 .height(80.dp),
             isProcessing = true,
             processingPhase = processingPhase,
-            innerColor = AvelisseColors.HomeAccent,
-            outerColor = AvelisseColors.HomeTextSecondary,
+            innerColor = AvelisseColors.Primary,
+            outerColor = AvelisseColors.TextSecondary,
         )
     }
 }

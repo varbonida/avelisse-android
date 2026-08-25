@@ -107,12 +107,12 @@ fun ModelCard(
     val isDownloading = downloadProgress != null
 
     // Active cards get an accent border; others get the default glass border
-    val borderColor = if (isActive) AvelisseColors.HomeAccent else AvelisseColors.HomeSurfaceBorder
+    val borderColor = if (isActive) AvelisseColors.Primary else AvelisseColors.Border
 
     // State-driven accent: the active/selected card is teal-branded (matches models.png),
     // non-active cards use neutral dark/gray tones. Reused by the badge, bars, and text below.
-    val accentColor = if (isActive) AvelisseColors.HomeAccent else AvelisseColors.ModelsTextPrimary
-    val accentColorMuted = if (isActive) AvelisseColors.HomeAccentDark else AvelisseColors.ModelsTextSecondary
+    val accentColor = if (isActive) AvelisseColors.Primary else AvelisseColors.TextPrimary
+    val accentColorMuted = if (isActive) AvelisseColors.PrimaryDark else AvelisseColors.TextSecondary
 
     // Swipe-to-delete state
     val deleteButtonWidth = 80.dp
@@ -170,7 +170,7 @@ fun ModelCard(
                 .offset { IntOffset(animatedOffsetX.roundToInt(), 0) }
                 .onSizeChanged { cardHeightPx = it.height.toFloat() }
                 .clip(RoundedCornerShape(16.dp))
-                .background(if (isActive) AvelisseColors.HomeAccent.copy(alpha = 0.18f) else AvelisseColors.ModelsSurface)
+                .background(if (isActive) AvelisseColors.Primary.copy(alpha = 0.18f) else AvelisseColors.Surface)
                 .border(
                     if (isActive) 2.dp else 1.dp,
                     borderColor,
@@ -230,7 +230,7 @@ fun ModelCard(
                         ) {
                             Text(
                                 text = model.displayName,
-                                color = AvelisseColors.ModelsTextPrimary,
+                                color = AvelisseColors.TextPrimary,
                                 fontSize = 17.sp,
                                 fontWeight = FontWeight.SemiBold,
                             )
@@ -259,12 +259,12 @@ fun ModelCard(
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(8.dp))
-                                    .background(AvelisseColors.HomeAccent.copy(alpha = 0.2f))
+                                    .background(AvelisseColors.Primary.copy(alpha = 0.2f))
                                     .padding(horizontal = 8.dp, vertical = 2.dp),
                             ) {
                                 Text(
                                     text = stringResource(R.string.model_active),
-                                    color = AvelisseColors.HomeAccentHighlight,
+                                    color = AvelisseColors.Accent,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium,
                                 )
@@ -309,14 +309,14 @@ fun ModelCard(
                         label = stringResource(R.string.model_precision),
                         value = model.precision,
                         color = accentColor,
-                        emptyColor = if (isActive) null else AvelisseColors.HomeSurfaceBorder,
+                        emptyColor = if (isActive) null else AvelisseColors.Border,
                         modifier = Modifier.weight(1f),
                     )
                     SegmentedMetricBar(
                         label = stringResource(R.string.model_speed),
                         value = model.speed,
-                        color = if (isActive) AvelisseColors.HomeAccentHighlight else accentColor,
-                        emptyColor = if (isActive) null else AvelisseColors.HomeSurfaceBorder,
+                        color = if (isActive) AvelisseColors.Accent else accentColor,
+                        emptyColor = if (isActive) null else AvelisseColors.Border,
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -338,13 +338,13 @@ fun ModelCard(
                                 .fillMaxWidth()
                                 .height(6.dp)
                                 .clip(RoundedCornerShape(3.dp)),
-                            color = AvelisseColors.HomeAccent,
-                            trackColor = AvelisseColors.ModelsBackground,
+                            color = AvelisseColors.Primary,
+                            trackColor = AvelisseColors.Background,
                             strokeCap = StrokeCap.Round,
                         )
                         Text(
                             text = stringResource(R.string.model_extracting),
-                            color = AvelisseColors.HomeAccentHighlight,
+                            color = AvelisseColors.Accent,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -359,13 +359,13 @@ fun ModelCard(
                                 .fillMaxWidth()
                                 .height(6.dp)
                                 .clip(RoundedCornerShape(3.dp)),
-                            color = AvelisseColors.HomeAccent,
-                            trackColor = AvelisseColors.ModelsBackground,
+                            color = AvelisseColors.Primary,
+                            trackColor = AvelisseColors.Background,
                             strokeCap = StrokeCap.Round,
                         )
                         Text(
                             text = stringResource(R.string.model_download_progress, percent),
-                            color = AvelisseColors.HomeAccentHighlight,
+                            color = AvelisseColors.Accent,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -404,8 +404,8 @@ fun ModelCard(
                                 .background(
                                     brush = Brush.horizontalGradient(
                                         colors = listOf(
-                                            AvelisseColors.HomeAccent,
-                                            AvelisseColors.HomeAccentDark,
+                                            AvelisseColors.Primary,
+                                            AvelisseColors.PrimaryDark,
                                         ),
                                     )
                                 )
@@ -448,7 +448,7 @@ fun ModelCard(
 private fun SegmentedMetricBar(
     label: String,
     value: Float,
-    color: Color = AvelisseColors.HomeAccent,
+    color: Color = AvelisseColors.Primary,
     emptyColor: Color? = null,
     modifier: Modifier = Modifier,
 ) {

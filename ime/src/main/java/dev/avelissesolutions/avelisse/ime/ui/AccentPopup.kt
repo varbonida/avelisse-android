@@ -46,7 +46,7 @@ fun AccentPopup(
                     .size(44.dp)
                     .background(
                         if (highlightedIndex == index) {
-                            AvelisseColors.AccentHighlight.copy(alpha = 0.35f)
+                            AvelisseColors.Primary.copy(alpha = 0.35f)
                         } else {
                             LocalAvelisseColors.current.keyBackground
                         }

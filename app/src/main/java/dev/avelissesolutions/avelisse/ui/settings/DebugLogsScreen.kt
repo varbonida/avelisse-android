@@ -71,7 +71,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground),
+            .background(AvelisseColors.Background),
     ) {
         LazyColumn(
             modifier = Modifier
@@ -88,7 +88,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                     ) {
                         Text(
                             text = stringResource(R.string.debug_logs_empty),
-                            color = AvelisseColors.ModelsTextSecondary,
+                            color = AvelisseColors.TextSecondary,
                             fontSize = 16.sp,
                         )
                     }
@@ -99,7 +99,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                         text = line,
                         fontSize = 11.sp,
                         fontFamily = FontFamily.Monospace,
-                        color = AvelisseColors.ModelsTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 1.dp),
                     )
                 }
@@ -110,7 +110,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(AvelisseColors.ModelsBackground)
+                .background(AvelisseColors.Background)
                 .padding(horizontal = 4.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -118,12 +118,12 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.debug_logs_back_cd),
-                    tint = AvelisseColors.ModelsTextPrimary,
+                    tint = AvelisseColors.TextPrimary,
                 )
             }
             Text(
                 text = stringResource(R.string.debug_logs_title),
-                color = AvelisseColors.ModelsTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
@@ -134,19 +134,19 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = stringResource(R.string.debug_logs_menu_cd),
-                        tint = AvelisseColors.ModelsTextPrimary,
+                        tint = AvelisseColors.TextPrimary,
                     )
                 }
                 DropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
-                    containerColor = AvelisseColors.ModelsSurface,
+                    containerColor = AvelisseColors.Surface,
                 ) {
                     DropdownMenuItem(
                         text = {
                             Text(
                                 text = stringResource(R.string.debug_logs_clear),
-                                color = AvelisseColors.ModelsTextPrimary,
+                                color = AvelisseColors.TextPrimary,
                             )
                         },
                         onClick = {
@@ -159,7 +159,7 @@ fun DebugLogsScreen(onBack: () -> Unit) {
                         text = {
                             Text(
                                 text = stringResource(R.string.debug_logs_copy),
-                                color = AvelisseColors.ModelsTextPrimary,
+                                color = AvelisseColors.TextPrimary,
                             )
                         },
                         onClick = {

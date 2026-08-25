@@ -60,7 +60,7 @@ fun OnboardingKeyboardSetupScreen(
         Icon(
             imageVector = Icons.Default.KeyboardAlt,
             contentDescription = null,
-            tint = AvelisseColors.HomeAccent,
+            tint = AvelisseColors.Primary,
             modifier = Modifier.size(64.dp),
         )
 
@@ -68,7 +68,7 @@ fun OnboardingKeyboardSetupScreen(
 
         Text(
             text = stringResource(R.string.onboarding_keyboard_setup_title),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -78,7 +78,7 @@ fun OnboardingKeyboardSetupScreen(
 
         Text(
             text = stringResource(R.string.onboarding_keyboard_setup_body),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,

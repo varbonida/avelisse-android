@@ -64,7 +64,7 @@ fun SoundSettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.ModelsBackground)
+            .background(AvelisseColors.Background)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar with back button and title
@@ -78,12 +78,12 @@ fun SoundSettingsScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.sound_settings_back_cd),
-                    tint = AvelisseColors.ModelsTextPrimary,
+                    tint = AvelisseColors.TextPrimary,
                 )
             }
             Text(
                 text = stringResource(R.string.sound_settings_title),
-                color = AvelisseColors.ModelsTextPrimary,
+                color = AvelisseColors.TextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -165,7 +165,7 @@ private fun formatSoundName(name: String): String {
 private fun SoundSectionHeader(text: String) {
     Text(
         text = text,
-        color = AvelisseColors.ModelsTextSecondary,
+        color = AvelisseColors.TextSecondary,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -179,7 +179,7 @@ private fun SoundSettingsCard(content: @Composable () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(AvelisseColors.ModelsSurface),
+            .background(AvelisseColors.Surface),
     ) {
         content()
     }
@@ -201,12 +201,12 @@ private fun SoundToggleRow(
     ) {
         Text(
             text = label,
-            color = AvelisseColors.ModelsTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.HomeAccent)
+        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.Primary)
     }
 }
 
@@ -228,14 +228,14 @@ private fun SoundSliderRow(
         ) {
             Text(
                 text = label,
-                color = if (enabled) AvelisseColors.ModelsTextPrimary else AvelisseColors.ModelsTextSecondary,
+                color = if (enabled) AvelisseColors.TextPrimary else AvelisseColors.TextSecondary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier.weight(1f),
             )
             Text(
                 text = "${(value * 100).toInt()}%",
-                color = AvelisseColors.ModelsTextSecondary,
+                color = AvelisseColors.TextSecondary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
             )
@@ -246,12 +246,12 @@ private fun SoundSliderRow(
             valueRange = 0.05f..1.0f,
             enabled = enabled,
             colors = SliderDefaults.colors(
-                thumbColor = AvelisseColors.HomeAccent,
-                activeTrackColor = AvelisseColors.HomeAccent,
-                inactiveTrackColor = AvelisseColors.ModelsTextSecondary.copy(alpha = 0.3f),
-                disabledThumbColor = AvelisseColors.ModelsTextSecondary.copy(alpha = 0.5f),
-                disabledActiveTrackColor = AvelisseColors.ModelsTextSecondary.copy(alpha = 0.3f),
-                disabledInactiveTrackColor = AvelisseColors.ModelsTextSecondary.copy(alpha = 0.15f),
+                thumbColor = AvelisseColors.Primary,
+                activeTrackColor = AvelisseColors.Primary,
+                inactiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.3f),
+                disabledThumbColor = AvelisseColors.TextSecondary.copy(alpha = 0.5f),
+                disabledActiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.3f),
+                disabledInactiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.15f),
             ),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -275,14 +275,14 @@ private fun SoundPickerRow(
     ) {
         Text(
             text = label,
-            color = if (enabled) AvelisseColors.ModelsTextPrimary else AvelisseColors.ModelsTextSecondary,
+            color = if (enabled) AvelisseColors.TextPrimary else AvelisseColors.TextSecondary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
         Text(
             text = value,
-            color = AvelisseColors.ModelsTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
         )
@@ -290,7 +290,7 @@ private fun SoundPickerRow(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = AvelisseColors.ModelsTextSecondary,
+            tint = AvelisseColors.TextSecondary,
         )
     }
 }
@@ -298,7 +298,7 @@ private fun SoundPickerRow(
 @Composable
 private fun SoundDivider() {
     HorizontalDivider(
-        color = AvelisseColors.HomeSurfaceBorder,
+        color = AvelisseColors.Border,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
     )

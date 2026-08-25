@@ -103,7 +103,7 @@ fun OnboardingTestRecordingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.HomeBackground),
+            .background(AvelisseColors.Background),
     ) {
         // ── Layer 1: Upper content (idle text, "Recording..." + timer, or result card) ──
         when {
@@ -119,7 +119,7 @@ fun OnboardingTestRecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_result),
-                        color = AvelisseColors.HomeTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -132,7 +132,7 @@ fun OnboardingTestRecordingScreen(
                     ) {
                         Text(
                             text = transcriptionResult ?: "",
-                            color = AvelisseColors.HomeTextPrimary,
+                            color = AvelisseColors.TextPrimary,
                             fontSize = 17.sp,
                             lineHeight = 26.sp,
                         )
@@ -157,7 +157,7 @@ fun OnboardingTestRecordingScreen(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.onboarding_test_recording_cd_copy),
-                                tint = if (copied) AvelisseColors.HomeAccentSecondary else AvelisseColors.HomeTextSecondary,
+                                tint = if (copied) AvelisseColors.Secondary else AvelisseColors.TextSecondary,
                                 modifier = Modifier.size(20.dp),
                             )
                         }
@@ -190,7 +190,7 @@ fun OnboardingTestRecordingScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_title),
-                        color = AvelisseColors.HomeTextPrimary,
+                        color = AvelisseColors.TextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = (-0.5).sp,
@@ -200,7 +200,7 @@ fun OnboardingTestRecordingScreen(
 
                     Text(
                         text = stringResource(R.string.onboarding_test_recording_body),
-                        color = AvelisseColors.HomeTextSecondary,
+                        color = AvelisseColors.TextSecondary,
                         fontSize = 15.sp,
                         lineHeight = (15 * 1.5).sp,
                         textAlign = TextAlign.Center,
@@ -252,7 +252,7 @@ fun OnboardingTestRecordingScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(AvelisseColors.HomeAccentSecondary)
+                                .background(AvelisseColors.Secondary)
                                 .clickable {
                                     scope.launch {
                                         val result = dictationController?.confirmAndTranscribe()
@@ -275,13 +275,13 @@ fun OnboardingTestRecordingScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(AvelisseColors.HomeSurface),
+                                .background(AvelisseColors.Surface),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Mic,
                                 contentDescription = null,
-                                tint = AvelisseColors.HomeTextSecondary,
+                                tint = AvelisseColors.TextSecondary,
                                 modifier = Modifier.size(36.dp),
                             )
                         }
@@ -292,7 +292,7 @@ fun OnboardingTestRecordingScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(AvelisseColors.HomeAccent)
+                                .background(AvelisseColors.Primary)
                                 .clickable {
                                     dictationController?.startRecording()
                                 },
@@ -312,7 +312,7 @@ fun OnboardingTestRecordingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = if (isRecording) stringResource(R.string.onboarding_test_recording_tap_to_stop) else "",
-                    color = AvelisseColors.HomeTextSecondary,
+                    color = AvelisseColors.TextSecondary,
                     fontSize = 13.sp,
                 )
             }

@@ -7,12 +7,13 @@ import org.junit.Test
 /**
  * Unit tests for ThemeMode enum and theme-related color tokens.
  *
- * These tests verify the ThemeMode enum values exist and that the light/dark
- * color palette tokens have the correct hex values matching iOS AvelisseColors.swift.
+ * The Mediterranean Coastal palette (see DESIGN.md) is a single fixed palette —
+ * ThemeMode is preserved as a user-facing setting but no longer selects between
+ * two different color schemes (see AvelisseTheme.kt).
  *
- * NOTE: AvelisseTheme composable itself (which uses isSystemInDarkTheme) cannot
- * be tested in a pure JVM unit test without a Compose test rule. These tests
- * cover the data layer: enum values and color constants.
+ * NOTE: AvelisseTheme composable itself cannot be tested in a pure JVM unit
+ * test without a Compose test rule. These tests cover the data layer: enum
+ * values and color constants.
  */
 class AvelisseThemeTest {
 
@@ -37,24 +38,12 @@ class AvelisseThemeTest {
     }
 
     @Test
-    fun `dark background color matches iOS token 0A1628`() {
-        assertEquals(Color(0xFF0A1628), AvelisseColors.Background)
+    fun `background color matches Mediterranean Coastal token F7F7F7`() {
+        assertEquals(Color(0xFFF7F7F7), AvelisseColors.Background)
     }
 
     @Test
-    fun `light background color matches iOS token F2F2F7`() {
-        assertEquals(Color(0xFFF2F2F7), AvelisseColors.LightBackground)
-    }
-
-    @Test
-    fun `light surface color matches iOS token FFFFFF`() {
-        assertEquals(Color(0xFFFFFFFF), AvelisseColors.LightSurface)
-    }
-
-    @Test
-    fun `light and dark backgrounds are different`() {
-        assert(AvelisseColors.Background != AvelisseColors.LightBackground) {
-            "Dark and light backgrounds should have different colors"
-        }
+    fun `surface color matches Mediterranean Coastal token FFFFFF`() {
+        assertEquals(Color(0xFFFFFFFF), AvelisseColors.Surface)
     }
 }

@@ -93,8 +93,8 @@ fun KeyButton(
 
     // Caps lock check must come before isShifted since caps lock also sets isShifted=true
     val backgroundColor = when {
-        key.type == KeyType.SHIFT && isCapsLock -> AvelisseColors.AccentHighlight
-        key.type == KeyType.SHIFT && isShifted -> AvelisseColors.Accent
+        key.type == KeyType.SHIFT && isCapsLock -> AvelisseColors.Primary.copy(alpha = 0.3f)
+        key.type == KeyType.SHIFT && isShifted -> AvelisseColors.Primary
         key.type == KeyType.CHARACTER || key.type == KeyType.SPACE -> LocalAvelisseColors.current.keyBackground
         else -> LocalAvelisseColors.current.keySpecialBackground
     }

@@ -78,12 +78,12 @@ fun MicButtonRow(
                     elevation = 12.dp,
                     shape = RoundedCornerShape(20.dp),
                     ambientColor = if (isRecording) AvelisseColors.Recording.copy(alpha = 0.25f)
-                        else AvelisseColors.Accent.copy(alpha = 0.25f),
+                        else AvelisseColors.Primary.copy(alpha = 0.25f),
                     spotColor = if (isRecording) AvelisseColors.Recording.copy(alpha = 0.4f)
-                        else AvelisseColors.Accent.copy(alpha = 0.4f),
+                        else AvelisseColors.Primary.copy(alpha = 0.4f),
                 )
                 .clip(RoundedCornerShape(20.dp))
-                .background(if (isRecording) AvelisseColors.Recording else AvelisseColors.Accent)
+                .background(if (isRecording) AvelisseColors.Recording else AvelisseColors.Primary)
                 .clickable {
                     HapticHelper.performMicHaptic(view)
                     onMicTap()

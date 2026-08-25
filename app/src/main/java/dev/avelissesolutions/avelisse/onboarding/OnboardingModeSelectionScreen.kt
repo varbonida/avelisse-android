@@ -50,7 +50,7 @@ fun OnboardingModeSelectionScreen(
         Icon(
             imageVector = Icons.Default.GridView,
             contentDescription = null,
-            tint = AvelisseColors.HomeAccent,
+            tint = AvelisseColors.Primary,
             modifier = Modifier.size(64.dp),
         )
 
@@ -58,7 +58,7 @@ fun OnboardingModeSelectionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mode_selection_title),
-            color = AvelisseColors.HomeTextPrimary,
+            color = AvelisseColors.TextPrimary,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
             letterSpacing = (-0.5).sp,
@@ -68,7 +68,7 @@ fun OnboardingModeSelectionScreen(
 
         Text(
             text = stringResource(R.string.onboarding_mode_selection_body),
-            color = AvelisseColors.HomeTextSecondary,
+            color = AvelisseColors.TextSecondary,
             fontSize = 15.sp,
             lineHeight = (15 * 1.5).sp,
             textAlign = TextAlign.Center,
