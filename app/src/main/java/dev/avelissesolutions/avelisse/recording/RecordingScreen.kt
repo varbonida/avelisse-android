@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Mic
@@ -48,7 +49,6 @@ import dev.avelissesolutions.avelisse.core.ui.HomeGlassCard
 import dev.avelissesolutions.avelisse.core.ui.WaveformBars
 import dev.avelissesolutions.avelisse.core.ui.WaveformBlob
 import dev.avelissesolutions.avelisse.core.ui.WaveformDriver
-import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.launch
 
 /**
@@ -67,13 +67,18 @@ import kotlinx.coroutines.launch
  * Recording auto-starts on first composition so the user lands directly in recording
  * state — matching iOS Avelisse behavior where tapping "Nouvelle dictée" starts immediately.
  *
+ * The screen records and transcribes; what happens to the transcript is the caller's
+ * decision. It is handed over through [onTranscribed] rather than written here, so the
+ * screen has no opinion about where an entry is filed.
+ *
  * @param dictationController Controller for the DictationService (may be null if not yet bound).
- * @param onBack Called when the user taps the close button to return to Home.
+ * @param onTranscribed Called once with the finished transcript.
+ * @param onBack Called when the user leaves the screen.
  */
 @Composable
 fun RecordingScreen(
     dictationController: DictationController?,
-    dataStore: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>? = null,
+    onTranscribed: (String) -> Unit,
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -150,7 +155,7 @@ fun RecordingScreen(
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = stringResource(R.string.recording_result_title),
+                        text = stringResource(R.string.recording_saved_title),
                         color = AvelisseColors.TextPrimary,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -299,11 +304,8 @@ fun RecordingScreen(
                                 scope.launch {
                                     val result = dictationController?.confirmAndTranscribe()
                                     transcriptionResult = result ?: noResultLabel
-                                    // Persist last transcription to DataStore for HomeScreen
                                     if (result != null) {
-                                        dataStore?.edit { prefs ->
-                                            prefs[dev.avelissesolutions.avelisse.core.preferences.PreferenceKeys.LAST_TRANSCRIPTION] = result
-                                        }
+                                        onTranscribed(result)
                                     }
                                 }
                             },
@@ -337,22 +339,19 @@ fun RecordingScreen(
                 }
 
                 hasResult -> {
-                    // Teal mic button in result state — tapping re-records
+                    // The entry is already filed, so the only thing left to do is leave.
+                    // Re-recording here would file a second entry for the same moment.
                     Box(
                         modifier = Modifier
                             .size(90.dp)
                             .clip(CircleShape)
                             .background(AvelisseColors.Primary)
-                            .clickable {
-                                transcriptionResult = null
-                                copied = false
-                                dictationController?.startRecording()
-                            },
+                            .clickable(onClick = onBack),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Mic,
-                            contentDescription = stringResource(R.string.recording_new_dictation_cd),
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.recording_done),
                             tint = Color.White,
                             modifier = Modifier.size(36.dp),
                         )
@@ -386,7 +385,7 @@ fun RecordingScreen(
             Text(
                 text = when {
                     isRecording -> stringResource(R.string.recording_tap_to_stop)
-                    hasResult -> stringResource(R.string.recording_idle_title)
+                    hasResult -> stringResource(R.string.recording_done)
                     else -> ""
                 },
                 color = AvelisseColors.TextSecondary,

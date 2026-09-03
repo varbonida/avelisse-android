@@ -30,6 +30,8 @@ import dev.avelissesolutions.avelisse.core.service.DictationController
 import androidx.compose.material3.MaterialTheme
 import dev.avelissesolutions.avelisse.home.AvelisseWaveformLogo
 import dev.avelissesolutions.avelisse.home.HomeScreen
+import dev.avelissesolutions.avelisse.journal.JournalKind
+import dev.avelissesolutions.avelisse.journal.JournalRecordingViewModel
 import dev.avelissesolutions.avelisse.models.ModelsScreen
 import dev.avelissesolutions.avelisse.onboarding.OnboardingKeyboardSetupScreen
 import dev.avelissesolutions.avelisse.recording.RecordingScreen
@@ -243,7 +245,7 @@ private fun MainTabsScreen(
     // Hide the bottom nav bar when on the Recording screen so it gets full-screen immersion.
     // WHY conditional (not AnimatedVisibility): simple show/hide is sufficient here; there
     // is no animation spec for the nav bar in the design.
-    val showBottomBar = currentRoute != AppDestination.Recording.route &&
+    val showBottomBar = currentRoute != AppDestination.JournalRecording.route &&
         currentRoute != AppDestination.Licences.route &&
         currentRoute != AppDestination.DebugLogs.route &&
         currentRoute != AppDestination.SoundSettings.route &&
@@ -277,14 +279,15 @@ private fun MainTabsScreen(
         ) {
             composable(AppDestination.Home.route) {
                 HomeScreen(
-                    dataStore = dataStore,
-                    // Both logs open the existing recording flow for now. Filing what
-                    // they say into the journal is the next task.
                     onOpenSymptomLog = {
-                        navController.navigate(AppDestination.Recording.route)
+                        navController.navigate(
+                            AppDestination.JournalRecording.createRoute(JournalKind.SYMPTOM),
+                        )
                     },
                     onOpenVisitCapture = {
-                        navController.navigate(AppDestination.Recording.route)
+                        navController.navigate(
+                            AppDestination.JournalRecording.createRoute(JournalKind.VISIT),
+                        )
                     },
                 )
             }
@@ -329,10 +332,18 @@ private fun MainTabsScreen(
                     onBack = { navController.popBackStack() },
                 )
             }
-            composable(AppDestination.Recording.route) {
+            composable(AppDestination.JournalRecording.route) { backStackEntry ->
+                // The route is only ever built by createRoute, so the argument is a
+                // JournalKind name. A missing or unknown one is a routing bug, not a
+                // user-facing case, and should fail loudly here rather than file the
+                // entry under the wrong log.
+                val kind = JournalKind.valueOf(
+                    requireNotNull(backStackEntry.arguments?.getString("kind")),
+                )
+                val journalViewModel: JournalRecordingViewModel = hiltViewModel()
                 RecordingScreen(
                     dictationController = dictationController,
-                    dataStore = dataStore,
+                    onTranscribed = { text -> journalViewModel.save(kind, text) },
                     onBack = { navController.popBackStack() },
                 )
             }

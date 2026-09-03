@@ -1,5 +1,7 @@
 package dev.avelissesolutions.avelisse.navigation
 
+import dev.avelissesolutions.avelisse.journal.JournalKind
+
 /**
  * Type-safe navigation route definitions for the Avelisse app.
  *
@@ -31,8 +33,14 @@ sealed class AppDestination(val route: String) {
     /** Settings tab — language, haptics, sound, and app info. */
     data object Settings : AppDestination("settings")
 
-    /** Standalone recording screen — navigated from Home "Nouvelle dictée". */
-    data object Recording : AppDestination("recording")
+    /**
+     * Recording screen for one of the two logs, navigated from the Home buttons.
+     *
+     * @param kind Route parameter: the [JournalKind] name the entry will be filed under.
+     */
+    data object JournalRecording : AppDestination("journal/{kind}") {
+        fun createRoute(kind: JournalKind): String = "journal/${kind.name}"
+    }
 
     /** Licences screen — navigated from Settings > À propos > Licences. */
     data object Licences : AppDestination("licences")

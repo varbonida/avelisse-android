@@ -1,8 +1,5 @@
 ﻿package dev.avelissesolutions.avelisse.home
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,7 +8,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,14 +20,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -47,21 +41,14 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import dev.avelissesolutions.avelisse.R
-import dev.avelissesolutions.avelisse.core.preferences.PreferenceKeys
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
-import dev.avelissesolutions.avelisse.core.ui.HomeGlassCard
-import kotlinx.coroutines.flow.map
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.pow
@@ -87,25 +74,19 @@ private val LOG_BUTTON_GAP = 20.dp
  *
  * WHY the keyboard and the model are not here: they belong to the dictation keyboard,
  * which is a setting now rather than the point of the app. The active model moved to
- * the Models tab, one tap away. The last transcription stays, demoted above the
- * buttons, because someone who dictated into another app may still want to copy it.
+ * the Models tab, one tap away.
  *
- * @param dataStore Application DataStore, read for the last keyboard transcription.
+ * Recent entries are not here yet. They belong to the browse screen, and reading them
+ * from anywhere other than the journal itself would leave deleted text on this screen.
+ *
  * @param onOpenSymptomLog Opens the symptom log recording flow.
  * @param onOpenVisitCapture Opens the post-appointment recording flow.
  */
 @Composable
 fun HomeScreen(
-    dataStore: DataStore<Preferences>,
     onOpenSymptomLog: () -> Unit,
     onOpenVisitCapture: () -> Unit,
 ) {
-    val lastTranscription by remember(dataStore) {
-        dataStore.data.map { it[PreferenceKeys.LAST_TRANSCRIPTION] }
-    }.collectAsState(initial = null)
-
-    val context = LocalContext.current
-
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -136,21 +117,6 @@ fun HomeScreen(
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                if (!lastTranscription.isNullOrBlank()) {
-                    LastTranscriptionCard(
-                        text = lastTranscription.orEmpty(),
-                        onCopy = {
-                            val clipboard = context.getSystemService(
-                                Context.CLIPBOARD_SERVICE,
-                            ) as ClipboardManager
-                            clipboard.setPrimaryClip(
-                                ClipData.newPlainText("AVELISSE", lastTranscription),
-                            )
-                        },
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-                }
-
                 LogButton(
                     title = stringResource(R.string.home_symptom_title),
                     subtitle = stringResource(R.string.home_symptom_subtitle),
@@ -224,54 +190,6 @@ private fun LogButton(
                 lineHeight = 20.sp,
             )
         }
-    }
-}
-
-/**
- * The last thing dictated through the keyboard, with a copy control.
- *
- * Sits above the log buttons so the two actions stay lowest on the screen.
- */
-@Composable
-private fun LastTranscriptionCard(
-    text: String,
-    onCopy: () -> Unit,
-) {
-    HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.home_last_transcription),
-                color = AvelisseColors.TextSecondary,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
-            )
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickable(role = Role.Button, onClick = onCopy),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ContentCopy,
-                    contentDescription = stringResource(R.string.home_copy_cd),
-                    tint = AvelisseColors.TextSecondary,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = text,
-            color = AvelisseColors.TextPrimary,
-            fontSize = 16.sp,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-        )
     }
 }
 
