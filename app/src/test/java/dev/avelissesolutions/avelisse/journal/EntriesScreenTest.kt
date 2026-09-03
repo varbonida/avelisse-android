@@ -2,6 +2,7 @@ package dev.avelissesolutions.avelisse.journal
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import dev.avelissesolutions.avelisse.core.theme.AvelisseTheme
@@ -44,6 +45,7 @@ class EntriesScreenTest {
         entries: List<JournalEntry> = listOf(symptom, visit),
         query: String = "",
         onDelete: (String) -> Unit = {},
+        onExport: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             AvelisseTheme {
@@ -52,6 +54,7 @@ class EntriesScreenTest {
                     query = query,
                     onQueryChange = {},
                     onDelete = onDelete,
+                    onExport = onExport,
                     onBack = {},
                 )
             }
@@ -80,6 +83,23 @@ class EntriesScreenTest {
         setScreen(entries = emptyList(), query = "migraine")
 
         composeTestRule.onNodeWithText("Nothing matches that.").assertIsDisplayed()
+    }
+
+    @Test
+    fun `there is nothing to export from an empty journal`() {
+        setScreen(entries = emptyList())
+
+        composeTestRule.onNodeWithContentDescription("Export").assertDoesNotExist()
+    }
+
+    @Test
+    fun `exporting sends what is on screen`() {
+        var exported = 0
+        setScreen(onExport = { exported++ })
+
+        composeTestRule.onNodeWithContentDescription("Export").performClick()
+
+        assertEquals(1, exported)
     }
 
     @Test

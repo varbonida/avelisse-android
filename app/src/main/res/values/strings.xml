@@ -202,6 +202,9 @@
     <string name="entries_delete_body">It will be gone for good. Nothing was ever sent anywhere, so there is no other copy.</string>
     <string name="entries_delete_confirm">Delete it</string>
     <string name="entries_keep">Keep it</string>
+    <string name="entries_export_cd">Export</string>
+    <string name="entries_kind_symptom">Symptom</string>
+    <string name="entries_kind_visit">Appointment</string>
 
     <!-- RecordingScreen -->
     <string name="recording_saved_title">Saved</string>

@@ -1,5 +1,7 @@
 package dev.avelissesolutions.avelisse.journal
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +26,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -41,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -53,10 +57,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+
+/** What the save dialog creates. Plain text so anything can open it. */
+private const val EXPORT_MIME_TYPE = "text/plain"
 
 /** Smallest height of a tappable row. Nothing on this screen is smaller. */
 private val ROW_MIN_HEIGHT = 72.dp
@@ -78,11 +86,41 @@ fun EntriesScreen(
     val entries by viewModel.entries.collectAsStateWithLifecycle()
     val query by viewModel.query.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+    val formatter = remember { entryDateFormatter() }
+    val title = stringResource(R.string.entries_title)
+    val symptomLabel = stringResource(R.string.entries_kind_symptom)
+    val visitLabel = stringResource(R.string.entries_kind_visit)
+
+    // Held between opening the save dialog and the person choosing a destination, so what
+    // gets written is what was on screen when they pressed Export.
+    var pendingExport by remember { mutableStateOf("") }
+
+    val saveFile = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument(EXPORT_MIME_TYPE),
+    ) { destination ->
+        // Null means they backed out of the save dialog. Nothing to write, nothing to say.
+        if (destination != null) {
+            JournalExporter.writeTo(context, destination, pendingExport)
+        }
+    }
+
     EntriesScreenContent(
         entries = entries,
         query = query,
         onQueryChange = viewModel::setQuery,
         onDelete = viewModel::deleteEntry,
+        // Exports what is on screen: everything, or only what the search narrowed it to.
+        onExport = {
+            pendingExport = JournalExporter.buildExportText(title, entries) { entry ->
+                val kind = when (entry.kind) {
+                    JournalKind.SYMPTOM -> symptomLabel
+                    JournalKind.VISIT -> visitLabel
+                }
+                formatter.format(Instant.ofEpochMilli(entry.createdAt)) + " - " + kind
+            }
+            saveFile.launch(JournalExporter.suggestedFileName(LocalDate.now()))
+        },
         onBack = onBack,
     )
 }
@@ -96,6 +134,7 @@ internal fun EntriesScreenContent(
     query: String,
     onQueryChange: (String) -> Unit,
     onDelete: (String) -> Unit,
+    onExport: () -> Unit,
     onBack: () -> Unit,
 ) {
     var expandedId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -124,7 +163,17 @@ internal fun EntriesScreenContent(
                 color = AvelisseColors.TextPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f),
             )
+            if (entries.isNotEmpty()) {
+                IconButton(onClick = onExport) {
+                    Icon(
+                        imageVector = Icons.Filled.Share,
+                        contentDescription = stringResource(R.string.entries_export_cd),
+                        tint = AvelisseColors.TextPrimary,
+                    )
+                }
+            }
         }
 
         OutlinedTextField(
@@ -343,16 +392,15 @@ private fun JournalKind.dotColor() = when (this) {
     JournalKind.VISIT -> AvelisseColors.Secondary
 }
 
-/**
- * When the entry was said, in the reader's own language and date order.
- */
+/** When the entry was said, in the reader's own language and date order. */
+private fun entryDateFormatter(): DateTimeFormatter =
+    DateTimeFormatter
+        .ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+        .withLocale(Locale.getDefault())
+        .withZone(ZoneId.systemDefault())
+
 @Composable
 private fun formatEntryTimestamp(epochMillis: Long): String {
-    val formatter = remember {
-        DateTimeFormatter
-            .ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-            .withLocale(Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-    }
+    val formatter = remember { entryDateFormatter() }
     return formatter.format(Instant.ofEpochMilli(epochMillis))
 }
