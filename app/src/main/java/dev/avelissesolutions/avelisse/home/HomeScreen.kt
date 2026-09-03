@@ -6,7 +6,10 @@ import android.content.Context
 import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,14 +18,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,8 +46,11 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -54,7 +61,6 @@ import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.preferences.PreferenceKeys
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
 import dev.avelissesolutions.avelisse.core.ui.HomeGlassCard
-import dev.avelissesolutions.avelisse.model.ModelCatalog
 import kotlinx.coroutines.flow.map
 import kotlin.math.abs
 import kotlin.math.cos
@@ -62,186 +68,210 @@ import kotlin.math.pow
 import kotlin.math.sin
 
 /**
- * Home tab screen showing the AVELISSE logo, active model, and new dictation CTA.
+ * Smallest height of a log button. Large enough to hit without aiming, and a minimum
+ * rather than a fixed size so the button grows instead of clipping its label when the
+ * system font is scaled up.
+ */
+private val LOG_BUTTON_MIN_HEIGHT = 148.dp
+
+/** Gap between the two log buttons. Wide enough that a shaky thumb cannot cross it. */
+private val LOG_BUTTON_GAP = 20.dp
+
+/**
+ * Home tab — the two logs, and nothing competing with them.
  *
- * Layout matches iOS: centered waveform logo + "AVELISSE" wordmark, active model card,
- * and "Nouvelle dictée" button. Content is vertically centered.
+ * The person this is built for may be in bed, holding the phone in one hand, on a bad
+ * day. So the two buttons sit at the bottom of the screen where a thumb already rests,
+ * not centred where they would look best in a screenshot. Everything above them is
+ * glanceable and optional.
  *
- * @param dataStore Application DataStore for reading active model preference.
- * @param onNewDictation Callback for the "Nouvelle dictée" CTA.
+ * WHY the keyboard and the model are not here: they belong to the dictation keyboard,
+ * which is a setting now rather than the point of the app. The active model moved to
+ * the Models tab, one tap away. The last transcription stays, demoted above the
+ * buttons, because someone who dictated into another app may still want to copy it.
+ *
+ * @param dataStore Application DataStore, read for the last keyboard transcription.
+ * @param onOpenSymptomLog Opens the symptom log recording flow.
+ * @param onOpenVisitCapture Opens the post-appointment recording flow.
  */
 @Composable
 fun HomeScreen(
     dataStore: DataStore<Preferences>,
-    onNewDictation: () -> Unit,
+    onOpenSymptomLog: () -> Unit,
+    onOpenVisitCapture: () -> Unit,
 ) {
-    val activeModelKey by remember(dataStore) {
-        dataStore.data.map { it[PreferenceKeys.ACTIVE_MODEL] ?: ModelCatalog.DEFAULT_KEY }
-    }.collectAsState(initial = ModelCatalog.DEFAULT_KEY)
-
     val lastTranscription by remember(dataStore) {
         dataStore.data.map { it[PreferenceKeys.LAST_TRANSCRIPTION] }
     }.collectAsState(initial = null)
 
-    val activeModel = ModelCatalog.findByKey(activeModelKey)
     val context = LocalContext.current
 
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.Background)
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(AvelisseColors.Background),
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+                // At least a screenful, so the arrangement below has room to push the
+                // buttons to the bottom. Taller than a screen when the content needs it,
+                // at which point the scroll takes over and nothing is out of reach.
+                .heightIn(min = maxHeight)
+                .padding(horizontal = 16.dp, vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            // Two children: identity at the top, the two logs at the bottom where a
+            // thumb already rests. On a bad day nobody should have to reach.
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                AvelisseWaveformLogo()
+                Text(
+                    text = "AVELISSE",
+                    color = AvelisseColors.Primary,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
 
-        // Waveform logo (soundwave mark matching the app icon)
-        AvelisseWaveformLogo()
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (!lastTranscription.isNullOrBlank()) {
+                    LastTranscriptionCard(
+                        text = lastTranscription.orEmpty(),
+                        onCopy = {
+                            val clipboard = context.getSystemService(
+                                Context.CLIPBOARD_SERVICE,
+                            ) as ClipboardManager
+                            clipboard.setPrimaryClip(
+                                ClipData.newPlainText("AVELISSE", lastTranscription),
+                            )
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
-        Spacer(modifier = Modifier.height(12.dp))
+                LogButton(
+                    title = stringResource(R.string.home_symptom_title),
+                    subtitle = stringResource(R.string.home_symptom_subtitle),
+                    icon = Icons.Filled.MonitorHeart,
+                    gradient = listOf(AvelisseColors.Primary, AvelisseColors.PrimaryDark),
+                    onClick = onOpenSymptomLog,
+                )
 
-        // "AVELISSE" wordmark in accent teal
-        Text(
-            text = "AVELISSE",
-            color = AvelisseColors.Primary,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
+                Spacer(modifier = Modifier.height(LOG_BUTTON_GAP))
+
+                LogButton(
+                    title = stringResource(R.string.home_visit_title),
+                    subtitle = stringResource(R.string.home_visit_subtitle),
+                    icon = Icons.Filled.MedicalServices,
+                    gradient = listOf(AvelisseColors.SecondaryMid, AvelisseColors.SecondaryDark),
+                    onClick = onOpenVisitCapture,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * One of the two log buttons.
+ *
+ * The whole block is the target, so there is nothing small to aim at. Title and
+ * subtitle are read as one item by TalkBack rather than as two stray lines.
+ *
+ * WHY white text over two dark gradient stops: white has to clear 4.5:1 against every
+ * point of the gradient, not only its darkest end. That is why the terracotta button
+ * starts at [AvelisseColors.SecondaryMid] rather than the lighter brand secondary.
+ */
+@Composable
+private fun LogButton(
+    title: String,
+    subtitle: String,
+    icon: ImageVector,
+    gradient: List<Color>,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = LOG_BUTTON_MIN_HEIGHT)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Brush.verticalGradient(gradient))
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics(mergeDescendants = true) {}
+            .padding(horizontal = 24.dp, vertical = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(44.dp),
         )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Subtitle beneath the wordmark — secondary color/size, centered with it.
-        Text(
-            text = stringResource(R.string.home_tagline),
-            color = AvelisseColors.TextSecondary,
-            fontSize = 13.sp,
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Active model card
-        HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.width(20.dp))
+        Column {
             Text(
-                text = stringResource(R.string.home_active_model),
+                text = title,
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = subtitle,
+                color = Color.White,
+                fontSize = 15.sp,
+                lineHeight = 20.sp,
+            )
+        }
+    }
+}
+
+/**
+ * The last thing dictated through the keyboard, with a copy control.
+ *
+ * Sits above the log buttons so the two actions stay lowest on the screen.
+ */
+@Composable
+private fun LastTranscriptionCard(
+    text: String,
+    onCopy: () -> Unit,
+) {
+    HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.home_last_transcription),
                 color = AvelisseColors.TextSecondary,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth(),
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(role = Role.Button, onClick = onCopy),
+                contentAlignment = Alignment.Center,
             ) {
-                Column {
-                    Text(
-                        text = activeModel?.displayName ?: activeModelKey,
-                        color = AvelisseColors.TextPrimary,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    if (activeModel != null) {
-                        val sizeMb = activeModel.expectedSizeBytes / 1_000_000
-                        Text(
-                            text = stringResource(R.string.model_size_mb, sizeMb),
-                            color = AvelisseColors.TextSecondary,
-                            fontSize = 13.sp,
-                        )
-                    }
-                }
-                // Check circle
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(CircleShape)
-                        .background(AvelisseColors.Secondary),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = "\u2713",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            }
-        }
-
-        // Last transcription card (only shown when a transcription exists)
-        if (!lastTranscription.isNullOrBlank()) {
-            Spacer(modifier = Modifier.height(16.dp))
-            HomeGlassCard(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(R.string.home_last_transcription),
-                        color = AvelisseColors.TextSecondary,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
-                    Icon(
-                        imageVector = Icons.Default.ContentCopy,
-                        contentDescription = stringResource(R.string.home_copy_cd),
-                        tint = AvelisseColors.TextSecondary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable {
-                                val clipboard = context.getSystemService(
-                                    Context.CLIPBOARD_SERVICE,
-                                ) as ClipboardManager
-                                clipboard.setPrimaryClip(
-                                    ClipData.newPlainText("AVELISSE", lastTranscription),
-                                )
-                            },
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = lastTranscription ?: "",
-                    color = AvelisseColors.TextPrimary,
-                    fontSize = 16.sp,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
+                Icon(
+                    imageVector = Icons.Filled.ContentCopy,
+                    contentDescription = stringResource(R.string.home_copy_cd),
+                    tint = AvelisseColors.TextSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Nouvelle dictée CTA
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(AvelisseColors.Primary, AvelisseColors.PrimaryDark),
-                    )
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Button(
-                onClick = onNewDictation,
-                modifier = Modifier.fillMaxSize(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                ),
-                shape = RoundedCornerShape(14.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.home_new_dictation),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = text,
+            color = AvelisseColors.TextPrimary,
+            fontSize = 16.sp,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

@@ -187,11 +187,12 @@
     <string name="model_desc_parakeet_06b">25 languages \u2014 automatic detection</string>
 
     <!-- HomeScreen -->
-    <string name="home_tagline">Dictation Application</string>
-    <string name="home_active_model">Active model</string>
     <string name="home_last_transcription">Last transcription</string>
     <string name="home_copy_cd">Copy</string>
-    <string name="home_new_dictation">New dictation</string>
+    <string name="home_symptom_title">Symptom log</string>
+    <string name="home_symptom_subtitle">Something happened. Press, talk, done.</string>
+    <string name="home_visit_title">After an appointment</string>
+    <string name="home_visit_subtitle">What was said, while it is fresh.</string>
 
     <!-- RecordingScreen -->
     <string name="recording_result_title">Result</string>

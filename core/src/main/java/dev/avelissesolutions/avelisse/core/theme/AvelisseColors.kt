@@ -25,6 +25,13 @@ object AvelisseColors {
     /** Darkened shade of [Secondary], for the second stop of a two-color gradient. */
     val SecondaryDark = Color(0xFFA2451D)
 
+    /**
+     * Deepened [Secondary], used as the light stop of a terracotta gradient that has to
+     * carry white body text. [Secondary] itself only reaches 3.8:1 against white, which
+     * fails AA for anything below large type.
+     */
+    val SecondaryMid = Color(0xFFBF5122)
+
     // --- Accent (tertiary) ---
     val Accent = Color(0xFFFFB74D)
 

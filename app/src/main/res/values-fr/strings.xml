@@ -187,11 +187,12 @@
     <string name="model_desc_parakeet_06b">25 langues — détection automatique</string>
 
     <!-- HomeScreen -->
-    <string name="home_tagline">Application de dict\u00e9e</string>
-    <string name="home_active_model">Mod\u00e8le actif</string>
     <string name="home_last_transcription">Derni\u00e8re transcription</string>
     <string name="home_copy_cd">Copier</string>
-    <string name="home_new_dictation">Nouvelle dict\u00e9e</string>
+    <string name="home_symptom_title">Journal des sympt\u00f4mes</string>
+    <string name="home_symptom_subtitle">Il se passe quelque chose. Appuyez, parlez, c\'est fait.</string>
+    <string name="home_visit_title">Apr\u00e8s un rendez-vous</string>
+    <string name="home_visit_subtitle">Ce qui a \u00e9t\u00e9 dit, tant que c\'est frais.</string>
 
     <!-- RecordingScreen -->
     <string name="recording_result_title">R\u00e9sultat</string>

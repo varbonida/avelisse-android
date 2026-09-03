@@ -278,7 +278,12 @@ private fun MainTabsScreen(
             composable(AppDestination.Home.route) {
                 HomeScreen(
                     dataStore = dataStore,
-                    onNewDictation = {
+                    // Both logs open the existing recording flow for now. Filing what
+                    // they say into the journal is the next task.
+                    onOpenSymptomLog = {
+                        navController.navigate(AppDestination.Recording.route)
+                    },
+                    onOpenVisitCapture = {
                         navController.navigate(AppDestination.Recording.route)
                     },
                 )
