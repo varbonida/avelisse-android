@@ -32,12 +32,14 @@ class HomeScreenTest {
     }
 
     private fun setHome(
+        onOpenEntries: () -> Unit = {},
         onOpenSymptomLog: () -> Unit = {},
         onOpenVisitCapture: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             AvelisseTheme {
                 HomeScreen(
+                    onOpenEntries = onOpenEntries,
                     onOpenSymptomLog = onOpenSymptomLog,
                     onOpenVisitCapture = onOpenVisitCapture,
                 )
@@ -53,6 +55,16 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText("Something happened. Press, talk, done.").assertIsDisplayed()
         composeTestRule.onNodeWithText("After an appointment").assertIsDisplayed()
         composeTestRule.onNodeWithText("What was said, while it is fresh.").assertIsDisplayed()
+    }
+
+    @Test
+    fun `past entries are reachable from home`() {
+        var opened = 0
+        setHome(onOpenEntries = { opened++ })
+
+        composeTestRule.onNodeWithText("Your entries").performClick()
+
+        assertEquals(1, opened)
     }
 
     @Test

@@ -42,6 +42,9 @@ sealed class AppDestination(val route: String) {
         fun createRoute(kind: JournalKind): String = "journal/${kind.name}"
     }
 
+    /** Everything said into either log, browsable and searchable. */
+    data object Entries : AppDestination("entries")
+
     /** Licences screen — navigated from Settings > À propos > Licences. */
     data object Licences : AppDestination("licences")
 

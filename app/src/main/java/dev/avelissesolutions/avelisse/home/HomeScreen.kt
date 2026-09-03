@@ -3,6 +3,7 @@
 import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material3.Icon
@@ -76,14 +78,16 @@ private val LOG_BUTTON_GAP = 20.dp
  * which is a setting now rather than the point of the app. The active model moved to
  * the Models tab, one tap away.
  *
- * Recent entries are not here yet. They belong to the browse screen, and reading them
- * from anywhere other than the journal itself would leave deleted text on this screen.
+ * Past entries are one tap away rather than listed here. The link is outlined instead of
+ * filled so it reads as a way through rather than a third thing to decide between.
  *
+ * @param onOpenEntries Opens the list of past entries.
  * @param onOpenSymptomLog Opens the symptom log recording flow.
  * @param onOpenVisitCapture Opens the post-appointment recording flow.
  */
 @Composable
 fun HomeScreen(
+    onOpenEntries: () -> Unit,
     onOpenSymptomLog: () -> Unit,
     onOpenVisitCapture: () -> Unit,
 ) {
@@ -117,6 +121,10 @@ fun HomeScreen(
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                EntriesLink(onClick = onOpenEntries)
+
+                Spacer(modifier = Modifier.height(LOG_BUTTON_GAP))
+
                 LogButton(
                     title = stringResource(R.string.home_symptom_title),
                     subtitle = stringResource(R.string.home_symptom_subtitle),
@@ -136,6 +144,41 @@ fun HomeScreen(
                 )
             }
         }
+    }
+}
+
+/**
+ * The way through to everything already said.
+ *
+ * Outlined rather than filled: it is navigation sitting next to the two actions, and it
+ * should not compete with them for the first glance.
+ */
+@Composable
+private fun EntriesLink(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 64.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(AvelisseColors.Surface)
+            .border(1.dp, AvelisseColors.Border, RoundedCornerShape(20.dp))
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.home_entries),
+            color = AvelisseColors.TextPrimary,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.weight(1f),
+        )
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = AvelisseColors.TextSecondary,
+            modifier = Modifier.size(24.dp),
+        )
     }
 }
 

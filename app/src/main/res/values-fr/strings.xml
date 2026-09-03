@@ -191,6 +191,17 @@
     <string name="home_symptom_subtitle">Il se passe quelque chose. Appuyez, parlez, c\'est fait.</string>
     <string name="home_visit_title">Apr\u00e8s un rendez-vous</string>
     <string name="home_visit_subtitle">Ce qui a \u00e9t\u00e9 dit, tant que c\'est frais.</string>
+    <string name="home_entries">Vos notes</string>
+    <string name="entries_title">Vos notes</string>
+    <string name="entries_back_cd">Retour</string>
+    <string name="entries_search_hint">Rechercher</string>
+    <string name="entries_empty">Rien pour l\'instant. Appuyez sur un des deux boutons de l\'accueil et parlez.</string>
+    <string name="entries_no_results">Aucun r\u00e9sultat.</string>
+    <string name="entries_delete">Supprimer</string>
+    <string name="entries_delete_title">Supprimer cette note ?</string>
+    <string name="entries_delete_body">Elle sera d\u00e9finitivement perdue. Rien n\'a jamais \u00e9t\u00e9 envoy\u00e9 ailleurs, il n\'y a donc pas d\'autre copie.</string>
+    <string name="entries_delete_confirm">Oui, supprimer</string>
+    <string name="entries_keep">Garder</string>
 
     <!-- RecordingScreen -->
     <string name="recording_saved_title">Enregistr\u00e9</string>

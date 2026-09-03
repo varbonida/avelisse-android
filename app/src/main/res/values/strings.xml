@@ -191,6 +191,17 @@
     <string name="home_symptom_subtitle">Something happened. Press, talk, done.</string>
     <string name="home_visit_title">After an appointment</string>
     <string name="home_visit_subtitle">What was said, while it is fresh.</string>
+    <string name="home_entries">Your entries</string>
+    <string name="entries_title">Your entries</string>
+    <string name="entries_back_cd">Back</string>
+    <string name="entries_search_hint">Search</string>
+    <string name="entries_empty">Nothing here yet. Press one of the two buttons on the home screen and talk.</string>
+    <string name="entries_no_results">Nothing matches that.</string>
+    <string name="entries_delete">Delete</string>
+    <string name="entries_delete_title">Delete this entry?</string>
+    <string name="entries_delete_body">It will be gone for good. Nothing was ever sent anywhere, so there is no other copy.</string>
+    <string name="entries_delete_confirm">Delete it</string>
+    <string name="entries_keep">Keep it</string>
 
     <!-- RecordingScreen -->
     <string name="recording_saved_title">Saved</string>

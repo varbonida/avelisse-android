@@ -30,6 +30,7 @@ import dev.avelissesolutions.avelisse.core.service.DictationController
 import androidx.compose.material3.MaterialTheme
 import dev.avelissesolutions.avelisse.home.AvelisseWaveformLogo
 import dev.avelissesolutions.avelisse.home.HomeScreen
+import dev.avelissesolutions.avelisse.journal.EntriesScreen
 import dev.avelissesolutions.avelisse.journal.JournalKind
 import dev.avelissesolutions.avelisse.journal.JournalRecordingViewModel
 import dev.avelissesolutions.avelisse.models.ModelsScreen
@@ -246,6 +247,7 @@ private fun MainTabsScreen(
     // WHY conditional (not AnimatedVisibility): simple show/hide is sufficient here; there
     // is no animation spec for the nav bar in the design.
     val showBottomBar = currentRoute != AppDestination.JournalRecording.route &&
+        currentRoute != AppDestination.Entries.route &&
         currentRoute != AppDestination.Licences.route &&
         currentRoute != AppDestination.DebugLogs.route &&
         currentRoute != AppDestination.SoundSettings.route &&
@@ -279,6 +281,9 @@ private fun MainTabsScreen(
         ) {
             composable(AppDestination.Home.route) {
                 HomeScreen(
+                    onOpenEntries = {
+                        navController.navigate(AppDestination.Entries.route)
+                    },
                     onOpenSymptomLog = {
                         navController.navigate(
                             AppDestination.JournalRecording.createRoute(JournalKind.SYMPTOM),
@@ -329,6 +334,11 @@ private fun MainTabsScreen(
                 val soundType = backStackEntry.arguments?.getString("soundType") ?: "start"
                 SoundPickerScreen(
                     soundType = soundType,
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(AppDestination.Entries.route) {
+                EntriesScreen(
                     onBack = { navController.popBackStack() },
                 )
             }
