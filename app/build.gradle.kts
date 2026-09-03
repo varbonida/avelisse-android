@@ -80,6 +80,12 @@ android {
     }
 }
 
+// Room writes the schema of each database version here. Version 1 has to be recorded
+// before version 2 ships, or the first migration cannot be verified against it.
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 licensee {
     allow("Apache-2.0")
     allow("MIT")
@@ -133,6 +139,9 @@ dependencies {
     implementation("org.apache.commons:commons-compress:1.26.1")
     implementation(libs.navigation.compose)
     implementation(libs.datastore.preferences)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.coroutines.android)
     implementation(libs.compose.material.icons.extended)
