@@ -3,6 +3,7 @@ package dev.avelissesolutions.avelisse.service
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import dev.avelissesolutions.avelisse.BuildConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -80,6 +81,16 @@ class AudioCaptureManager {
     private var segmentDir: File? = null
     private var samplesInSegment = 0
     private var quietRunSamples = 0
+
+    // Diagnostic only: how loud the microphone actually is on this device, in this
+    // room. QUIET_ENERGY has been guessed twice and been wrong twice, once too
+    // permissive and once too strict, so the value wants setting from a measurement
+    // rather than from reasoning about the curve. Remove once it is settled.
+    private var rmsWindowMin = Float.MAX_VALUE
+    private var rmsWindowMax = 0f
+    private var rmsWindowSum = 0f
+    private var rmsWindowCount = 0
+    private var rmsWindowSamples = 0
     private val segments = mutableListOf<File>()
 
     // Guards onEnergyUpdate against firing after stop()/cancel() has returned.
@@ -160,6 +171,8 @@ class AudioCaptureManager {
                     val rms = calculateRmsEnergy(readBuffer, read)
                     val normalized = normalizeEnergy(rms)
 
+                    if (BuildConfig.DEBUG) recordRmsForTuning(rms, read)
+
                     writeSamples(readBuffer, read)
                     quietRunSamples = if (normalized <= QUIET_ENERGY) quietRunSamples + read else 0
                     if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
@@ -239,6 +252,35 @@ class AudioCaptureManager {
         val out = writer ?: return
         for (i in 0 until count) out.writeFloat(buffer[i])
         samplesInSegment += count
+    }
+
+    /**
+     * Logs the raw RMS range roughly twice a second while recording.
+     *
+     * Raw, not the [normalizeEnergy] value: that curve multiplies by 20 and takes a
+     * square root so quiet sounds show up on the waveform, which squashes speech and
+     * room tone together near the top and makes it useless for telling them apart.
+     */
+    private fun recordRmsForTuning(rms: Float, read: Int) {
+        rmsWindowMin = minOf(rmsWindowMin, rms)
+        rmsWindowMax = maxOf(rmsWindowMax, rms)
+        rmsWindowSum += rms
+        rmsWindowCount++
+        rmsWindowSamples += read
+
+        if (rmsWindowSamples < SAMPLE_RATE / 2) return
+        Timber.d(
+            "RMS over %.1fs: min=%.5f mean=%.5f max=%.5f",
+            rmsWindowSamples.toFloat() / SAMPLE_RATE,
+            rmsWindowMin,
+            rmsWindowSum / rmsWindowCount,
+            rmsWindowMax,
+        )
+        rmsWindowMin = Float.MAX_VALUE
+        rmsWindowMax = 0f
+        rmsWindowSum = 0f
+        rmsWindowCount = 0
+        rmsWindowSamples = 0
     }
 
     private fun closeWriter() {

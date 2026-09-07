@@ -336,19 +336,25 @@ class DictationService : Service(), DictationController {
             //    so a long recording can no longer be discarded for taking too long,
             //    and an engine that hangs still has a way out. A segment that times
             //    out costs its own half minute and nothing either side of it.
-            val rawText = buildString {
-                for (segment in segments) {
-                    val text = withTimeoutOrNull(TRANSCRIPTION_TIMEOUT_MS) {
-                        provider.transcribe(readSegment(segment), whisperLanguage ?: "fr")
-                    }
-                    if (text == null) {
-                        Timber.e("Segment %s timed out after %d ms, skipping", segment.name, TRANSCRIPTION_TIMEOUT_MS)
-                        continue
-                    }
-                    append(text)
-                    _state.value = DictationState.Transcribing(toString().trim())
+            //    Each segment's text is trimmed and the pieces joined with a single
+            //    space. Whisper returns a leading space and Parakeet does not, so
+            //    appending raw ran the last word of one segment into the first word of
+            //    the next ("slightly lessMargare").
+            val parts = mutableListOf<String>()
+            for (segment in segments) {
+                val text = withTimeoutOrNull(TRANSCRIPTION_TIMEOUT_MS) {
+                    provider.transcribe(readSegment(segment), whisperLanguage ?: "fr")
                 }
+                if (text == null) {
+                    Timber.e("Segment %s timed out after %d ms, skipping", segment.name, TRANSCRIPTION_TIMEOUT_MS)
+                    continue
+                }
+                val trimmed = text.trim()
+                if (trimmed.isEmpty()) continue
+                parts += trimmed
+                _state.value = DictationState.Transcribing(parts.joinToString(" "))
             }
+            val rawText = parts.joinToString(" ")
 
             // 6. Post-process (trim + punctuation)
             val processedText = TextPostProcessor.process(rawText)
