@@ -96,6 +96,14 @@ fun RecordingScreen(
         dictationController?.startRecording()
     }
 
+    // Leaving mid-recording has to stop it. There is no route back into this screen to
+    // finish it, so a recording left running is one nobody can reach, still holding the
+    // microphone and still writing to disk.
+    val leave = {
+        if (dictationState is DictationState.Recording) dictationController?.cancelRecording()
+        onBack()
+    }
+
     // Processing animation driver for the transcribing state.
     // Uses WaveformDriver.processingEnergy() — same formula as iOS BrandWaveformDriver.
     val processingDriver = remember {
@@ -131,7 +139,7 @@ fun RecordingScreen(
                 .align(Alignment.TopStart)
                 .padding(start = 32.dp, top = 16.dp)
                 .clip(CircleShape)
-                .clickable(onClick = onBack)
+                .clickable(onClick = leave)
                 .padding(8.dp),
         ) {
             Icon(
@@ -286,6 +294,23 @@ fun RecordingScreen(
                         // padding for the whole screen — this state's look is unchanged.
                         TranscribingIndicator(processingPhase = processingPhase)
 
+                        // The text so far, growing as each piece of the recording is
+                        // finished. A long recording otherwise leaves a still screen
+                        // for minutes, which looks broken and invites a force quit.
+                        val soFar = (dictationState as DictationState.Transcribing).textSoFar
+                        if (soFar.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = soFar,
+                                color = AvelisseColors.TextPrimary,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 32.dp),
+                            )
+                        }
+
                         Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
@@ -346,7 +371,7 @@ fun RecordingScreen(
                             .size(90.dp)
                             .clip(CircleShape)
                             .background(AvelisseColors.Primary)
-                            .clickable(onClick = onBack),
+                            .clickable(onClick = leave),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(

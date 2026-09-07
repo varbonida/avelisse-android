@@ -21,8 +21,8 @@ interface DictationController {
     /** Start recording via foreground service. */
     fun startRecording()
 
-    /** Stop recording and return captured audio buffer. */
-    fun stopRecording(): FloatArray
+    /** Stop recording and discard the audio. */
+    fun stopRecording()
 
     /** Cancel recording and discard all audio data. */
     fun cancelRecording()

@@ -9,14 +9,28 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.BufferedOutputStream
+import java.io.DataOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.ByteBuffer
 import kotlin.math.sqrt
 
 /**
  * Wraps the Android AudioRecord API to capture 16kHz mono Float32 audio.
  *
- * Audio samples accumulate in an in-memory buffer (ArrayList<Float>).
- * RMS energy is calculated per read chunk and stored in a rolling 30-entry
- * history for waveform visualization.
+ * Audio is written to a series of segment files as it is captured, each about
+ * half a minute long and ending where the person paused. RMS energy is calculated
+ * per read chunk and stored in a rolling 30-entry history for waveform visualization.
+ *
+ * WHY segments on disk and not one buffer in memory: samples used to accumulate in an
+ * ArrayList<Float>, which costs about 20 bytes for every 4-byte sample once boxed. At
+ * 16kHz that is roughly 19 MB a minute, so a post-visit capture ran the phone out of
+ * heap several minutes in and the person lost everything they had said.
+ *
+ * WHY cut while recording rather than afterwards: the read loop already measures
+ * loudness for the waveform, so a pause is free to spot here. Finding one later would
+ * mean reading the whole recording back and searching it.
  *
  * WHY Float32 (ENCODING_PCM_FLOAT): whisper.cpp expects float input.
  * Capturing directly in float avoids a PCM_16BIT-to-float conversion step.
@@ -32,11 +46,36 @@ class AudioCaptureManager {
         private const val CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO
         private const val AUDIO_FORMAT = AudioFormat.ENCODING_PCM_FLOAT
         private const val MAX_ENERGY_HISTORY = 30
+
+        /** Shortest a segment may be before a pause is allowed to end it. */
+        const val SEGMENT_MIN_SAMPLES = 25 * SAMPLE_RATE
+
+        /**
+         * Longest a segment may run without a pause.
+         *
+         * Someone talking without a break still gets cut here. That may split a word,
+         * which costs one rough join. Letting the segment grow instead would put the
+         * memory problem back.
+         */
+        const val SEGMENT_MAX_SAMPLES = 35 * SAMPLE_RATE
+
+        /**
+         * Normalized energy at or below which the microphone is treated as quiet.
+         *
+         * [normalizeEnergy] puts speech near 0.8-1.0 and a room with nobody talking
+         * nearer 0.2-0.4, so this sits between them. Needs confirming on a real phone
+         * in a real room; if it is wrong the only cost is more cuts landing at
+         * [SEGMENT_MAX_SAMPLES] instead of at a pause.
+         */
+        const val QUIET_ENERGY = 0.5f
     }
 
     private var recorder: AudioRecord? = null
     private var captureJob: Job? = null
-    private val samples = ArrayList<Float>()
+    private var writer: DataOutputStream? = null
+    private var segmentDir: File? = null
+    private var samplesInSegment = 0
+    private val segments = mutableListOf<File>()
 
     // Guards onEnergyUpdate against firing after stop()/cancel() has returned.
     // captureJob.cancel() is cooperative -- the read loop can be blocked inside
@@ -67,8 +106,10 @@ class AudioCaptureManager {
      * @param scope CoroutineScope tied to the service lifecycle. The read loop
      *              runs on Dispatchers.Default (background thread pool) so it
      *              doesn't block the main thread.
+     * @param dir Directory the segment files are written into. Emptied first, so
+     *            anything a previous run left behind goes with it.
      */
-    fun start(scope: CoroutineScope) {
+    fun start(scope: CoroutineScope, dir: File) {
         val minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT)
         if (minBufferSize <= 0) {
             Timber.e("AudioRecord.getMinBufferSize returned $minBufferSize -- device may not support ENCODING_PCM_FLOAT")
@@ -95,6 +136,12 @@ class AudioCaptureManager {
             Timber.d("AudioRecord started: ${SAMPLE_RATE}Hz mono Float32, buffer=$bufferSize")
         }
 
+        dir.mkdirs()
+        dir.listFiles()?.forEach { it.delete() }
+        segmentDir = dir
+        segments.clear()
+        openSegment()
+
         synchronized(captureLock) { isCapturing = true }
 
         // Read loop on a background thread.
@@ -105,13 +152,14 @@ class AudioCaptureManager {
             while (isActive) {
                 val read = recorder?.read(readBuffer, 0, readBuffer.size, AudioRecord.READ_BLOCKING) ?: break
                 if (read > 0) {
-                    synchronized(samples) {
-                        for (i in 0 until read) {
-                            samples.add(readBuffer[i])
-                        }
-                    }
                     val rms = calculateRmsEnergy(readBuffer, read)
                     val normalized = normalizeEnergy(rms)
+
+                    writeSamples(readBuffer, read)
+                    if (shouldCloseSegment(samplesInSegment, normalized)) {
+                        openSegment()
+                    }
+
                     addEnergyToHistory(normalized)
                     synchronized(captureLock) {
                         if (isCapturing) onEnergyUpdate?.invoke(normalized)
@@ -122,42 +170,72 @@ class AudioCaptureManager {
     }
 
     /**
-     * Stop capturing and return the collected audio samples.
+     * Stop capturing and return the recording, in order.
      *
-     * @return FloatArray of all captured samples at 16kHz mono.
+     * @return the segment files, oldest first. Empty if nothing was captured.
      */
-    fun stop(): FloatArray {
+    fun stop(): List<File> {
         synchronized(captureLock) { isCapturing = false }
         captureJob?.cancel()
         captureJob = null
         recorder?.stop()
         recorder?.release()
         recorder = null
-        Timber.d("AudioRecord stopped, captured ${samples.size} samples")
-        val result: FloatArray
-        synchronized(samples) {
-            result = samples.toFloatArray()
-            samples.clear()
-        }
+        closeWriter()
         resetEnergyHistory()
+
+        // A segment holding no samples is one that was opened and never written to,
+        // which happens whenever a recording ends right after a cut.
+        val result = segments.filter { it.length() > 0 }.toList()
+        segments.clear()
+        Timber.d("AudioRecord stopped, %d segment(s)", result.size)
         return result
     }
 
     /**
-     * Cancel capturing and discard all audio data.
+     * Cancel capturing and delete the audio.
      */
     fun cancel() {
-        synchronized(captureLock) { isCapturing = false }
-        captureJob?.cancel()
-        captureJob = null
-        recorder?.stop()
-        recorder?.release()
-        recorder = null
-        synchronized(samples) {
-            samples.clear()
-        }
-        resetEnergyHistory()
-        Timber.d("AudioRecord cancelled, samples discarded")
+        stop().forEach { it.delete() }
+        segmentDir?.listFiles()?.forEach { it.delete() }
+        segmentDir = null
+        Timber.d("AudioRecord cancelled, segments deleted")
+    }
+
+    /**
+     * Whether the segment being written should end here.
+     *
+     * Ends it at the first quiet moment once the segment is long enough, and forces
+     * the cut at [SEGMENT_MAX_SAMPLES] so someone who never pauses still gets pieces.
+     * Public for testability.
+     */
+    fun shouldCloseSegment(samplesInSegment: Int, energy: Float): Boolean = when {
+        samplesInSegment >= SEGMENT_MAX_SAMPLES -> true
+        samplesInSegment >= SEGMENT_MIN_SAMPLES -> energy <= QUIET_ENERGY
+        else -> false
+    }
+
+    /** Close the current segment, if any, and begin the next one. */
+    private fun openSegment() {
+        closeWriter()
+        val dir = segmentDir ?: return
+        val file = File(dir, "segment-%03d.pcm".format(segments.size))
+        segments += file
+        writer = DataOutputStream(BufferedOutputStream(FileOutputStream(file)))
+        samplesInSegment = 0
+    }
+
+    private fun writeSamples(buffer: FloatArray, count: Int) {
+        val out = writer ?: return
+        for (i in 0 until count) out.writeFloat(buffer[i])
+        samplesInSegment += count
+    }
+
+    private fun closeWriter() {
+        runCatching { writer?.close() }
+            .onFailure { Timber.e(it, "Failed to close segment writer") }
+        writer = null
+        samplesInSegment = 0
     }
 
     /**
@@ -227,4 +305,21 @@ class AudioCaptureManager {
         energyHistory.clear()
         repeat(MAX_ENERGY_HISTORY) { energyHistory.addLast(0f) }
     }
+}
+
+/**
+ * Reads one segment file back into samples.
+ *
+ * A segment runs at most 35 seconds, so this is a couple of megabytes at worst. That
+ * is the point of segments: transcription never holds more than one at a time, however
+ * long the recording was.
+ *
+ * DataOutputStream.writeFloat is big-endian, which is also ByteBuffer's default, so the
+ * two agree without setting an order.
+ */
+fun readSegment(file: File): FloatArray {
+    val bytes = file.readBytes()
+    val samples = FloatArray(bytes.size / 4)
+    ByteBuffer.wrap(bytes).asFloatBuffer().get(samples)
+    return samples
 }

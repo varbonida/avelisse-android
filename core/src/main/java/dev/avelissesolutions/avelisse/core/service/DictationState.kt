@@ -31,6 +31,13 @@ sealed class DictationState {
         val energy: List<Float> = emptyList(),
     ) : DictationState()
 
-    /** Transcription is in progress. No user action possible -- wait for result. */
-    data object Transcribing : DictationState()
+    /**
+     * Transcription is in progress. No user action possible -- wait for result.
+     *
+     * @param textSoFar What has come back from the engine up to now, growing as each
+     *                  piece of the recording is finished. Shown on screen so a long
+     *                  recording does not sit motionless for minutes after the person
+     *                  stops, which reads as broken and invites a force quit.
+     */
+    data class Transcribing(val textSoFar: String = "") : DictationState()
 }

@@ -19,17 +19,15 @@ class FakeDictationController : DictationController {
     var startRecordingCallCount = 0; private set
     var stopRecordingCallCount = 0; private set
     var cancelRecordingCallCount = 0; private set
-    var stopRecordingResult = FloatArray(0)
 
     override fun startRecording() {
         startRecordingCallCount++
         _state.value = DictationState.Recording(elapsedMs = 0L, energy = emptyList())
     }
 
-    override fun stopRecording(): FloatArray {
+    override fun stopRecording() {
         stopRecordingCallCount++
         _state.value = DictationState.Idle
-        return stopRecordingResult
     }
 
     override fun cancelRecording() {
@@ -42,7 +40,7 @@ class FakeDictationController : DictationController {
 
     override suspend fun confirmAndTranscribe(): String? {
         confirmAndTranscribeCallCount++
-        _state.value = DictationState.Transcribing
+        _state.value = DictationState.Transcribing()
         val result = transcriptionResult
         _state.value = DictationState.Idle
         return result

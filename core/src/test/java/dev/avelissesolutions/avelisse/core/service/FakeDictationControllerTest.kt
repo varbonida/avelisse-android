@@ -33,15 +33,12 @@ class FakeDictationControllerTest {
     }
 
     @Test
-    fun `stopRecording transitions to Idle and returns result`() {
-        val expected = floatArrayOf(0.1f, 0.2f, 0.3f)
-        controller.stopRecordingResult = expected
+    fun `stopRecording transitions to Idle`() {
         controller.startRecording()
 
-        val result = controller.stopRecording()
+        controller.stopRecording()
 
         assertTrue(controller.state.value is DictationState.Idle)
-        assertArrayEquals(expected, result, 0.001f)
         assertEquals(1, controller.stopRecordingCallCount)
     }
 

@@ -44,6 +44,7 @@ import dev.avelissesolutions.avelisse.core.whisper.TextPostProcessor
 import dev.avelissesolutions.avelisse.model.AiProvider
 import dev.avelissesolutions.avelisse.model.ModelManager
 import timber.log.Timber
+import java.io.File
 
 /**
  * Foreground service that manages audio recording for voice dictation.
@@ -232,24 +233,18 @@ class DictationService : Service(), DictationController {
     }
 
     /**
-     * Stop recording and return the captured audio buffer.
+     * Stop recording and discard the audio.
      *
-     * The audio data is returned as a FloatArray of 16kHz mono samples,
-     * ready to be passed to whisper.cpp for transcription (Phase 3).
-     *
-     * @return FloatArray of captured audio samples, or empty array if not recording.
+     * WHY discard: both callers already threw away the samples this used to return,
+     * so the recording has no destination. Deleting it keeps the segment files from
+     * piling up on disk for a recording nobody asked to keep.
      */
-    override fun stopRecording(): FloatArray {
-        val samples = audioCaptureManager?.stop() ?: FloatArray(0)
-        timerJob?.cancel()
-        timerJob = null
-        elapsedMs = 0L
+    override fun stopRecording() {
         if (soundEnabled) soundPlayer.playStop()
-        _state.value = DictationState.Idle
+        stopRecordingInternal(discard = true)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
-        Timber.d("Recording stopped, ${samples.size} samples captured")
-        return samples
+        Timber.d("Recording stopped and discarded")
     }
 
     /**
@@ -278,14 +273,14 @@ class DictationService : Service(), DictationController {
      */
     override suspend fun confirmAndTranscribe(): String? {
         // 1. Stop recording and get audio samples
-        val samples = audioCaptureManager?.stop() ?: FloatArray(0)
+        val segments = audioCaptureManager?.stop() ?: emptyList()
         timerJob?.cancel()
         timerJob = null
         elapsedMs = 0L
         audioCaptureManager = null
 
-        if (samples.isEmpty()) {
-            Timber.w("confirmAndTranscribe: no audio samples captured")
+        if (segments.isEmpty()) {
+            Timber.w("confirmAndTranscribe: nothing was recorded")
             _state.value = DictationState.Idle
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
@@ -295,8 +290,8 @@ class DictationService : Service(), DictationController {
         // Play stop cue when audio capture ends and transcription begins.
         if (soundEnabled) soundPlayer.playStop()
 
-        Timber.d("confirmAndTranscribe: %d samples captured, transitioning to Transcribing", samples.size)
-        _state.value = DictationState.Transcribing
+        Timber.d("confirmAndTranscribe: %d segment(s), transitioning to Transcribing", segments.size)
+        _state.value = DictationState.Transcribing()
 
         return try {
             // 2. Read user preferences at transcription time so changes take effect
@@ -336,17 +331,23 @@ class DictationService : Service(), DictationController {
                 return null
             }
 
-            // 5. Transcribe with timeout
-            val rawText = withTimeoutOrNull(TRANSCRIPTION_TIMEOUT_MS) {
-                provider.transcribe(samples, whisperLanguage ?: "fr")
-            }
-
-            if (rawText == null) {
-                Timber.e("Transcription timed out after %d ms", TRANSCRIPTION_TIMEOUT_MS)
-                _state.value = DictationState.Idle
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                stopSelf()
-                return null
+            // 5. Transcribe a segment at a time, publishing the text as it lands.
+            //    The timeout applies to each segment rather than the whole recording,
+            //    so a long recording can no longer be discarded for taking too long,
+            //    and an engine that hangs still has a way out. A segment that times
+            //    out costs its own half minute and nothing either side of it.
+            val rawText = buildString {
+                for (segment in segments) {
+                    val text = withTimeoutOrNull(TRANSCRIPTION_TIMEOUT_MS) {
+                        provider.transcribe(readSegment(segment), whisperLanguage ?: "fr")
+                    }
+                    if (text == null) {
+                        Timber.e("Segment %s timed out after %d ms, skipping", segment.name, TRANSCRIPTION_TIMEOUT_MS)
+                        continue
+                    }
+                    append(text)
+                    _state.value = DictationState.Transcribing(toString().trim())
+                }
             }
 
             // 6. Post-process (trim + punctuation)
@@ -368,8 +369,15 @@ class DictationService : Service(), DictationController {
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             null
+        } finally {
+            // The audio is working scratch. An entry keeps the transcript only, so the
+            // segments go whether transcription succeeded, failed or threw.
+            segments.forEach { it.delete() }
         }
     }
+
+    /** Where segment files live while a recording is in progress. */
+    private fun recordingDir(): File = File(filesDir, "recording")
 
     /**
      * Get or initialize the correct STT provider based on the active model's provider type.
@@ -431,6 +439,14 @@ class DictationService : Service(), DictationController {
      * Initialize AudioCaptureManager and start the read loop + timer.
      */
     private fun startAudioCapture() {
+        // Starting a second recording used to leave the first one running: its read
+        // loop lives in serviceScope and the only reference to it was overwritten
+        // here. Two loops then recorded at once off one microphone.
+        audioCaptureManager?.let {
+            Timber.w("A recording was already running; cancelling it before starting another")
+            it.cancel()
+        }
+
         val manager = AudioCaptureManager()
         audioCaptureManager = manager
 
@@ -449,7 +465,7 @@ class DictationService : Service(), DictationController {
             }
         }
 
-        manager.start(serviceScope)
+        manager.start(serviceScope, recordingDir())
 
         // Timer coroutine: increments elapsed time every second.
         // Runs on Main dispatcher since it only updates the state flow.
