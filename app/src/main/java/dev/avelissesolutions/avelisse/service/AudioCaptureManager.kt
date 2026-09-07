@@ -59,15 +59,19 @@ class AudioCaptureManager {
          */
         const val SEGMENT_MAX_SAMPLES = 35 * SAMPLE_RATE
 
-        /**
-         * Normalized energy at or below which the microphone is treated as quiet.
-         *
-         * [normalizeEnergy] puts speech near 0.8-1.0 and a room with nobody talking
-         * nearer 0.2-0.4, so this sits between them. Needs confirming on a real phone
-         * in a real room; if it is wrong the only cost is more cuts landing at
-         * [SEGMENT_MAX_SAMPLES] instead of at a pause.
-         */
+        /** Normalized energy at or below which the microphone is treated as quiet. */
         const val QUIET_ENERGY = 0.5f
+
+        /**
+         * How long the quiet has to last before it counts as the person pausing.
+         *
+         * Each check sees one read buffer, which was 40ms on the phone this was
+         * measured on. Ordinary speech is full of gaps that short - between words, and
+         * inside stop consonants - so checking a single buffer cut mid-sentence almost
+         * every time, within a second of the minimum. 300ms is longer than those gaps
+         * and shorter than a real pause.
+         */
+        const val QUIET_RUN_SAMPLES = SAMPLE_RATE * 3 / 10
     }
 
     private var recorder: AudioRecord? = null
@@ -75,6 +79,7 @@ class AudioCaptureManager {
     private var writer: DataOutputStream? = null
     private var segmentDir: File? = null
     private var samplesInSegment = 0
+    private var quietRunSamples = 0
     private val segments = mutableListOf<File>()
 
     // Guards onEnergyUpdate against firing after stop()/cancel() has returned.
@@ -156,7 +161,8 @@ class AudioCaptureManager {
                     val normalized = normalizeEnergy(rms)
 
                     writeSamples(readBuffer, read)
-                    if (shouldCloseSegment(samplesInSegment, normalized)) {
+                    quietRunSamples = if (normalized <= QUIET_ENERGY) quietRunSamples + read else 0
+                    if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
                         openSegment()
                     }
 
@@ -205,13 +211,16 @@ class AudioCaptureManager {
     /**
      * Whether the segment being written should end here.
      *
-     * Ends it at the first quiet moment once the segment is long enough, and forces
-     * the cut at [SEGMENT_MAX_SAMPLES] so someone who never pauses still gets pieces.
-     * Public for testability.
+     * Ends it once the segment is long enough and the person has been quiet for
+     * [QUIET_RUN_SAMPLES], and forces the cut at [SEGMENT_MAX_SAMPLES] so someone who
+     * never pauses still gets pieces. Public for testability.
+     *
+     * @param quietRunSamples How long the microphone has been quiet for, in samples,
+     *                        reset to zero the moment anything louder arrives.
      */
-    fun shouldCloseSegment(samplesInSegment: Int, energy: Float): Boolean = when {
+    fun shouldCloseSegment(samplesInSegment: Int, quietRunSamples: Int): Boolean = when {
         samplesInSegment >= SEGMENT_MAX_SAMPLES -> true
-        samplesInSegment >= SEGMENT_MIN_SAMPLES -> energy <= QUIET_ENERGY
+        samplesInSegment >= SEGMENT_MIN_SAMPLES -> quietRunSamples >= QUIET_RUN_SAMPLES
         else -> false
     }
 
@@ -223,6 +232,7 @@ class AudioCaptureManager {
         segments += file
         writer = DataOutputStream(BufferedOutputStream(FileOutputStream(file)))
         samplesInSegment = 0
+        quietRunSamples = 0
     }
 
     private fun writeSamples(buffer: FloatArray, count: Int) {

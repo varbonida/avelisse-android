@@ -9,39 +9,47 @@ import org.junit.Test
  *
  * Speech is loud, a pause is quiet, and the read loop already measures that for the
  * waveform. So the cut costs nothing to find: wait until the piece is long enough,
- * then end it the moment the person stops talking.
+ * then end it once the person has actually stopped talking.
  */
 class SegmentBoundaryTest {
 
     private val manager = AudioCaptureManager()
 
-    private val quiet = 0.1f
-    private val speech = 0.9f
+    private val longEnough = AudioCaptureManager.SEGMENT_MIN_SAMPLES + 1
+    private val realPause = AudioCaptureManager.QUIET_RUN_SAMPLES
+    private val gapBetweenWords = AudioCaptureManager.QUIET_RUN_SAMPLES - 1
+    private val stillTalking = 0
 
     @Test
-    fun `a short piece is never cut, even in silence`() {
-        assertFalse(manager.shouldCloseSegment(samplesInSegment = 1_000, energy = quiet))
+    fun `a short piece is never cut, however long the pause`() {
+        assertFalse(manager.shouldCloseSegment(samplesInSegment = 1_000, quietRunSamples = realPause))
     }
 
     @Test
-    fun `a piece past the minimum is cut at a pause`() {
-        val past = AudioCaptureManager.SEGMENT_MIN_SAMPLES + 1
-
-        assertTrue(manager.shouldCloseSegment(samplesInSegment = past, energy = quiet))
+    fun `a piece past the minimum is cut at a real pause`() {
+        assertTrue(manager.shouldCloseSegment(longEnough, quietRunSamples = realPause))
     }
 
     @Test
     fun `a piece past the minimum keeps going while someone is still talking`() {
-        val past = AudioCaptureManager.SEGMENT_MIN_SAMPLES + 1
+        assertFalse(manager.shouldCloseSegment(longEnough, quietRunSamples = stillTalking))
+    }
 
-        assertFalse(manager.shouldCloseSegment(samplesInSegment = past, energy = speech))
+    @Test
+    fun `a gap between words is not long enough to cut on`() {
+        // This is what went wrong on the phone: a 40ms gap inside a sentence read as a
+        // pause, so segments ended mid-phrase about a second past the minimum.
+        assertFalse(manager.shouldCloseSegment(longEnough, quietRunSamples = gapBetweenWords))
     }
 
     @Test
     fun `an unbroken talker is cut at the maximum anyway`() {
-        val atMax = AudioCaptureManager.SEGMENT_MAX_SAMPLES
-
-        assertTrue(manager.shouldCloseSegment(samplesInSegment = atMax, energy = speech))
+        assertTrue(
+            manager.shouldCloseSegment(
+                samplesInSegment = AudioCaptureManager.SEGMENT_MAX_SAMPLES,
+                quietRunSamples = stillTalking,
+            ),
+        )
     }
 
     @Test
@@ -50,5 +58,12 @@ class SegmentBoundaryTest {
         assertTrue(
             AudioCaptureManager.SEGMENT_MIN_SAMPLES < AudioCaptureManager.SEGMENT_MAX_SAMPLES,
         )
+    }
+
+    @Test
+    fun `a pause fits inside the window between the minimum and the maximum`() {
+        // A quiet run longer than the window could never complete before the hard cut.
+        val window = AudioCaptureManager.SEGMENT_MAX_SAMPLES - AudioCaptureManager.SEGMENT_MIN_SAMPLES
+        assertTrue(AudioCaptureManager.QUIET_RUN_SAMPLES < window)
     }
 }
