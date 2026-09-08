@@ -83,18 +83,25 @@ class AudioCaptureManager {
          * repository only drops blank text, so that would have been filed as a journal
          * entry. One second of actual speech is the floor for treating a recording as
          * real.
+         *
+         * Known limit: noise above [SPEECH_RMS] accumulates at roughly 2.7% of a
+         * recording's length, so a very long recording of an empty room can still clear
+         * this floor. A proportion of the recording would close that, but it would also
+         * throw away someone who left the recording running for twenty minutes and
+         * spoke for one. Losing a real recording is worse than filing a junk entry
+         * somebody can delete, so the failure points that way on purpose.
          */
         const val MIN_SPEECH_SAMPLES = SAMPLE_RATE
 
         /**
-         * How long the microphone has to stay loud before it counts as someone talking.
+         * Raw RMS a recording has to reach before anyone is treated as having spoken.
          *
-         * Counting every buffer that crosses [QUIET_RMS] does not work: room noise
-         * crosses it constantly, and a deliberately silent half minute accumulated 7.4
-         * seconds of "speech" that way. A spoken word lasts 200ms or more and connected
-         * speech runs for seconds; a tick of noise is one or two 40ms buffers.
+         * Twice the loudest thing a quiet room produced in the measurements, where
+         * silence never peaked above 0.0294 and speech averaged 0.03 to 0.14. Level
+         * rather than duration, because speech is not continuously loud: it drops below
+         * any threshold between words, so counting how long it stays up finds nothing.
          */
-        const val MIN_SPEECH_RUN_SAMPLES = SAMPLE_RATE * 3 / 10
+        const val SPEECH_RMS = 0.06f
 
         /**
          * How long the quiet has to last before it counts as the person pausing.
@@ -115,7 +122,6 @@ class AudioCaptureManager {
     private var samplesInSegment = 0
     private var quietRunSamples = 0
     private var speechSamples = 0
-    private var speechRunSamples = 0
 
     private val segments = mutableListOf<File>()
 
@@ -179,7 +185,6 @@ class AudioCaptureManager {
         }
 
         speechSamples = 0
-        speechRunSamples = 0
         dir.mkdirs()
         dir.listFiles()?.forEach { it.delete() }
         segmentDir = dir
@@ -200,13 +205,8 @@ class AudioCaptureManager {
                     val normalized = normalizeEnergy(rms)
 
                     writeSamples(readBuffer, read)
-                    if (rms <= QUIET_RMS) {
-                        quietRunSamples += read
-                        endSpeechRun()
-                    } else {
-                        quietRunSamples = 0
-                        speechRunSamples += read
-                    }
+                    quietRunSamples = if (rms <= QUIET_RMS) quietRunSamples + read else 0
+                    if (rms >= SPEECH_RMS) speechSamples += read
                     if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
                         openSegment()
                     }
@@ -233,7 +233,6 @@ class AudioCaptureManager {
         recorder?.release()
         recorder = null
         closeWriter()
-        endSpeechRun()
         resetEnergyHistory()
 
         // A segment holding no samples is one that was opened and never written to,
@@ -257,21 +256,6 @@ class AudioCaptureManager {
         segmentDir = null
         Timber.d("AudioRecord cancelled, segments deleted")
     }
-
-    /**
-     * Bank a run of loud audio if it lasted long enough to be a word rather than noise.
-     */
-    private fun endSpeechRun() {
-        if (countsAsSpeech(speechRunSamples)) speechSamples += speechRunSamples
-        speechRunSamples = 0
-    }
-
-    /**
-     * Whether an unbroken stretch of loud audio is long enough to be speech.
-     *
-     * Public for testability.
-     */
-    fun countsAsSpeech(runSamples: Int): Boolean = runSamples >= MIN_SPEECH_RUN_SAMPLES
 
     /**
      * Whether anyone actually spoke during this recording.

@@ -61,21 +61,17 @@ class SegmentBoundaryTest {
     }
 
     @Test
-    fun `a tick of room noise is not speech`() {
-        // One or two 40ms buffers crossing the threshold is a door, a breath, a hand on
-        // the case. Counting those made a silent half minute look like 7.4s of talking.
-        assertFalse(manager.countsAsSpeech(AudioCaptureManager.MIN_SPEECH_RUN_SAMPLES - 1))
-    }
-
-    @Test
-    fun `a spoken word is speech`() {
-        assertTrue(manager.countsAsSpeech(AudioCaptureManager.MIN_SPEECH_RUN_SAMPLES))
-    }
-
-    @Test
     fun `a recording nobody spoke into counts as silent`() {
         assertTrue(manager.isSilent(speechSamples = 0))
         assertTrue(manager.isSilent(AudioCaptureManager.MIN_SPEECH_SAMPLES - 1))
+    }
+
+    @Test
+    fun `the speech level sits well clear of what a quiet room reaches`() {
+        // Silence peaked at 0.0294 in the measurements on the target phone. Anything at
+        // or above this is louder than a quiet room ever managed.
+        assertTrue(AudioCaptureManager.SPEECH_RMS > AudioCaptureManager.QUIET_RMS)
+        assertTrue(AudioCaptureManager.SPEECH_RMS >= 0.05f)
     }
 
     @Test
