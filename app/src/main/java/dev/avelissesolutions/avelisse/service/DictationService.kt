@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import dev.avelissesolutions.avelisse.asr.ParakeetProvider
 import dev.avelissesolutions.avelisse.core.stt.SttProvider
@@ -85,6 +86,7 @@ class DictationService : Service(), DictationController {
         const val ACTION_START = "dev.avelissesolutions.avelisse.action.START"
         const val ACTION_STOP = "dev.avelissesolutions.avelisse.action.STOP"
         private const val TRANSCRIPTION_TIMEOUT_MS = 120_000L
+        private const val ENGINE_IDLE_RELEASE_MS = 60_000L
     }
 
     /**
@@ -120,6 +122,17 @@ class DictationService : Service(), DictationController {
 
     private var audioCaptureManager: AudioCaptureManager? = null
     private var timerJob: Job? = null
+
+    // Frees the loaded engine once nobody has used it for a while.
+    //
+    // WHY on a timer and not straight after transcription: the keyboard uses this same
+    // path for short dictations, and loading a model takes seconds - twenty of them for
+    // whisper tiny in one measurement - so paying that per dictation would be worse
+    // than holding the memory. WHY at all: onDestroy never runs, because the IME binds
+    // to this service and stays bound, so a bound service is not destroyed by
+    // stopSelf(). Without this the recognizer is held for the life of the process, and
+    // after a long recording that measured 470 MB of native memory.
+    private var idleReleaseJob: Job? = null
     private var elapsedMs: Long = 0L
 
     // Sound feedback for recording lifecycle events.
@@ -273,7 +286,9 @@ class DictationService : Service(), DictationController {
      */
     override suspend fun confirmAndTranscribe(): String? {
         // 1. Stop recording and get audio samples
-        val segments = audioCaptureManager?.stop() ?: emptyList()
+        val manager = audioCaptureManager
+        val segments = manager?.stop() ?: emptyList()
+        val hadSpeech = manager?.hadSpeech() == true
         timerJob?.cancel()
         timerJob = null
         elapsedMs = 0L
@@ -287,8 +302,22 @@ class DictationService : Service(), DictationController {
             return null
         }
 
+        // Nobody spoke. Not transcribed at all: the engine does not return silence for
+        // silence, it invents sentences, and those would be filed as a journal entry.
+        if (!hadSpeech) {
+            Timber.d("confirmAndTranscribe: no speech in the recording, discarding it")
+            segments.forEach { it.delete() }
+            _state.value = DictationState.Idle
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
+            return null
+        }
+
         // Play stop cue when audio capture ends and transcription begins.
         if (soundEnabled) soundPlayer.playStop()
+
+        idleReleaseJob?.cancel()
+        idleReleaseJob = null
 
         Timber.d("confirmAndTranscribe: %d segment(s), transitioning to Transcribing", segments.size)
         _state.value = DictationState.Transcribing()
@@ -379,11 +408,29 @@ class DictationService : Service(), DictationController {
             // The audio is working scratch. An entry keeps the transcript only, so the
             // segments go whether transcription succeeded, failed or threw.
             segments.forEach { it.delete() }
+            scheduleEngineRelease()
         }
     }
 
     /** Where segment files live while a recording is in progress. */
     private fun recordingDir(): File = File(filesDir, "recording")
+
+    /**
+     * Free the loaded engine once it has gone unused for [ENGINE_IDLE_RELEASE_MS].
+     *
+     * Restarted after every transcription, cancelled when another one begins, so a run
+     * of keyboard dictations keeps the model loaded and someone who puts the phone down
+     * gets the memory back.
+     */
+    private fun scheduleEngineRelease() {
+        idleReleaseJob?.cancel()
+        idleReleaseJob = serviceScope.launch {
+            delay(ENGINE_IDLE_RELEASE_MS)
+            currentProvider?.release()
+            currentProvider = null
+            Timber.d("Engine released after %d ms idle", ENGINE_IDLE_RELEASE_MS)
+        }
+    }
 
     /**
      * Get or initialize the correct STT provider based on the active model's provider type.
@@ -539,11 +586,15 @@ class DictationService : Service(), DictationController {
 
     override fun onDestroy() {
         super.onDestroy()
-        serviceScope.launch {
-            currentProvider?.release()
-        }
+        // The release used to be launched on serviceScope and the scope cancelled on
+        // the next line, so it was cancelled before it ever ran. Take the provider
+        // first, tear the scope down, then free it outside the scope being cancelled.
+        val provider = currentProvider
+        currentProvider = null
+        idleReleaseJob = null
         if (::soundPlayer.isInitialized) soundPlayer.release()
         serviceScope.cancel()
+        runBlocking { provider?.release() }
         Timber.d("DictationService destroyed")
     }
 }

@@ -76,6 +76,17 @@ class AudioCaptureManager {
         const val QUIET_RMS = 0.035f
 
         /**
+         * How much speech a recording needs before it is worth transcribing at all.
+         *
+         * A recording nobody spoke into is not silence to the engine: given 21 minutes
+         * of an empty room it invented a paragraph of plausible-looking sentences. The
+         * repository only drops blank text, so that would have been filed as a journal
+         * entry. One second of actual speech is the floor for treating a recording as
+         * real.
+         */
+        const val MIN_SPEECH_SAMPLES = SAMPLE_RATE
+
+        /**
          * How long the quiet has to last before it counts as the person pausing.
          *
          * Each check sees one read buffer, which was 40ms on the phone this was
@@ -93,6 +104,7 @@ class AudioCaptureManager {
     private var segmentDir: File? = null
     private var samplesInSegment = 0
     private var quietRunSamples = 0
+    private var speechSamples = 0
 
     private val segments = mutableListOf<File>()
 
@@ -155,6 +167,7 @@ class AudioCaptureManager {
             Timber.d("AudioRecord started: ${SAMPLE_RATE}Hz mono Float32, buffer=$bufferSize")
         }
 
+        speechSamples = 0
         dir.mkdirs()
         dir.listFiles()?.forEach { it.delete() }
         segmentDir = dir
@@ -175,7 +188,12 @@ class AudioCaptureManager {
                     val normalized = normalizeEnergy(rms)
 
                     writeSamples(readBuffer, read)
-                    quietRunSamples = if (rms <= QUIET_RMS) quietRunSamples + read else 0
+                    if (rms <= QUIET_RMS) {
+                        quietRunSamples += read
+                    } else {
+                        quietRunSamples = 0
+                        speechSamples += read
+                    }
                     if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
                         openSegment()
                     }
@@ -208,7 +226,11 @@ class AudioCaptureManager {
         // which happens whenever a recording ends right after a cut.
         val result = segments.filter { it.length() > 0 }.toList()
         segments.clear()
-        Timber.d("AudioRecord stopped, %d segment(s)", result.size)
+        Timber.d(
+            "AudioRecord stopped, %d segment(s), %.1fs of speech",
+            result.size,
+            speechSamples.toFloat() / SAMPLE_RATE,
+        )
         return result
     }
 
@@ -221,6 +243,20 @@ class AudioCaptureManager {
         segmentDir = null
         Timber.d("AudioRecord cancelled, segments deleted")
     }
+
+    /**
+     * Whether anyone actually spoke during this recording.
+     *
+     * Read after [stop], before the manager is discarded.
+     */
+    fun hadSpeech(): Boolean = !isSilent(speechSamples)
+
+    /**
+     * Whether a recording holding this much speech should be treated as empty.
+     *
+     * Public for testability.
+     */
+    fun isSilent(speechSamples: Int): Boolean = speechSamples < MIN_SPEECH_SAMPLES
 
     /**
      * Whether the segment being written should end here.

@@ -61,6 +61,19 @@ class SegmentBoundaryTest {
     }
 
     @Test
+    fun `a recording nobody spoke into counts as silent`() {
+        assertTrue(manager.isSilent(speechSamples = 0))
+        assertTrue(manager.isSilent(AudioCaptureManager.MIN_SPEECH_SAMPLES - 1))
+    }
+
+    @Test
+    fun `a second of speech is enough to be worth transcribing`() {
+        // Below this the engine is handed an empty room, and it answers with invented
+        // sentences rather than with nothing.
+        assertFalse(manager.isSilent(AudioCaptureManager.MIN_SPEECH_SAMPLES))
+    }
+
+    @Test
     fun `a pause fits inside the window between the minimum and the maximum`() {
         // A quiet run longer than the window could never complete before the hard cut.
         val window = AudioCaptureManager.SEGMENT_MAX_SAMPLES - AudioCaptureManager.SEGMENT_MIN_SAMPLES
