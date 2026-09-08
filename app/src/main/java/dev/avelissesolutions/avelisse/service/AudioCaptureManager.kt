@@ -87,6 +87,16 @@ class AudioCaptureManager {
         const val MIN_SPEECH_SAMPLES = SAMPLE_RATE
 
         /**
+         * How long the microphone has to stay loud before it counts as someone talking.
+         *
+         * Counting every buffer that crosses [QUIET_RMS] does not work: room noise
+         * crosses it constantly, and a deliberately silent half minute accumulated 7.4
+         * seconds of "speech" that way. A spoken word lasts 200ms or more and connected
+         * speech runs for seconds; a tick of noise is one or two 40ms buffers.
+         */
+        const val MIN_SPEECH_RUN_SAMPLES = SAMPLE_RATE * 3 / 10
+
+        /**
          * How long the quiet has to last before it counts as the person pausing.
          *
          * Each check sees one read buffer, which was 40ms on the phone this was
@@ -105,6 +115,7 @@ class AudioCaptureManager {
     private var samplesInSegment = 0
     private var quietRunSamples = 0
     private var speechSamples = 0
+    private var speechRunSamples = 0
 
     private val segments = mutableListOf<File>()
 
@@ -168,6 +179,7 @@ class AudioCaptureManager {
         }
 
         speechSamples = 0
+        speechRunSamples = 0
         dir.mkdirs()
         dir.listFiles()?.forEach { it.delete() }
         segmentDir = dir
@@ -190,9 +202,10 @@ class AudioCaptureManager {
                     writeSamples(readBuffer, read)
                     if (rms <= QUIET_RMS) {
                         quietRunSamples += read
+                        endSpeechRun()
                     } else {
                         quietRunSamples = 0
-                        speechSamples += read
+                        speechRunSamples += read
                     }
                     if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
                         openSegment()
@@ -220,6 +233,7 @@ class AudioCaptureManager {
         recorder?.release()
         recorder = null
         closeWriter()
+        endSpeechRun()
         resetEnergyHistory()
 
         // A segment holding no samples is one that was opened and never written to,
@@ -243,6 +257,21 @@ class AudioCaptureManager {
         segmentDir = null
         Timber.d("AudioRecord cancelled, segments deleted")
     }
+
+    /**
+     * Bank a run of loud audio if it lasted long enough to be a word rather than noise.
+     */
+    private fun endSpeechRun() {
+        if (countsAsSpeech(speechRunSamples)) speechSamples += speechRunSamples
+        speechRunSamples = 0
+    }
+
+    /**
+     * Whether an unbroken stretch of loud audio is long enough to be speech.
+     *
+     * Public for testability.
+     */
+    fun countsAsSpeech(runSamples: Int): Boolean = runSamples >= MIN_SPEECH_RUN_SAMPLES
 
     /**
      * Whether anyone actually spoke during this recording.
