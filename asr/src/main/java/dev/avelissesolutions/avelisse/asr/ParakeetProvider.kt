@@ -6,8 +6,12 @@ import com.k2fsa.sherpa.onnx.OfflineRecognizer
 import com.k2fsa.sherpa.onnx.OfflineRecognizerConfig
 import com.k2fsa.sherpa.onnx.OfflineTransducerModelConfig
 import dev.avelissesolutions.avelisse.core.stt.SttProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
+import java.util.concurrent.Executors
 
 /**
  * SttProvider implementation backed by sherpa-onnx OfflineRecognizer for
@@ -34,6 +38,22 @@ class ParakeetProvider : SttProvider {
     override val supportedLanguages: List<String> = emptyList()
 
     private var recognizer: OfflineRecognizer? = null
+
+    /**
+     * All sherpa-onnx work runs here, never on the caller's thread.
+     *
+     * WHY: transcribe() used to run ONNX inference on whichever dispatcher called it,
+     * and the caller is the recording screen's composition scope, which is the main
+     * thread. A 35-second segment froze the UI for around twelve seconds - long past
+     * the point Android offers to kill the app - and no partial text could be drawn
+     * because nothing could draw at all. WhisperContext already does exactly this.
+     *
+     * Single-threaded rather than a shared pool so calls into one recognizer stay
+     * serialised, matching the whisper side.
+     */
+    private val inferenceScope: CoroutineScope = CoroutineScope(
+        Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    )
 
     override val isReady: Boolean get() = recognizer != null
 
@@ -89,14 +109,18 @@ class ParakeetProvider : SttProvider {
             decodingMethod = "greedy_search",
         )
 
-        return try {
-            recognizer = OfflineRecognizer(assetManager = null, config = config)
-            Timber.d("ParakeetProvider initialized (%s) with model: %s",
-                if (isTransducer) "transducer" else "CTC", modelPath)
-            true
-        } catch (e: Exception) {
-            Timber.e(e, "ParakeetProvider: initialization failed for %s", modelPath)
-            false
+        // Loading the model took over three seconds on a low-end phone, and it ran on
+        // the caller's thread, which is the UI thread.
+        return withContext(inferenceScope.coroutineContext) {
+            try {
+                recognizer = OfflineRecognizer(assetManager = null, config = config)
+                Timber.d("ParakeetProvider initialized (%s) with model: %s",
+                    if (isTransducer) "transducer" else "CTC", modelPath)
+                true
+            } catch (e: Exception) {
+                Timber.e(e, "ParakeetProvider: initialization failed for %s", modelPath)
+                false
+            }
         }
     }
 
@@ -110,21 +134,33 @@ class ParakeetProvider : SttProvider {
      * @param language BCP-47 language code (ignored — Parakeet auto-detects).
      * @return Raw transcribed text.
      */
-    override suspend fun transcribe(samples: FloatArray, language: String): String {
-        val r = recognizer ?: throw IllegalStateException("ParakeetProvider not initialized — call initialize() first")
-        val stream = r.createStream()
-        stream.acceptWaveform(samples, sampleRate = 16000)
-        r.decode(stream)
-        return r.getResult(stream).text
-    }
+    override suspend fun transcribe(samples: FloatArray, language: String): String =
+        withContext(inferenceScope.coroutineContext) {
+            val r = recognizer ?: throw IllegalStateException("ParakeetProvider not initialized — call initialize() first")
+            val stream = r.createStream()
+            try {
+                stream.acceptWaveform(samples, sampleRate = 16000)
+                r.decode(stream)
+                r.getResult(stream).text
+            } finally {
+                // Native memory, not garbage collected. One segment leaked one stream,
+                // so a long recording leaked one per half minute of audio.
+                stream.release()
+            }
+        }
 
     /**
      * Release native resources.
      *
-     * Sets recognizer to null so isReady returns false. The OfflineRecognizer's
-     * finalize() method handles native ONNX Runtime object cleanup via JNI.
+     * Frees the native recognizer, then sets it to null so isReady returns false.
+     *
+     * WHY the explicit release: dropping the reference alone left the model's native
+     * memory to a finalizer, which runs whenever the collector gets round to it. That
+     * is 131 MB for the 110M model, held on a phone that is switching to another model
+     * precisely because memory is tight.
      */
-    override suspend fun release() {
+    override suspend fun release() = withContext(inferenceScope.coroutineContext) {
+        recognizer?.release()
         recognizer = null
         Timber.d("ParakeetProvider released")
     }

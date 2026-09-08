@@ -60,8 +60,21 @@ class AudioCaptureManager {
          */
         const val SEGMENT_MAX_SAMPLES = 35 * SAMPLE_RATE
 
-        /** Normalized energy at or below which the microphone is treated as quiet. */
-        const val QUIET_ENERGY = 0.5f
+        /**
+         * Raw RMS at or below which the microphone is treated as quiet.
+         *
+         * Measured on an SM-A057F held normally in an ordinary room, 0.5s windows:
+         * speech averaged 0.03 to 0.14, while pauses between sentences and thirty
+         * seconds of deliberate silence both sat at 0.011 to 0.021 and never peaked
+         * above 0.0294. This is set just above that ceiling so a quiet stretch is not
+         * broken up by its own noise floor.
+         *
+         * Raw, not [normalizeEnergy]: that curve multiplies by 20 and takes a square
+         * root so quiet sounds still move the waveform, which pushes speech and room
+         * tone together near the top of the range and makes them impossible to tell
+         * apart. Two earlier attempts using it failed in opposite directions.
+         */
+        const val QUIET_RMS = 0.035f
 
         /**
          * How long the quiet has to last before it counts as the person pausing.
@@ -174,7 +187,7 @@ class AudioCaptureManager {
                     if (BuildConfig.DEBUG) recordRmsForTuning(rms, read)
 
                     writeSamples(readBuffer, read)
-                    quietRunSamples = if (normalized <= QUIET_ENERGY) quietRunSamples + read else 0
+                    quietRunSamples = if (rms <= QUIET_RMS) quietRunSamples + read else 0
                     if (shouldCloseSegment(samplesInSegment, quietRunSamples)) {
                         openSegment()
                     }
