@@ -36,7 +36,7 @@ Voir `design/README.md` pour la liste des frames et IDs.
 - Nommage: camelCase pour variables/fonctions, PascalCase pour classes/composables
 - Un fichier = une responsabilite
 - Commentaires en anglais dans le code
-- UI strings: francais (langue principale) + anglais
+- UI strings: anglais (langue principale) + francais. Les autres langues restent supportees.
 
 ## Couleurs principales
 
