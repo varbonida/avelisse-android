@@ -49,6 +49,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -266,10 +268,16 @@ private fun EntryRow(
     onDelete: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
+        val rowState = stringResource(
+            if (isExpanded) R.string.entries_row_expanded else R.string.entries_row_collapsed,
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = ROW_MIN_HEIGHT)
+                // Without this a screen reader reads the title and the date and gives no
+                // clue that the row opens, or whether it is already open.
+                .semantics { stateDescription = rowState }
                 .clickable(role = Role.Button, onClick = onToggle)
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,

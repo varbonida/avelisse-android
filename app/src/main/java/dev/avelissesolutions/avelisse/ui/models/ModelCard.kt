@@ -41,6 +41,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -166,6 +171,7 @@ fun ModelCard(
         }
 
         // Main card content (slides left on swipe)
+        val deleteActionLabel = stringResource(R.string.model_delete_cd)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -192,6 +198,22 @@ fun ModelCard(
                             onHorizontalDrag = { _, dragAmount ->
                                 offsetX = (offsetX + dragAmount)
                                     .coerceIn(-deleteButtonWidthPx, 0f)
+                            },
+                        )
+                    }
+                }
+                // The gestures below are hand-rolled, so this card announced itself as
+                // nothing and offered no way in for a screen reader. The tap still runs
+                // through pointerInput - TalkBack's double tap arrives as one - but the
+                // role makes it a button, and swipe-to-delete becomes an action that can
+                // actually be reached without being able to swipe.
+                .semantics(mergeDescendants = true) {
+                    role = Role.Button
+                    if (isDownloaded && canDelete) {
+                        customActions = listOf(
+                            CustomAccessibilityAction(deleteActionLabel) {
+                                onDelete()
+                                true
                             },
                         )
                     }

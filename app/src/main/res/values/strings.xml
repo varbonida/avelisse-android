@@ -251,4 +251,7 @@
 
     <string name="sound_settings_volume_hint">Use the volume buttons on the side of your phone.</string>
 
+    <string name="entries_row_expanded">Showing the whole entry</string>
+    <string name="entries_row_collapsed">Closed</string>
+
 </resources>

@@ -6,6 +6,10 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -117,6 +121,13 @@ private fun LayoutOptionCard(
             .clip(RoundedCornerShape(16.dp))
             .background(AvelisseColors.Surface)
             .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
+            // Hand-rolled taps left this announcing itself as plain text, with no way
+            // to tell which of the two was chosen. It is one of a pair, so it reads as
+            // a radio button and says whether it is the selected one.
+            .semantics(mergeDescendants = true) {
+                role = Role.RadioButton
+                selected = isSelected
+            }
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
