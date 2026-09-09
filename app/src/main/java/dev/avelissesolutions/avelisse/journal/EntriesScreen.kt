@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.Color
+import dev.avelissesolutions.avelisse.core.theme.AvelisseTouch
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -310,12 +312,15 @@ private fun EntryRow(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                 )
-                TextButton(onClick = onDelete) {
+                TextButton(
+                    onClick = onDelete,
+                    modifier = Modifier.heightIn(min = AvelisseTouch.Minimum),
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = null,
                         tint = AvelisseColors.Destructive,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(24.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -346,21 +351,47 @@ private fun DeleteConfirmation(
         textContentColor = AvelisseColors.TextSecondary,
         title = { Text(stringResource(R.string.entries_delete_title)) },
         text = { Text(stringResource(R.string.entries_delete_body)) },
+        // Both actions live in this one slot, stacked, rather than in the usual
+        // confirm/dismiss pair. Side by side they were two small pieces of text a
+        // thumb's width apart, with the irreversible one bolder and on the side the
+        // thumb rests. Keeping is the large, obvious target; deleting is deliberately
+        // the quieter one, and far enough away that a bad tap misses it entirely.
         confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(
-                    text = stringResource(R.string.entries_delete_confirm),
-                    color = AvelisseColors.Destructive,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(
-                    text = stringResource(R.string.entries_keep),
-                    color = AvelisseColors.TextPrimary,
-                )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AvelisseTouch.Primary)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(AvelisseColors.Primary)
+                        .clickable(role = Role.Button, onClick = onDismiss),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = stringResource(R.string.entries_keep),
+                        color = Color.White,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(AvelisseTouch.Separation * 2))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AvelisseTouch.Minimum)
+                        .clip(RoundedCornerShape(14.dp))
+                        .clickable(role = Role.Button, onClick = onConfirm),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = stringResource(R.string.entries_delete_confirm),
+                        color = AvelisseColors.Destructive,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                    )
+                }
             }
         },
     )

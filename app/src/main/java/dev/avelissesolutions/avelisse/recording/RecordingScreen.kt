@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.sp
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.service.DictationController
 import dev.avelissesolutions.avelisse.core.service.DictationState
+import androidx.compose.ui.semantics.Role
+import dev.avelissesolutions.avelisse.core.theme.AvelisseTouch
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
 import dev.avelissesolutions.avelisse.core.ui.HomeGlassCard
 import dev.avelissesolutions.avelisse.core.ui.WaveformBars
@@ -133,20 +135,30 @@ fun RecordingScreen(
             .fillMaxSize()
             .background(AvelisseColors.Background),
     ) {
-        // ── Close button (top-left, always visible) ──
+        // ── Leave button (bottom-left, always visible) ──
+        //
+        // It used to sit in the top-left corner at about 40dp. That is the hardest
+        // place on a large phone to reach with one thumb, it needed an accurate tap,
+        // and it is the only way out of this screen - so getting it wrong meant
+        // shifting grip, which is the second hand we cannot assume anyone has.
+        //
+        // Down here it is in reach, but deliberately not beside the stop button in the
+        // middle: leaving mid-recording throws the audio away, and that must never be
+        // the thing a shaky hand hits while aiming for "I have finished talking".
         Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 32.dp, top = 16.dp)
+                .align(Alignment.BottomStart)
+                .padding(start = 24.dp, bottom = 88.dp)
+                .size(AvelisseTouch.Minimum)
                 .clip(CircleShape)
-                .clickable(onClick = leave)
-                .padding(8.dp),
+                .clickable(role = Role.Button, onClick = leave),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(R.string.recording_close_cd),
                 tint = AvelisseColors.TextPrimary,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(28.dp),
             )
         }
 
