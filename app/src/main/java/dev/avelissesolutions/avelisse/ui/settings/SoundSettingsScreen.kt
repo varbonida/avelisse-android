@@ -2,6 +2,8 @@ package dev.avelissesolutions.avelisse.ui.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -188,7 +190,11 @@ private fun SoundToggleRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
-            .clickable(onClick = onToggle)
+            .toggleable(
+                value = checked,
+                role = Role.Switch,
+                onValueChange = { onToggle() },
+            )
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -199,7 +205,7 @@ private fun SoundToggleRow(
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.Primary)
+        AvelisseToggle(checked = checked, trackColorOn = AvelisseColors.Primary)
     }
 }
 

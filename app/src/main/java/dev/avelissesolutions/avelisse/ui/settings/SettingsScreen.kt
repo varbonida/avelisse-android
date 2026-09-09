@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -460,7 +462,14 @@ private fun SettingToggleRow(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = AvelisseTouch.Minimum)
-            .clickable(onClick = onToggle)
+            // toggleable, not clickable: a screen reader announced this as a plain
+            // button and "double tap to activate", so the one thing you needed to
+            // know - whether it is on - was the one thing it would not say.
+            .toggleable(
+                value = checked,
+                role = Role.Switch,
+                onValueChange = { onToggle() },
+            )
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -471,7 +480,7 @@ private fun SettingToggleRow(
             fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f),
         )
-        AvelisseToggle(checked = checked, onToggle = onToggle, trackColorOn = AvelisseColors.Primary)
+        AvelisseToggle(checked = checked, trackColorOn = AvelisseColors.Primary)
     }
 }
 
@@ -605,7 +614,6 @@ private fun SettingDivider() {
 @Composable
 fun AvelisseToggle(
     checked: Boolean,
-    onToggle: () -> Unit,
     modifier: Modifier = Modifier,
     trackColorOn: Color = AvelisseColors.Primary,
 ) {
@@ -626,8 +634,7 @@ fun AvelisseToggle(
         modifier = modifier
             .size(width = toggleWidth, height = toggleHeight)
             .clip(RoundedCornerShape(cornerRadius))
-            .background(trackColor)
-            .clickable(onClick = onToggle),
+            .background(trackColor),
     ) {
         Box(
             modifier = Modifier
