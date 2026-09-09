@@ -228,8 +228,12 @@ internal fun EntriesScreenContent(
             onValueChange = onQueryChange,
             modifier = Modifier
                 .fillMaxWidth()
+                // Its own ground, so a row scrolled up behind it does not appear to run
+                // into it, and a clear gap above so the cut-off row reads as "there is
+                // more below" rather than as a broken card.
+                .background(AvelisseColors.Background)
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 12.dp)
+                .padding(top = AvelisseTouch.Separation, bottom = AvelisseTouch.Separation)
                 .heightIn(min = AvelisseTouch.Minimum),
             placeholder = { Text(stringResource(R.string.entries_search_hint)) },
             leadingIcon = {
