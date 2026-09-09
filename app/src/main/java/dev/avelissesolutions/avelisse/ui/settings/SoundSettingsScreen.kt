@@ -19,8 +19,6 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,7 +39,6 @@ import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
  *
  * Allows the user to:
  * - Toggle global sound on/off
- * - Adjust volume (0.05 to 1.0)
  * - Pick start/stop/cancel sounds via dedicated picker screens
  *
  * Shares the same [SettingsViewModel] as the main Settings screen because all
@@ -56,7 +53,6 @@ fun SoundSettingsScreen(
     onNavigateToSoundPicker: (soundType: String) -> Unit,
 ) {
     val soundEnabled by viewModel.soundEnabled.collectAsState()
-    val soundVolume by viewModel.soundVolume.collectAsState()
     val startSound by viewModel.recordStartSound.collectAsState()
     val stopSound by viewModel.recordStopSound.collectAsState()
     val cancelSound by viewModel.recordCancelSound.collectAsState()
@@ -99,13 +95,10 @@ fun SoundSettingsScreen(
                 onToggle = { viewModel.toggleSound() },
             )
             SoundDivider()
-            // Volume slider
-            SoundSliderRow(
-                label = stringResource(R.string.sound_settings_volume),
-                value = soundVolume,
-                enabled = soundEnabled,
-                onValueChange = { viewModel.setSoundVolume(it) },
-            )
+            // No volume control of our own. Dragging a small thumb along a track is the
+            // one thing an unsteady hand cannot do, and the phone already has a better
+            // control for this: two physical buttons that need no aim at all.
+            SoundHint(text = stringResource(R.string.sound_settings_volume_hint))
         }
 
         // ---------- SECTION: SONS ----------
@@ -210,53 +203,6 @@ private fun SoundToggleRow(
     }
 }
 
-@Composable
-private fun SoundSliderRow(
-    label: String,
-    value: Float,
-    enabled: Boolean,
-    onValueChange: (Float) -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = label,
-                color = if (enabled) AvelisseColors.TextPrimary else AvelisseColors.TextSecondary,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.weight(1f),
-            )
-            Text(
-                text = "${(value * 100).toInt()}%",
-                color = AvelisseColors.TextSecondary,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-            )
-        }
-        Slider(
-            value = value,
-            onValueChange = onValueChange,
-            valueRange = 0.05f..1.0f,
-            enabled = enabled,
-            colors = SliderDefaults.colors(
-                thumbColor = AvelisseColors.Primary,
-                activeTrackColor = AvelisseColors.Primary,
-                inactiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.3f),
-                disabledThumbColor = AvelisseColors.TextSecondary.copy(alpha = 0.5f),
-                disabledActiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.3f),
-                disabledInactiveTrackColor = AvelisseColors.TextSecondary.copy(alpha = 0.15f),
-            ),
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
 
 @Composable
 private fun SoundPickerRow(
@@ -301,5 +247,16 @@ private fun SoundDivider() {
         color = AvelisseColors.Border,
         thickness = 1.dp,
         modifier = Modifier.padding(start = 16.dp),
+    )
+}
+
+/** A quiet line of guidance inside a settings card. */
+@Composable
+private fun SoundHint(text: String) {
+    Text(
+        text = text,
+        color = AvelisseColors.TextSecondary,
+        fontSize = 14.sp,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
     )
 }

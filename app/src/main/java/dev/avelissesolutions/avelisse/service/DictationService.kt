@@ -141,7 +141,6 @@ class DictationService : Service(), DictationController {
     // SoundSettingsScreen take effect without a service restart.
     private lateinit var soundPlayer: DictationSoundPlayer
     private var soundEnabled: Boolean = false
-    private var soundVolume: Float = 0.5f
 
     // State machine exposed to the IME via the binder.
     // MutableStateFlow is thread-safe; updates from any coroutine are fine.
@@ -165,7 +164,9 @@ class DictationService : Service(), DictationController {
             val cancelSound = prefs[PreferenceKeys.RECORD_CANCEL_SOUND] ?: "electronic_03c"
             soundPlayer.loadSounds(startSound, stopSound, cancelSound)
 
-            soundPlayer.volume = prefs[PreferenceKeys.SOUND_VOLUME] ?: 0.5f
+            // Full volume: how loud these actually are is the phone's volume buttons'
+            // job now, not a slider of ours.
+            soundPlayer.volume = 1f
         }
 
         // Reactively observe the SOUND_ENABLED preference so changes take effect
@@ -174,16 +175,6 @@ class DictationService : Service(), DictationController {
             dataStore.data
                 .map { it[PreferenceKeys.SOUND_ENABLED] ?: false }
                 .collect { soundEnabled = it }
-        }
-
-        // Reactively observe volume changes.
-        serviceScope.launch {
-            dataStore.data
-                .map { it[PreferenceKeys.SOUND_VOLUME] ?: 0.5f }
-                .collect { volume ->
-                    soundVolume = volume
-                    soundPlayer.volume = volume
-                }
         }
 
         // Reactively observe sound name changes and reload the affected slot.

@@ -136,16 +136,6 @@ class SettingsViewModel @Inject constructor(
     }
 
     /** Sound volume (0.05 to 1.0). */
-    val soundVolume: StateFlow<Float> = dataStore.data
-        .map { it[PreferenceKeys.SOUND_VOLUME] ?: 0.5f }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, 0.5f)
-
-    /** Persist the sound volume to DataStore. */
-    fun setSoundVolume(volume: Float) {
-        viewModelScope.launch {
-            dataStore.edit { it[PreferenceKeys.SOUND_VOLUME] = volume.coerceIn(0.05f, 1.0f) }
-        }
-    }
 
     /** Name of the WAV file used for recording start sound. */
     val recordStartSound: StateFlow<String> = dataStore.data

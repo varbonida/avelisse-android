@@ -58,7 +58,6 @@ fun SoundPickerScreen(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
-    val soundVolume by viewModel.soundVolume.collectAsState()
 
     val currentSelection by when (soundType) {
         "start" -> viewModel.recordStartSound.collectAsState()
@@ -118,7 +117,7 @@ fun SoundPickerScreen(
                         soundName = soundName,
                         isSelected = soundName == currentSelection,
                         onClick = {
-                            previewPlayer.play(context, soundName, soundVolume)
+                            previewPlayer.play(context, soundName, volume = 1f)
                             viewModel.setSoundForType(soundType, soundName)
                         },
                     )

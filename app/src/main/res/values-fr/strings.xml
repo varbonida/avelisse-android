@@ -110,7 +110,6 @@
     <string name="sound_settings_section_general">GENERAL</string>
     <string name="sound_settings_section_sounds">SONS</string>
     <string name="sound_settings_dictation_sound">Son de dict\u00e9e</string>
-    <string name="sound_settings_volume">Volume</string>
     <string name="sound_settings_start_sound">Son de d\u00e9but</string>
     <string name="sound_settings_stop_sound">Son de fin</string>
     <string name="sound_settings_cancel_sound">Son d\'annulation</string>
@@ -249,5 +248,7 @@
 
     <!-- Recording notification channel (DictationService) -->
     <string name="notification_channel_recording_description">Notification d\'enregistrement actif</string>
+
+    <string name="sound_settings_volume_hint">Utilisez les boutons de volume sur le côté de votre téléphone.</string>
 
 </resources>
