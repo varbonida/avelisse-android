@@ -291,8 +291,13 @@ private fun EntryRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
+                // Which log this belongs to is written out, not left to the colour of
+                // the dot. Anyone who cannot separate the teal from the terracotta -
+                // and that is a fair share of people - could not otherwise tell a
+                // symptom entry from an appointment one at all.
                 Text(
-                    text = formatEntryTimestamp(entry.createdAt),
+                    text = stringResource(entry.kind.labelRes()) + " · " +
+                        formatEntryTimestamp(entry.createdAt),
                     color = AvelisseColors.TextSecondary,
                     fontSize = 13.sp,
                 )
@@ -434,4 +439,10 @@ private fun entryDateFormatter(): DateTimeFormatter =
 private fun formatEntryTimestamp(epochMillis: Long): String {
     val formatter = remember { entryDateFormatter() }
     return formatter.format(Instant.ofEpochMilli(epochMillis))
+}
+
+/** The name of the log an entry belongs to, for the list to say out loud. */
+private fun JournalKind.labelRes(): Int = when (this) {
+    JournalKind.SYMPTOM -> R.string.entries_kind_symptom
+    JournalKind.VISIT -> R.string.entries_kind_visit
 }
