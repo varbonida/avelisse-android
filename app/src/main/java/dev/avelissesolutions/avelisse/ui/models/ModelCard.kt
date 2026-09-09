@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.avelissesolutions.avelisse.R
 import dev.avelissesolutions.avelisse.core.theme.AvelisseColors
+import dev.avelissesolutions.avelisse.core.theme.AvelisseTouch
 import dev.avelissesolutions.avelisse.model.AiProvider
 import dev.avelissesolutions.avelisse.model.ModelInfo
 import kotlin.math.roundToInt
@@ -244,7 +246,7 @@ fun ModelCard(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(badgeColor.copy(alpha = 0.2f))
-                                    .padding(horizontal = 6.dp, vertical = 2.dp),
+                                    .padding(horizontal = 8.dp, vertical = 6.dp),
                             ) {
                                 Text(
                                     text = badgeText,
@@ -260,11 +262,11 @@ fun ModelCard(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(8.dp))
                                     .background(AvelisseColors.Primary.copy(alpha = 0.2f))
-                                    .padding(horizontal = 8.dp, vertical = 2.dp),
+                                    .padding(horizontal = 10.dp, vertical = 6.dp),
                             ) {
                                 Text(
                                     text = stringResource(R.string.model_active),
-                                    color = AvelisseColors.Accent,
+                                    color = AvelisseColors.TextPrimary,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium,
                                 )
@@ -280,11 +282,11 @@ fun ModelCard(
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp))
                             .background(Color(0xFFF59E0B).copy(alpha = 0.15f))
-                            .padding(horizontal = 10.dp, vertical = 6.dp),
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.model_parakeet_language_warning),
-                            color = Color(0xFFF59E0B),
+                            color = AvelisseColors.TextPrimary,
                             fontSize = 12.sp,
                         )
                     }
@@ -344,7 +346,7 @@ fun ModelCard(
                         )
                         Text(
                             text = stringResource(R.string.model_extracting),
-                            color = AvelisseColors.Accent,
+                            color = AvelisseColors.TextPrimary,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -365,7 +367,7 @@ fun ModelCard(
                         )
                         Text(
                             text = stringResource(R.string.model_download_progress, percent),
-                            color = AvelisseColors.Accent,
+                            color = AvelisseColors.TextPrimary,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -399,7 +401,7 @@ fun ModelCard(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(40.dp)
+                                .heightIn(min = AvelisseTouch.Primary)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(
                                     brush = Brush.horizontalGradient(
@@ -452,6 +454,9 @@ private fun SegmentedMetricBar(
     emptyColor: Color? = null,
     modifier: Modifier = Modifier,
 ) {
+    // The label is deliberately not [color]. A hue chosen to read as a solid 6dp bar
+    // is not a text colour: the amber used for an active card's Speed bar came out at
+    // roughly 1.3:1 against the card behind it, which is invisible rather than subtle.
     val segmentCount = 5
     // Map 0.0–1.0 to 0–5 filled segments (round to nearest)
     val filledCount = (value.coerceIn(0f, 1f) * segmentCount).roundToInt()
@@ -464,7 +469,7 @@ private fun SegmentedMetricBar(
     ) {
         Text(
             text = label,
-            color = color,
+            color = AvelisseColors.TextPrimary,
             fontSize = 12.sp,
         )
         Row(
