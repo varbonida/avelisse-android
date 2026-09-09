@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -147,7 +148,8 @@ internal fun EntriesScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AvelisseColors.Background),
+            .background(AvelisseColors.Background)
+            .imePadding(),
     ) {
         Row(
             modifier = Modifier
@@ -180,12 +182,55 @@ internal fun EntriesScreenContent(
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (entries.isEmpty()) {
+            EmptyState(
+                modifier = Modifier.weight(1f),
+                message = if (query.isBlank()) {
+                    stringResource(R.string.entries_empty)
+                } else {
+                    stringResource(R.string.entries_no_results)
+                },
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(AvelisseColors.Surface)
+                    .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp)),
+            ) {
+                itemsIndexed(entries, key = { _, entry -> entry.id }) { index, entry ->
+                    if (index > 0) {
+                        HorizontalDivider(thickness = 1.dp, color = AvelisseColors.Border)
+                    }
+                    EntryRow(
+                        entry = entry,
+                        isExpanded = expandedId == entry.id,
+                        onToggle = {
+                            expandedId = if (expandedId == entry.id) null else entry.id
+                        },
+                        onDelete = { pendingDeletion = entry },
+                    )
+                }
+            }
+        }
+
+        // Searching lives down here rather than under the title. On a phone this size
+        // the top edge needs a change of grip to reach, and this is the one control on
+        // the screen somebody has to aim at and then type into. imePadding lifts it
+        // clear of the keyboard once it has focus.
         OutlinedTextField(
             value = query,
             onValueChange = onQueryChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 12.dp)
+                .heightIn(min = AvelisseTouch.Minimum),
             placeholder = { Text(stringResource(R.string.entries_search_hint)) },
             leadingIcon = {
                 Icon(
@@ -209,40 +254,6 @@ internal fun EntriesScreenContent(
             ),
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (entries.isEmpty()) {
-            EmptyState(
-                message = if (query.isBlank()) {
-                    stringResource(R.string.entries_empty)
-                } else {
-                    stringResource(R.string.entries_no_results)
-                },
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(AvelisseColors.Surface)
-                    .border(1.dp, AvelisseColors.Border, RoundedCornerShape(16.dp)),
-            ) {
-                itemsIndexed(entries, key = { _, entry -> entry.id }) { index, entry ->
-                    if (index > 0) {
-                        HorizontalDivider(thickness = 1.dp, color = AvelisseColors.Border)
-                    }
-                    EntryRow(
-                        entry = entry,
-                        isExpanded = expandedId == entry.id,
-                        onToggle = {
-                            expandedId = if (expandedId == entry.id) null else entry.id
-                        },
-                        onDelete = { pendingDeletion = entry },
-                    )
-                }
-            }
-        }
     }
 
     pendingDeletion?.let { entry ->
@@ -411,9 +422,9 @@ private fun DeleteConfirmation(
 }
 
 @Composable
-private fun EmptyState(message: String) {
+private fun EmptyState(message: String, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 40.dp),
         contentAlignment = Alignment.TopCenter,
